@@ -1,6 +1,6 @@
-import { Product } from "@/services";
+import { OpenFoodData } from "@/constants/responses";
 
-export const prompt = (data: Product) => {
+export const prompt = (data: OpenFoodData) => {
     return `Analyze the following product JSON data and generate a health/safety score from 0-100, where 0 is potentially harmful and 100 is optimally healthy/safe for human use or consumption.
 
 Adapt your analysis based on the product type:

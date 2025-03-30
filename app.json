@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "food-scanne",
-    "slug": "food-scanne",
+    "name": "truth-label",
+    "slug": "truth-label",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.elbeqqal94.foodscanne",
+      "bundleIdentifier": "com.elbeqqal94.truth-label",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -24,7 +24,7 @@
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.elbeqqal94.foodscanne"
+      "package": "com.elbeqqal94.truth-label"
     },
     "web": {
       "bundler": "metro",

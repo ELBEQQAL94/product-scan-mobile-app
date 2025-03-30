@@ -2,8 +2,10 @@
 
 ## Issues:
 
-- [ ] dark mode issue
-- [ ] permission design
+- [ ] loading logo icon
+- [ ] app logo
+- [ ] handle transaltion
+- [ ] pay open ai
 
 ## Main features
 
@@ -16,6 +18,9 @@
 
 ## improvments
 
+- [ ] check inline styles
+- [ ] add logs instead of console.log
+- [ ] inhance performance
 - [ ] add unit testing for component
 - [ ] improve design
 - [ ] add husky for commit check

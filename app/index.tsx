@@ -1,17 +1,71 @@
 import { useEffect, useState } from 'react';
 import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import { useRouter } from 'expo-router';
+import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Href, useRouter } from 'expo-router';
+import { Screens } from '@/constants/screens';
+import OnBoarding from '@/components/OnBoarding';
+import { getItem } from '@/utils';
+
+const MainScreen: React.FC<{ scanned: boolean, handleBarcodeScanned: (result: BarcodeScanningResult) => Promise<void> }> = ({ scanned, handleBarcodeScanned }) => {
+  return (
+    <View style={styles.container}>
+    <CameraView 
+      style={styles.camera} 
+      facing="back"
+      onBarcodeScanned={scanned ? undefined : handleBarcodeScanned}
+      barcodeScannerSettings={{
+        barcodeTypes: ["qr", "pdf417", "ean13", "ean8", "code39", "code128", "itf14", "datamatrix", "aztec"],
+      }}
+    >
+      <View style={styles.overlay}>
+      <View style={styles.scan_window_container}>
+          <View style={styles.corner_tl} />
+          <View style={styles.corner_tr} />
+          <View style={styles.corner_bl} />
+          <View style={styles.corner_br} />
+        </View>
+      </View>
+    </CameraView>
+  </View>
+  )
+}
 
 export default function App() {
-  
-  // States
-  const [scanned, setScanned] = useState<boolean>(false);
   
   // Hooks
   const [permission, requestPermission] = useCameraPermissions();
   const router = useRouter();
+  
+  // States
+  const [scanned, setScanned] = useState<boolean>(false);
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState<boolean>(false);
 
+  const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
+    setScanned(true);
+    const bar_code = result.data;
+
+    if (bar_code) {
+      router.push(`${Screens.PRODUCT_DETAILS_SCREEN}?bar_code=${bar_code}` as Href);
+    }
+  };
+
+  const checkOnboardingStatus = async () => {
+    try {
+      const hasCompletedOnboarding = await getItem("hasCompletedOnboarding");
+      if (hasCompletedOnboarding) {
+        const convertToBool = Boolean(hasCompletedOnboarding);
+        setHasCompletedOnboarding(convertToBool);
+      }
+    } catch (error) {
+      console.log('checkOnboardingStatus get an error: ', error);     
+    }
+  };
+
+  useEffect(() => {
+    checkOnboardingStatus();
+  }, []);
+
+  
   if (!permission) {
     return <View style={styles.container}>
       <Text>Requesting camera permission...</Text>
@@ -19,45 +73,28 @@ export default function App() {
   }
 
   if (!permission.granted) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="Grant Permission" />
-      </View>
+    Alert.alert(
+      "Camera Permission Required",
+      "We need your permission to show the camera",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        { 
+          text: "Grant Permission", 
+          onPress: requestPermission 
+        }
+      ]
     );
   }
 
-  const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
-    setScanned(true);
-    const bar_code = result.data;
-
-    if (bar_code) {
-        router.push(`/product-details?bar_code=${bar_code}`);
-    }
-  };
-
-  return (
-    <View style={styles.container}>
-      <CameraView 
-        style={styles.camera} 
-        facing="back"
-        onBarcodeScanned={scanned ? undefined : handleBarcodeScanned}
-        barcodeScannerSettings={{
-          barcodeTypes: ["qr", "pdf417", "ean13", "ean8", "code39", "code128", "itf14", "datamatrix", "aztec"],
-        }}
-      >
-        <View style={styles.overlay}>
-        <View style={styles.scan_window_container}>
-            {/* Corner brackets instead of full border */}
-            <View style={styles.corner_tl} />
-            <View style={styles.corner_tr} />
-            <View style={styles.corner_bl} />
-            <View style={styles.corner_br} />
-          </View>
-        </View>
-      </CameraView>
-    </View>
-  );
+  return !hasCompletedOnboarding ? 
+          <OnBoarding /> : 
+          <MainScreen 
+            scanned={scanned} 
+            handleBarcodeScanned={handleBarcodeScanned} 
+          />;
 }
 
 const styles = StyleSheet.create({
@@ -116,7 +153,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderTopWidth: 4,
     borderLeftWidth: 4,
-    borderColor: '#FFF',
+    borderColor: '#90EE90',
     borderTopLeftRadius: 10,
   },
   corner_tr: {
@@ -127,7 +164,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderTopWidth: 4,
     borderRightWidth: 4,
-    borderColor: '#FFF',
+    borderColor: '#90EE90',
     borderTopRightRadius: 10,
   },
   corner_bl: {
@@ -138,7 +175,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderBottomWidth: 4,
     borderLeftWidth: 4,
-    borderColor: '#FFF',
+    borderColor: '#90EE90',
     borderBottomLeftRadius: 10,
   },
   corner_br: {
@@ -149,7 +186,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderBottomWidth: 4,
     borderRightWidth: 4,
-    borderColor: '#FFF',
+    borderColor: '#90EE90',
     borderBottomRightRadius: 10,
   },
 });
