@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CameraView, useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { chat, Product, product_details } from '@/services';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function App() {
@@ -12,10 +11,6 @@ export default function App() {
   // Hooks
   const [permission, requestPermission] = useCameraPermissions();
   const router = useRouter();
-
-  useEffect(() => {
-    setTimeout(() => router.push('/product-details'), 500)
-  }, []);
 
   if (!permission) {
     return <View style={styles.container}>
@@ -33,14 +28,11 @@ export default function App() {
   }
 
   const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
-    console.log('callback scan again')
     setScanned(true);
     const bar_code = result.data;
 
     if (bar_code) {
-        const response = await product_details(bar_code) as Product;
-        const answer = await chat(response);
-        alert(`Score: ${answer}/100`);
+        router.push(`/product-details?bar_code=${bar_code}`);
     }
   };
 
@@ -55,15 +47,13 @@ export default function App() {
         }}
       >
         <View style={styles.overlay}>
-          <View style={styles.scanWindow} />
-        </View>
-        
-        <View style={styles.buttonContainer}>
-          {scanned && (
-            <TouchableOpacity style={styles.button} onPress={() => setScanned(false)}>
-              <Text style={styles.text}>Tap to Scan Again</Text>
-            </TouchableOpacity>
-          )}
+        <View style={styles.scan_window_container}>
+            {/* Corner brackets instead of full border */}
+            <View style={styles.corner_tl} />
+            <View style={styles.corner_tr} />
+            <View style={styles.corner_bl} />
+            <View style={styles.corner_br} />
+          </View>
         </View>
       </CameraView>
     </View>
@@ -112,11 +102,54 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  scanWindow: {
+  scan_window_container: {
     width: 250,
     height: 250,
-    borderWidth: 2,
-    borderColor: '#FFF',
     backgroundColor: 'transparent',
+    position: 'relative',
+  },
+  corner_tl: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: 40,
+    height: 40,
+    borderTopWidth: 4,
+    borderLeftWidth: 4,
+    borderColor: '#FFF',
+    borderTopLeftRadius: 10,
+  },
+  corner_tr: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 40,
+    height: 40,
+    borderTopWidth: 4,
+    borderRightWidth: 4,
+    borderColor: '#FFF',
+    borderTopRightRadius: 10,
+  },
+  corner_bl: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    width: 40,
+    height: 40,
+    borderBottomWidth: 4,
+    borderLeftWidth: 4,
+    borderColor: '#FFF',
+    borderBottomLeftRadius: 10,
+  },
+  corner_br: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 40,
+    height: 40,
+    borderBottomWidth: 4,
+    borderRightWidth: 4,
+    borderColor: '#FFF',
+    borderBottomRightRadius: 10,
   },
 });
