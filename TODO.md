@@ -1,14 +1,18 @@
 # TODOS
 
+## Issues:
+
+- [ ] dark mode issue
+- [ ] permission design
+
 ## Main features
 
-- [ ] handle case wher product not found
-- [ ] send codebar number to api for get product details
-- [ ] display score /100 of this product if is healthy or not.
-- [ ] display image of product, name, description
+- [ ] add onBoarding screen
+- [ ] add translation for (arabic, franch, english) 
 - [ ] submit to play store
 - [ ] submit to apple store
 - [ ] create app logo
+- [ ] create app website
 
 ## improvments
 
