@@ -5,6 +5,8 @@ import { Href, useRouter } from 'expo-router';
 import { Screens } from '@/constants/screens';
 import OnBoarding from '@/components/OnBoarding';
 import { getItem } from '@/utils';
+import { i18n } from '@/i18n';
+import { getLocales } from 'expo-localization';
 
 const MainScreen: React.FC<{ scanned: boolean, handleBarcodeScanned: (result: BarcodeScanningResult) => Promise<void> }> = ({ scanned, handleBarcodeScanned }) => {
   return (
@@ -68,28 +70,28 @@ export default function App() {
   
   if (!permission) {
     return <View style={styles.container}>
-      <Text>Requesting camera permission...</Text>
+      <Text>{i18n.t('REQUEST_CAMERA_PERMISSION')}</Text>
     </View>;
   }
 
   if (!permission.granted) {
     Alert.alert(
-      "Camera Permission Required",
-      "We need your permission to show the camera",
+      i18n.t('CAMERA_PERMISSION_REQUIRED'),
+      i18n.t('NEED_CAMERA_PERMISSION'),
       [
         {
-          text: "Cancel",
+          text: i18n.t('CANCEL'),
           style: "cancel"
         },
         { 
-          text: "Grant Permission", 
+          text: i18n.t('GRANT_PERMISSION'), 
           onPress: requestPermission 
         }
       ]
     );
   }
 
-  return !hasCompletedOnboarding ? 
+  return true ? 
           <OnBoarding /> : 
           <MainScreen 
             scanned={scanned} 

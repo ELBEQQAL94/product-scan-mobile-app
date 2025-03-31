@@ -2,22 +2,19 @@
 
 ## Issues:
 
-- [ ] loading logo icon
-- [ ] app logo
-- [ ] handle transaltion
 - [ ] pay open ai
+- [ ] add translation for (arabic, franch, english) 
 
 ## Main features
 
-- [ ] add onBoarding screen
-- [ ] add translation for (arabic, franch, english) 
 - [ ] submit to play store
 - [ ] submit to apple store
-- [ ] create app logo
-- [ ] create app website
+- [ ] choose of language should be done once!
 
 ## improvments
 
+- [ ] create architecture of the application
+- [ ] create app website
 - [ ] check inline styles
 - [ ] add logs instead of console.log
 - [ ] inhance performance

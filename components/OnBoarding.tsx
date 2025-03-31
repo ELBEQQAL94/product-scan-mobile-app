@@ -12,6 +12,8 @@ import {
     Dimensions, 
     useColorScheme 
 } from "react-native";
+import SelectLanguage from "./SelectLanguage";
+import { i18n } from "@/i18n";
 
 const { width } = Dimensions.get("window");
 
@@ -47,6 +49,14 @@ const Onboarding: React.FC = () => {
     };
 
     return (
+        <View style={styles.mainContainer}>
+        {/* Header area for language selector */}
+        <View style={styles.header}>
+            <View style={styles.headerRight}>
+                <SelectLanguage />
+            </View>
+        </View>
+        
         <View style={[styles.container, { backgroundColor: "green" }]}>
             <FlatList
                 ref={flatListRef}
@@ -68,17 +78,33 @@ const Onboarding: React.FC = () => {
             />
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={[styles.button, { backgroundColor: "#CC8033" }]} onPress={handleNext}>
-                    <Text style={styles.buttonText}>{currentIndex < slides.length - 1 ? "Next" : "Done"}</Text>
+                    <Text style={styles.buttonText}>{currentIndex < slides.length - 1 ? i18n.t('SKIP') : i18n.t('DONE')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.button, { backgroundColor: colors.background }]} onPress={skip}>
-                    <Text style={[styles.buttonText, { color: colors.text }]}>Skip</Text>
+                    <Text style={[styles.buttonText, { color: colors.text }]}>{i18n.t('SKIP')}</Text>
                 </TouchableOpacity>
             </View>
         </View>
+    </View>
     );
 };
 
 const styles = StyleSheet.create({
+    mainContainer: {
+        flex: 1,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingTop: 40, // Adjust based on your safe area needs
+        paddingBottom: 10,
+        backgroundColor: 'transparent', // or whatever color you want for header
+    },
+    headerRight: {
+        // Additional styling for the right side of header if needed
+    },
     container: {
         flex: 1,
         justifyContent: "center",

@@ -1,5 +1,6 @@
 import { Ingredient, OpenFoodData } from "@/constants/responses";
 import { Screens } from "@/constants/screens";
+import { i18n } from "@/i18n";
 import { product_details } from "@/services";
 import { Href, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -93,7 +94,7 @@ const ProductDetails: React.FC = () => {
 
     if (loading) return (
         <View>
-            <Text style={{ color: colors.text }}>loading...</Text>
+            <Text style={{ color: colors.text }}>{i18n.t('LOADING')}</Text>
         </View>
     )
 
@@ -136,20 +137,20 @@ const ProductDetails: React.FC = () => {
             </View>
             <View style={[styles.spacer, { backgroundColor: colors.border }]} />
             <ScrollView style={styles.ingredients_container}>
-                <Text style={{ color: colors.text }}>Ingredients</Text>
+                <Text style={{ color: colors.text }}>{i18n.t('INGREDIENTS_TITLE')}</Text>
                 <View>
                     {
                         product?.product.ingredients ? product?.product.ingredients.map((ingrediant: Ingredient, index: number) => (
                             <View key={index} style={styles.ingredient_item}>
-                                <Text style={{ color: colors.text }}>text: {ingrediant.text}</Text>
-                                <Text style={{ color: colors.text }}>percent: {ingrediant.percent}</Text>
-                                <Text style={{ color: colors.text }}>percent_max: {ingrediant.percent_max}</Text>
-                                <Text style={{ color: colors.text }}>percent_min: {ingrediant.percent_min}</Text>
-                                <Text style={{ color: colors.text }}>percent_estimate: {ingrediant.percent_estimate}</Text>
+                                <Text style={{ color: colors.text }}>{i18n.t('TEXT')}: {ingrediant.text}</Text>
+                                <Text style={{ color: colors.text }}>{i18n.t('PERCENT')}: {ingrediant.percent}</Text>
+                                <Text style={{ color: colors.text }}>{i18n.t('PERCENT_MAX')}: {ingrediant.percent_max}</Text>
+                                <Text style={{ color: colors.text }}>{i18n.t('PERCENT_MIN')}: {ingrediant.percent_min}</Text>
+                                <Text style={{ color: colors.text }}>{i18n.t('PERCENT_ESTIMATE')}: {ingrediant.percent_estimate}</Text>
                                 <View style={styles.spacer} />
                             </View>
                         )) : <View>
-                            <Text style={{ color: colors.text }}>Ingredients not found!</Text>
+                            <Text style={{ color: colors.text }}>{i18n.t('INGREDIENTS_NOT_FOUND')}</Text>
                         </View>
                     }
                 </View>
@@ -159,7 +160,7 @@ const ProductDetails: React.FC = () => {
                     style={styles.scan_button}
                     onPress={retryScan}
                 >
-                    <Text style={[styles.scan_button_text, { color: colors.text }]}>Scan again</Text>
+                    <Text style={[styles.scan_button_text, { color: colors.text }]}>{i18n.t('SCAN_AGAIN')}</Text>
                 </TouchableOpacity>
             </View>
         </View>
