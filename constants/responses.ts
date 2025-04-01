@@ -11,6 +11,7 @@ export interface Product {
 }
 
 export interface OpenFoodData {
+    status: number;
     product: Product;
 }
 

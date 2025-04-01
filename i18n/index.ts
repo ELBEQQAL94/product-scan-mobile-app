@@ -30,7 +30,8 @@ export const i18n = new I18n({
     PRODUCT_DETAILS: 'product details',
     SELECT_LANGUGAE: 'Select Language',
     DONE: 'Done',
-    LOADING: 'loading...'
+    LOADING: 'loading...',
+    PRODUCT_NOT_FOUND: "The product was not found. Please verify that you've selected a product from either the beauty or food category."
   },
   ar: { 
     REQUEST_CAMERA_PERMISSION: 'طلب إذن الكاميرا...',
@@ -61,7 +62,8 @@ export const i18n = new I18n({
     PRODUCT_DETAILS: 'تفاصيل المنتج',
     SELECT_LANGUGAE: 'اختر اللغة',
     DONE: 'اكتمل',
-    LOADING: 'جاري التحميل...'
+    LOADING: 'جاري التحميل...',
+    PRODUCT_NOT_FOUND: "لم يتم العثور على المنتج. يرجى التحقق من اختيارك لمنتج من فئة الجمال أو الطعام."
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: 'Demande d\'autorisation de la caméra...',
@@ -92,7 +94,8 @@ export const i18n = new I18n({
     PRODUCT_DETAILS: 'détails du produit',
     SELECT_LANGUGAE: 'Sélectionner la langue',
     DONE: 'terminer',
-    LOADING: 'Chargement...'
+    LOADING: 'Chargement...',
+    PRODUCT_NOT_FOUND: "Le produit n'a pas été trouvé. Veuillez vérifier que vous avez sélectionné un produit de la catégorie beauté ou alimentation."
   },
   es: {
     REQUEST_CAMERA_PERMISSION: 'Solicitando permiso de cámara...',
@@ -123,7 +126,8 @@ export const i18n = new I18n({
     PRODUCT_DETAILS: 'detalles del producto',
     SELECT_LANGUGAE: 'Seleccionar idioma',
     DONE: 'hecho',
-    LOADING: 'Cargando...'
+    LOADING: 'Cargando...',
+    PRODUCT_NOT_FOUND: "No se encontró el producto. Por favor, verifique que ha seleccionado un producto de la categoría de belleza o alimentación."
   },
   de: {
     REQUEST_CAMERA_PERMISSION: 'Kameraerlaubnis wird angefordert...',
@@ -154,6 +158,7 @@ export const i18n = new I18n({
     PRODUCT_DETAILS: 'Produktdetails',
     SELECT_LANGUGAE: 'Sprache auswählen',
     DONE: 'fertig',
-    LOADING: 'Wird geladen...'
+    LOADING: 'Wird geladen...',
+    PRODUCT_NOT_FOUND: "Das Produkt wurde nicht gefunden. Bitte überprüfen Sie, ob Sie ein Produkt aus der Kategorie Schönheit oder Lebensmittel ausgewählt haben."
   }
 });

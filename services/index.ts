@@ -17,6 +17,7 @@ export const chat = async (data: OpenFoodResponse) => {
             ],
         });
         const answer = completion.choices[0].message.content;
+        console.log('AI Answer: ', answer)
         return answer;
     } catch (error) {
         console.log('chat get an error: ', error);

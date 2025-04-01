@@ -1,7 +1,10 @@
+import Loading from "@/components/ProductDetails/Loading";
+import ProductNotFound from "@/components/ProductDetails/ProductNotFound";
+import ScanAgainButton from "@/components/ProductDetails/ScanAgainButton";
 import { Ingredient, OpenFoodData } from "@/constants/responses";
 import { Screens } from "@/constants/screens";
 import { i18n } from "@/i18n";
-import { product_details } from "@/services";
+import { chat, product_details } from "@/services";
 import { Href, useLocalSearchParams, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -9,7 +12,6 @@ import {
     Text,
     Image,
     StyleSheet,
-    TouchableOpacity,
     ScrollView,
     useColorScheme
 } from "react-native"
@@ -34,27 +36,14 @@ const ProductDetails: React.FC = () => {
     };
 
     const fetch_product_details = async () => {
-        const scoreStrings = [
-            "0", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100",
-            "5", "15", "25", "35", "45", "55", "65", "75", "85", "95",
-            "3", "12", "27", "36", "48", "57", "69", "78", "87", "94",
-            "7", "18", "22", "39", "44", "59", "63", "71", "88", "97",
-            "2", "14", "29", "33", "47", "52", "68", "73", "84", "99",
-            "6", "19", "24", "37", "43", "58", "62", "77", "86", "91",
-            "1", "13", "26", "31", "49", "53", "64", "79", "82", "93",
-            "8", "16", "28", "38", "42", "56", "67", "72", "89", "96",
-            "4", "11", "21", "34", "46", "51", "61", "76", "83", "98",
-            "9", "17", "23", "32", "41", "54", "66", "74", "81", "92"
-        ];
-
         setLoading(true);
         try {
             const response = await product_details(bar_code);
-
-            if (response) {
-                const random_index = Math.floor(Math.random() * 100); //await chat(response);
-                const answer = scoreStrings[random_index];
+            if (response?.status === 1) {
+                const answer = await chat(response);
+                console.log('you call a chat');
                 const openFoodData: OpenFoodData = {
+                    status: response.status,
                     product: {
                         countries: response.product.countries,
                         image_url: response.product.image_url,
@@ -82,7 +71,7 @@ const ProductDetails: React.FC = () => {
 
         const numScore = parseInt(scoreValue);
         if (numScore < 50) return 'red';
-        if (numScore >= 50 && numScore <= 70) return '#FFD700'; // Yellow
+        if (numScore >= 50 && numScore <= 70) return '#FFD700';
         return 'green';
     };
 
@@ -93,12 +82,14 @@ const ProductDetails: React.FC = () => {
     }, [bar_code]);
 
     if (loading) return (
-        <View>
-            <Text style={{ color: colors.text }}>{i18n.t('LOADING')}</Text>
-        </View>
+        <Loading textColor={colors.text} />
     )
 
+
+    if (!product) return <ProductNotFound textColor={colors.text} retryScan={retryScan} />;
+
     return (
+
         <View style={[styles.container, { backgroundColor: colors.background }]}>
             <View style={styles.header_container}>
                 {product?.product.image_url ? (
@@ -155,15 +146,9 @@ const ProductDetails: React.FC = () => {
                     }
                 </View>
             </ScrollView>
-            <View style={styles.scan_button_container}>
-                <TouchableOpacity
-                    style={styles.scan_button}
-                    onPress={retryScan}
-                >
-                    <Text style={[styles.scan_button_text, { color: colors.text }]}>{i18n.t('SCAN_AGAIN')}</Text>
-                </TouchableOpacity>
-            </View>
+            <ScanAgainButton retryScan={retryScan} />
         </View>
+
     );
 };
 
@@ -216,21 +201,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         padding: 5,
     },
-    scan_button_container: {
-        paddingLeft: 40,
-        paddingRight: 40
-    },
-    scan_button: {
-        backgroundColor: 'green',
-        padding: 15,
-        borderRadius: 5,
-    },
-    scan_button_text: {
-        textAlign: 'center',
-        color: "white",
-        fontWeight: 'bold',
-        fontSize: 16,
-    }
-})
+});
 
 export default ProductDetails;

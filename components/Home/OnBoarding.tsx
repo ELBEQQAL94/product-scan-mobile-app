@@ -68,8 +68,8 @@ const Onboarding: React.FC = () => {
                 renderItem={({ item }) => (
                     <View style={styles.slide}>
                         <View style={styles.textContainer}>
-                            <Text style={[styles.title, { color: colors.text }]}>{item.title}</Text>
-                            <Text style={[styles.description, { color: colors.text }]}>{item.subtitle}</Text>
+                            <Text style={styles.title}>{item.title}</Text>
+                            <Text style={styles.description}>{item.subtitle}</Text>
                         </View>
                     </View>
                 )}
@@ -78,7 +78,7 @@ const Onboarding: React.FC = () => {
             />
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={[styles.button, { backgroundColor: "#CC8033" }]} onPress={handleNext}>
-                    <Text style={styles.buttonText}>{currentIndex < slides.length - 1 ? i18n.t('SKIP') : i18n.t('DONE')}</Text>
+                    <Text style={styles.buttonText}>{currentIndex < slides.length - 1 ? i18n.t('NEXT') : i18n.t('DONE')}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.button, { backgroundColor: colors.background }]} onPress={skip}>
                     <Text style={[styles.buttonText, { color: colors.text }]}>{i18n.t('SKIP')}</Text>
@@ -123,11 +123,13 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: "bold",
+        color: "white"
     },
     description: {
         fontSize: 16,
         textAlign: "center",
         marginVertical: 10,
+        color: "white"
     },
     buttonContainer: {
         position: "absolute",
@@ -142,8 +144,9 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         color: "#fff",
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: "bold",
+        textTransform: 'capitalize'
     },
 });
 
