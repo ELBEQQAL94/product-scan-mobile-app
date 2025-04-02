@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import { i18n } from "@/i18n";
-import ScanAgainButton from "./ScanAgainButton";
+import ScanAgainButton from "./CommonButton";
 
 interface ProductNotFoundProps {
     textColor: string;

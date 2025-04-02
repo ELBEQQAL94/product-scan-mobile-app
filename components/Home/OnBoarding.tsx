@@ -12,8 +12,8 @@ import {
     Dimensions, 
     useColorScheme 
 } from "react-native";
-import SelectLanguage from "./SelectLanguage";
 import { i18n } from "@/i18n";
+import SelectLanguage from "../SelectLanguage";
 
 const { width } = Dimensions.get("window");
 

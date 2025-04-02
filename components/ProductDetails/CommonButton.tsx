@@ -1,22 +1,23 @@
 import { i18n } from "@/i18n";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-interface ScanAgainButtonProps {
-    retryScan: () => void;
+interface CommonButtonProps {
+    label: string;
+    action: () => void;
 };
 
-const ScanAgainButton: React.FC<ScanAgainButtonProps> = ({ retryScan }) => (
+const CommonButton: React.FC<CommonButtonProps> = ({ action, label }) => (
     <View style={styles.scan_button_container}>
         <TouchableOpacity
             style={styles.scan_button}
-            onPress={retryScan}
+            onPress={action}
         >
-            <Text style={[styles.scan_button_text]}>{i18n.t('SCAN_AGAIN')}</Text>
+            <Text style={[styles.scan_button_text]}>{label}</Text>
         </TouchableOpacity>
     </View>
 );
 
-export default ScanAgainButton;
+export default CommonButton;
 
 const styles = StyleSheet.create({
     scan_button_container: {

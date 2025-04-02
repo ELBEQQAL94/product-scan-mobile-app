@@ -1,6 +1,6 @@
 import Loading from "@/components/ProductDetails/Loading";
 import ProductNotFound from "@/components/ProductDetails/ProductNotFound";
-import ScanAgainButton from "@/components/ProductDetails/ScanAgainButton";
+import ScanAgainButton from "@/components/ProductDetails/CommonButton";
 import { Ingredient, OpenFoodData } from "@/constants/responses";
 import { Screens } from "@/constants/screens";
 import { i18n } from "@/i18n";
@@ -15,6 +15,8 @@ import {
     ScrollView,
     useColorScheme
 } from "react-native"
+import CommonButton from "@/components/ProductDetails/CommonButton";
+import ConnectionError from "@/components/ProductDetails/ConnectionError";
 
 const ProductDetails: React.FC = () => {
     // Hooks
@@ -27,6 +29,7 @@ const ProductDetails: React.FC = () => {
     const [product, setProduct] = useState<OpenFoodData>();
     const [score, setScore] = useState<string | null | undefined>("0");
     const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     const colors = {
         background: colorScheme === 'dark' ? '#121212' : 'white',
@@ -61,6 +64,7 @@ const ProductDetails: React.FC = () => {
             }
         } catch (error) {
             console.log('fetch product details get an error: ', error);
+            setError(i18n.t("CONNECTION_ERROR"))
         } finally {
             setLoading(false);
         }
@@ -83,10 +87,15 @@ const ProductDetails: React.FC = () => {
 
     if (loading) return (
         <Loading textColor={colors.text} />
-    )
+    );
 
 
+    if (error) return (
+        <ConnectionError error={error} />
+    );
+    
     if (!product) return <ProductNotFound textColor={colors.text} retryScan={retryScan} />;
+
 
     return (
 
@@ -146,7 +155,7 @@ const ProductDetails: React.FC = () => {
                     }
                 </View>
             </ScrollView>
-            <ScanAgainButton retryScan={retryScan} />
+            <CommonButton action={retryScan} label={i18n.t('SCAN_AGAIN')}/>
         </View>
 
     );

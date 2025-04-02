@@ -5,6 +5,8 @@
 - [ ] change language on product details
 - [ ] check google play
 - [ ] submit to play store
+    - https://docs.expo.dev/submit/android/
+- [ ] test connection error
 
 ## Main features
 - [ ] submit to apple store

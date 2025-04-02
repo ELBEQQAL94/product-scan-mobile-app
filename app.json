@@ -1,64 +1,12 @@
 {
   "expo": {
-    "name": "truth-label",
-    "slug": "truth-label",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.elbeqqal94.truth-label",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+    "extra": {
+      "eas": {
+        "projectId": "653568ff-44a8-4a6b-8edd-a3c1f3dc14b8"
       }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "permissions": [
-        "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO"
-      ],
-      "package": "com.elbeqqal94.truth-label"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
-    "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
-        }
-      ],
-      [
-        "expo-camera",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
-        }
-      ]
-    ],
-    "experiments": {
-      "typedRoutes": true
-    },
-    "extra": {
-      "router": {
-        "origin": false
-      },
-      "eas": {
-        "projectId": "f1913ffd-034d-4274-93d9-6c39e0e05957"
-      }
+      "package": "com.elbeqqal94.truthlabel"
     }
   }
 }

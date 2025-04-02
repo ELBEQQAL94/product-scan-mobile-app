@@ -31,7 +31,8 @@ export const i18n = new I18n({
     SELECT_LANGUGAE: 'Select Language',
     DONE: 'Done',
     LOADING: 'loading...',
-    PRODUCT_NOT_FOUND: "The product was not found. Please verify that you've selected a product from either the beauty or food category."
+    PRODUCT_NOT_FOUND: "The product was not found. Please verify that you've selected a product from either the beauty or food category.",
+    CONNECTION_ERROR: "Check connection and try again."
   },
   ar: { 
     REQUEST_CAMERA_PERMISSION: 'طلب إذن الكاميرا...',
@@ -63,7 +64,8 @@ export const i18n = new I18n({
     SELECT_LANGUGAE: 'اختر اللغة',
     DONE: 'اكتمل',
     LOADING: 'جاري التحميل...',
-    PRODUCT_NOT_FOUND: "لم يتم العثور على المنتج. يرجى التحقق من اختيارك لمنتج من فئة الجمال أو الطعام."
+    PRODUCT_NOT_FOUND: "لم يتم العثور على المنتج. يرجى التحقق من اختيارك لمنتج من فئة الجمال أو الطعام.",
+    CONNECTION_ERROR: "تحقق من الاتصال وحاول مرة أخرى."
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: 'Demande d\'autorisation de la caméra...',
@@ -95,7 +97,8 @@ export const i18n = new I18n({
     SELECT_LANGUGAE: 'Sélectionner la langue',
     DONE: 'terminer',
     LOADING: 'Chargement...',
-    PRODUCT_NOT_FOUND: "Le produit n'a pas été trouvé. Veuillez vérifier que vous avez sélectionné un produit de la catégorie beauté ou alimentation."
+    PRODUCT_NOT_FOUND: "Le produit n'a pas été trouvé. Veuillez vérifier que vous avez sélectionné un produit de la catégorie beauté ou alimentation.",
+    CONNECTION_ERROR: "Vérifiez la connexion et réessayez."
   },
   es: {
     REQUEST_CAMERA_PERMISSION: 'Solicitando permiso de cámara...',
@@ -127,7 +130,8 @@ export const i18n = new I18n({
     SELECT_LANGUGAE: 'Seleccionar idioma',
     DONE: 'hecho',
     LOADING: 'Cargando...',
-    PRODUCT_NOT_FOUND: "No se encontró el producto. Por favor, verifique que ha seleccionado un producto de la categoría de belleza o alimentación."
+    PRODUCT_NOT_FOUND: "No se encontró el producto. Por favor, verifique que ha seleccionado un producto de la categoría de belleza o alimentación.",
+    CONNECTION_ERROR: "Verifique la conexión e inténtelo de nuevo."
   },
   de: {
     REQUEST_CAMERA_PERMISSION: 'Kameraerlaubnis wird angefordert...',
@@ -159,6 +163,7 @@ export const i18n = new I18n({
     SELECT_LANGUGAE: 'Sprache auswählen',
     DONE: 'fertig',
     LOADING: 'Wird geladen...',
-    PRODUCT_NOT_FOUND: "Das Produkt wurde nicht gefunden. Bitte überprüfen Sie, ob Sie ein Produkt aus der Kategorie Schönheit oder Lebensmittel ausgewählt haben."
+    PRODUCT_NOT_FOUND: "Das Produkt wurde nicht gefunden. Bitte überprüfen Sie, ob Sie ein Produkt aus der Kategorie Schönheit oder Lebensmittel ausgewählt haben.",
+    CONNECTION_ERROR: "Überprüfen Sie die Verbindung und versuchen Sie es erneut."
   }
 });
