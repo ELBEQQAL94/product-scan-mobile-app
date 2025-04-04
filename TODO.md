@@ -1,12 +1,12 @@
 # TODOS
 
 ## Issues:
-- [ ] cache product and get answer from cached value
-- [ ] change language on product details
-- [ ] check google play
-- [ ] submit to play store
-    - https://docs.expo.dev/submit/android/
-- [ ] test connection error
+- [ ] cleanup product-details code
+- [ ] link with add mob
+- [ ] add rest of configuration
+- [ ] website for application contains:
+    - [ ] privacy policy
+- [ ] find 12 people to test app
 
 ## Main features
 - [ ] submit to apple store

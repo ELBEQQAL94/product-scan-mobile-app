@@ -2,11 +2,20 @@ import { i18n } from "@/i18n";
 import { useState } from "react";
 import { View, Text, FlatList, Modal, TouchableOpacity, StyleSheet, Image, useColorScheme } from "react-native";
 
-const SelectLanguage: React.FC = () => {
-  // States
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const current_language = i18n.locale || "fr";
+interface SelectLanguageProps {
+  currentLanguage: string;
+  modalVisible: boolean;
+  setModalVisible: (is_visibile: boolean) => void;
+  changeLanguage: (language_code: string) => void;
+}
 
+const SelectLanguage: React.FC<SelectLanguageProps> = ({ 
+  currentLanguage, 
+  modalVisible, 
+  setModalVisible,
+  changeLanguage
+}) => {
+  // States  
   const colorScheme = useColorScheme();
 
   const colors = {
@@ -21,11 +30,6 @@ const SelectLanguage: React.FC = () => {
     { code: "de", name: "Deutsch" }
   ];
 
-  const changeLanguage = (languageCode: string) => {
-    i18n.locale = languageCode;
-    setModalVisible(false);
-  };
-
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -35,7 +39,7 @@ const SelectLanguage: React.FC = () => {
         <Image
           source={require('@/assets/images/language.png')}
           resizeMode="contain"
-          style={{ tintColor: colors.text, width: 50, height: 50 }}
+          style={{ tintColor: colors.text, width: 20, height: 20 }}
         />
       </TouchableOpacity>
 
@@ -56,7 +60,7 @@ const SelectLanguage: React.FC = () => {
                 <TouchableOpacity
                   style={[
                     styles.languageItem,
-                    current_language === item.code && styles.selectedLanguage
+                    currentLanguage === item.code && styles.selectedLanguage
                   ]}
                   onPress={() => changeLanguage(item.code)}
                 >

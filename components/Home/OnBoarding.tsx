@@ -1,6 +1,6 @@
 import { slides } from "@/constants/on-boarding-slides";
 import { Screens } from "@/constants/screens";
-import { setItem } from "@/utils";
+import { set_item } from "@/utils";
 import { Href, useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import { 
@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { i18n } from "@/i18n";
 import SelectLanguage from "../SelectLanguage";
+import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 
 const { width } = Dimensions.get("window");
 
@@ -22,6 +23,8 @@ const Onboarding: React.FC = () => {
     const colorScheme = useColorScheme();
     const flatListRef = useRef<FlatList>(null);
     const router = useRouter();
+    const { modalVisible, currentLanguage, setModalVisible, change_language } = useSelectedLanguage();
+    
 
     // States
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -39,58 +42,65 @@ const Onboarding: React.FC = () => {
             setCurrentIndex(newIndex);
             flatListRef.current?.scrollToIndex({ index: newIndex, animated: true });
         } else {
-            setItem("hasCompletedOnboarding", "true");
+            set_item("hasCompletedOnboarding", "true");
+            router.replace(Screens.HOME_SCREEN as Href);
         }
     };
 
     const skip = async () => {
-        await setItem("hasCompletedOnboarding", "true");
-        router.push(Screens.HOME_SCREEN as Href);
+        await set_item("hasCompletedOnboarding", "true");
+        router.replace(Screens.HOME_SCREEN as Href);
     };
 
     return (
-        <View style={styles.mainContainer}>
-        {/* Header area for language selector */}
-        <View style={styles.header}>
-            <View style={styles.headerRight}>
-                <SelectLanguage />
+        <>
+            <View style={styles.header}>
+                <View>
+                <SelectLanguage
+                        currentLanguage={currentLanguage}
+                        modalVisible={modalVisible}
+                        setModalVisible={setModalVisible}
+                        changeLanguage={change_language}
+                    />
+                </View>
             </View>
-        </View>
-        
-        <View style={[styles.container, { backgroundColor: "green" }]}>
-            <FlatList
-                ref={flatListRef}
-                data={slides}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                scrollEnabled={false}
-                renderItem={({ item }) => (
-                    <View style={styles.slide}>
-                        <View style={styles.textContainer}>
-                            <Text style={styles.title}>{item.title}</Text>
-                            <Text style={styles.description}>{item.subtitle}</Text>
+        <View style={styles.main_container}>
+            
+            <View style={[styles.container, { backgroundColor: "green" }]}>
+                <FlatList
+                    ref={flatListRef}
+                    data={slides}
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    scrollEnabled={false}
+                    renderItem={({ item }) => (
+                        <View style={styles.slide}>
+                            <View style={styles.text_container}>
+                                <Text style={styles.title}>{i18n.t(item.title)}</Text>
+                                <Text style={styles.description}>{i18n.t(item.subtitle)}</Text>
+                            </View>
                         </View>
-                    </View>
-                )}
-                keyExtractor={(item) => item.id}
-                extraData={currentIndex}
-            />
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={[styles.button, { backgroundColor: "#CC8033" }]} onPress={handleNext}>
-                    <Text style={styles.buttonText}>{currentIndex < slides.length - 1 ? i18n.t('NEXT') : i18n.t('DONE')}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, { backgroundColor: colors.background }]} onPress={skip}>
-                    <Text style={[styles.buttonText, { color: colors.text }]}>{i18n.t('SKIP')}</Text>
-                </TouchableOpacity>
+                    )}
+                    keyExtractor={(item) => item.id}
+                    extraData={currentIndex}
+                />
+                <View style={styles.button_container}>
+                    <TouchableOpacity style={[styles.button, { backgroundColor: "#CC8033" }]} onPress={handleNext}>
+                        <Text style={styles.button_text}>{currentIndex < slides.length - 1 ? i18n.t('NEXT') : i18n.t('DONE')}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.button, { backgroundColor: colors.background }]} onPress={skip}>
+                        <Text style={[styles.button_text, { color: colors.text }]}>{i18n.t('SKIP')}</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
-    </View>
+        </>
     );
 };
 
 const styles = StyleSheet.create({
-    mainContainer: {
+    main_container: {
         flex: 1,
     },
     header: {
@@ -98,12 +108,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
         paddingHorizontal: 16,
-        paddingTop: 40, // Adjust based on your safe area needs
+        paddingTop: 40, 
         paddingBottom: 10,
-        backgroundColor: 'transparent', // or whatever color you want for header
-    },
-    headerRight: {
-        // Additional styling for the right side of header if needed
+        backgroundColor: 'transparent', 
     },
     container: {
         flex: 1,
@@ -116,7 +123,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         padding: 20,
     },
-    textContainer: {
+    text_container: {
         justifyContent: "center",
         alignItems: "center"
     },
@@ -131,7 +138,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         color: "white"
     },
-    buttonContainer: {
+    button_container: {
         position: "absolute",
         bottom: 40,
         width: width * 0.8,
@@ -142,7 +149,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginVertical: 5,
     },
-    buttonText: {
+    button_text: {
         color: "#fff",
         fontSize: 17,
         fontWeight: "bold",

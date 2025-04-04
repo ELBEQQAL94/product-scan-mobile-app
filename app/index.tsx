@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useCameraPermissions, BarcodeScanningResult } from 'expo-camera';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { BarcodeScanningResult } from 'expo-camera';
 import { Href, useRouter } from 'expo-router';
 import { Screens } from '@/constants/screens';
-import { getItem } from '@/utils';
-import { i18n } from '@/i18n';
 import MainScreen from '@/components/Home/MainScreen';
 import OnBoarding from '@/components/Home/OnBoarding';
+import { get_item } from '@/utils';
 
 const HomeScreen = () => {
 
   // Hooks
-  const [permission, requestPermission] = useCameraPermissions();
   const router = useRouter();
 
   // States
@@ -29,7 +26,7 @@ const HomeScreen = () => {
 
   const checkOnboardingStatus = async () => {
     try {
-      const hasCompletedOnboarding = await getItem("hasCompletedOnboarding");
+      const hasCompletedOnboarding = await get_item("hasCompletedOnboarding");
       if (hasCompletedOnboarding) {
         const convertToBool = Boolean(hasCompletedOnboarding);
         setHasCompletedOnboarding(convertToBool);
@@ -43,31 +40,7 @@ const HomeScreen = () => {
     checkOnboardingStatus();
   }, []);
 
-
-  if (!permission) {
-    return <View style={styles.container}>
-      <Text>{i18n.t('REQUEST_CAMERA_PERMISSION')}</Text>
-    </View>;
-  }
-
-  if (!permission.granted) {
-    Alert.alert(
-      i18n.t('CAMERA_PERMISSION_REQUIRED'),
-      i18n.t('NEED_CAMERA_PERMISSION'),
-      [
-        {
-          text: i18n.t('CANCEL'),
-          style: "cancel"
-        },
-        {
-          text: i18n.t('GRANT_PERMISSION'),
-          onPress: requestPermission
-        }
-      ]
-    );
-  }
-
-  if (!hasCompletedOnboarding) {
+  if (hasCompletedOnboarding) {
     return <OnBoarding />
   }
 
@@ -75,18 +48,3 @@ const HomeScreen = () => {
 }
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  camera: {
-    flex: 1,
-  },
-  text: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white',
-  },
-});

@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import { i18n } from "@/i18n";
-import ScanAgainButton from "./CommonButton";
+import CommonButton from "./CommonButton";
 
 interface ProductNotFoundProps {
     textColor: string;
@@ -10,7 +10,7 @@ interface ProductNotFoundProps {
 const ProductNotFound: React.FC<ProductNotFoundProps> = ({ textColor, retryScan }) => (
     <View style={styles.product_not_found_container}>
         <Text style={[styles.product_not_found_text, { color: textColor }]}>{i18n.t('PRODUCT_NOT_FOUND')}</Text>
-        <ScanAgainButton retryScan={retryScan} />
+        <CommonButton action={retryScan} label={i18n.t('SCAN_AGAIN')} />
     </View>
 );
 

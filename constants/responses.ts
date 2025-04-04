@@ -199,3 +199,8 @@ export interface OpenFoodResponse {
     status: number
     status_verbose: string;
 }
+
+export interface CachedProduct {
+    score: string;
+    open_food_data: OpenFoodData;
+}

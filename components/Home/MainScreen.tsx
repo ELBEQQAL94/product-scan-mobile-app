@@ -1,7 +1,35 @@
-import { BarcodeScanningResult, CameraView } from "expo-camera"
-import { View, StyleSheet } from "react-native"
+import { i18n } from "@/i18n";
+import { BarcodeScanningResult, CameraView, useCameraPermissions } from "expo-camera"
+import { View, StyleSheet, Text, Alert } from "react-native"
 
 const MainScreen: React.FC<{ scanned: boolean, handleBarcodeScanned: (result: BarcodeScanningResult) => Promise<void> }> = ({ scanned, handleBarcodeScanned }) => {
+ 
+  // Hooks
+  const [permission, requestPermission] = useCameraPermissions();
+
+  if (!permission) {
+    return <View style={styles.container}>
+      <Text>{i18n.t('REQUEST_CAMERA_PERMISSION')}</Text>
+    </View>;
+  }
+
+  if (!permission.granted) {
+    Alert.alert(
+      i18n.t('CAMERA_PERMISSION_REQUIRED'),
+      i18n.t('NEED_CAMERA_PERMISSION'),
+      [
+        {
+          text: i18n.t('CANCEL'),
+          style: "cancel"
+        },
+        {
+          text: i18n.t('GRANT_PERMISSION'),
+          onPress: requestPermission
+        }
+      ]
+    );
+  }
+
   return (
     <View style={styles.container}>
     <CameraView 

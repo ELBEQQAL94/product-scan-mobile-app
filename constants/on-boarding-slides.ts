@@ -7,27 +7,27 @@ export interface Slide {
 export const slides: Slide[] = [
     {
         id: '1',
-        title: 'Welcome to TruthLabel',
-        subtitle: "Scan products to instantly reveal what's really in them",
+        title: "SLIDE_1_TITLE",
+        subtitle: "SLIDE_1_SUBTITLE",
     },
     {
         id: '2',
-        title: 'Analyze Any Product',
-        subtitle: 'Works with both food and cosmetics to help you make informed choices',
+        title: "SLIDE_2_TITLE",
+        subtitle: "SLIDE_2_SUBTITLE",
     },
     {
         id: '3',
-        title: 'Understand Ingredients',
-        subtitle: 'Get clear explanations of what each ingredient is and its potential effects',
+        title: "SLIDE_3_TITLE",
+        subtitle: "SLIDE_3_SUBTITLE",
     },
     {
         id: '4',
-        title: 'Health Score at a Glance',
-        subtitle: 'Our AI analyzes ingredients to provide an easy-to-understand health rating',
+        title: "SLIDE_4_TITLE",
+        subtitle: "SLIDE_4_SUBTITLE",
     },
     {
         id: '5',
-        title: 'Start Scanning Today',
-        subtitle: 'Make healthier choices with just a quick scan',
+        title: "SLIDE_5_TITLE",
+        subtitle: "SLIDE_5_SUBTITLE",
     },
 ];

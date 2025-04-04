@@ -1,7 +1,7 @@
 import Loading from "@/components/ProductDetails/Loading";
 import ProductNotFound from "@/components/ProductDetails/ProductNotFound";
 import ScanAgainButton from "@/components/ProductDetails/CommonButton";
-import { Ingredient, OpenFoodData } from "@/constants/responses";
+import { CachedProduct, Ingredient, OpenFoodData, Product } from "@/constants/responses";
 import { Screens } from "@/constants/screens";
 import { i18n } from "@/i18n";
 import { chat, product_details } from "@/services";
@@ -17,12 +17,16 @@ import {
 } from "react-native"
 import CommonButton from "@/components/ProductDetails/CommonButton";
 import ConnectionError from "@/components/ProductDetails/ConnectionError";
+import { get_product_by_bar_code, save_product_by_bar_code } from "@/utils";
+import SelectLanguage from "@/components/SelectLanguage";
+import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 
 const ProductDetails: React.FC = () => {
     // Hooks
     const router = useRouter();
     const local = useLocalSearchParams();
     const colorScheme = useColorScheme();
+    const { modalVisible, currentLanguage, setModalVisible, change_language } = useSelectedLanguage();
     const bar_code = local.bar_code as string;
 
     // states
@@ -30,6 +34,7 @@ const ProductDetails: React.FC = () => {
     const [score, setScore] = useState<string | null | undefined>("0");
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+
 
     const colors = {
         background: colorScheme === 'dark' ? '#121212' : 'white',
@@ -40,28 +45,61 @@ const ProductDetails: React.FC = () => {
 
     const fetch_product_details = async () => {
         setLoading(true);
+        console.log('code bar: ', bar_code);
         try {
-            const response = await product_details(bar_code);
-            if (response?.status === 1) {
-                const answer = await chat(response);
-                console.log('you call a chat');
-                const openFoodData: OpenFoodData = {
-                    status: response.status,
-                    product: {
-                        countries: response.product.countries,
-                        image_url: response.product.image_url,
-                        ingredients: response.product.ingredients,
-                        labels: response.product.labels,
-                        product_name: response.product.product_name,
-                        product_name_ar: response.product.product_name_ar,
-                        product_name_en: response.product.product_name_en,
-                        product_name_fr: response.product.product_name_fr,
-                        product_type: response.product.product_type
+            const check_product_if_exists = await get_product_by_bar_code(bar_code);
+            let score = null;
+            let openFoodData: OpenFoodData = {
+                status: 0,
+                product: {
+                    image_url: "",
+                    labels: "",
+                    product_name: "",
+                    product_name_ar: "",
+                    product_name_en: "",
+                    product_name_fr: "",
+                    product_type: ""
+                }
+            };
+
+            if (!check_product_if_exists) {
+                console.log('new product: ');
+                const response = await product_details(bar_code);
+                console.log('response status:', response?.status);
+                if (response?.status === 1) {
+                    score = await chat(response);
+
+                    if (score) {
+                        console.log('you call a chat');
+                        openFoodData = {
+                            status: response.status,
+                            product: {
+                                countries: response.product.countries,
+                                image_url: response.product.image_url,
+                                ingredients: response.product.ingredients,
+                                labels: response.product.labels,
+                                product_name: response.product.product_name,
+                                product_name_ar: response.product.product_name_ar,
+                                product_name_en: response.product.product_name_en,
+                                product_name_fr: response.product.product_name_fr,
+                                product_type: response.product.product_type
+                            }
+                        }
+                        const build_product: CachedProduct = {
+                            score,
+                            open_food_data: openFoodData
+                        }
+                        await save_product_by_bar_code(bar_code, build_product);
                     }
                 }
-                setProduct(openFoodData);
-                setScore(answer);
+            } else {
+                console.log('get product from cache')
+                openFoodData = check_product_if_exists.open_food_data;
+                score = check_product_if_exists.score;
             }
+
+            setProduct(openFoodData);
+            setScore(score);
         } catch (error) {
             console.log('fetch product details get an error: ', error);
             setError(i18n.t("CONNECTION_ERROR"))
@@ -90,16 +128,26 @@ const ProductDetails: React.FC = () => {
     );
 
 
-    if (error) return (
-        <ConnectionError error={error} />
+    if (error || !product) return (
+        <ConnectionError error={error} textColor={colors.text} />
     );
-    
-    if (!product) return <ProductNotFound textColor={colors.text} retryScan={retryScan} />;
+
+    if (product.status === 0) return <ProductNotFound textColor={colors.text} retryScan={retryScan} />;
 
 
     return (
 
         <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <View style={styles.header}>
+                <View>
+                    <SelectLanguage
+                        currentLanguage={currentLanguage}
+                        modalVisible={modalVisible}
+                        setModalVisible={setModalVisible}
+                        changeLanguage={change_language}
+                    />
+                </View>
+            </View>
             <View style={styles.header_container}>
                 {product?.product.image_url ? (
                     <Image
@@ -155,7 +203,7 @@ const ProductDetails: React.FC = () => {
                     }
                 </View>
             </ScrollView>
-            <CommonButton action={retryScan} label={i18n.t('SCAN_AGAIN')}/>
+            <CommonButton action={retryScan} label={i18n.t('SCAN_AGAIN')} />
         </View>
 
     );
@@ -165,6 +213,15 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: 30,
         paddingBottom: 30,
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingTop: 40,
+        paddingBottom: 10,
+        backgroundColor: 'transparent',
     },
     header_container: {
         display: 'flex',
@@ -204,7 +261,7 @@ const styles = StyleSheet.create({
     },
     ingredients_container: {
         marginBottom: 10,
-        height: "60%",
+        height: "50%",
     },
     ingredient_item: {
         marginBottom: 10,

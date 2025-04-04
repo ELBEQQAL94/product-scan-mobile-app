@@ -167,3 +167,7 @@ export const i18n = new I18n({
     CONNECTION_ERROR: "Überprüfen Sie die Verbindung und versuchen Sie es erneut."
   }
 });
+
+export const DEFAULT_LANGUAGE_APP = "fr";
+
+i18n.locale = DEFAULT_LANGUAGE_APP;
