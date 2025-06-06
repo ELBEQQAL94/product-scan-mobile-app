@@ -1,5 +1,6 @@
 ## Build App
 ```ssh
+eas build --platform android --profile production
 ````
 ## Build APK
 
