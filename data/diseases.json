@@ -1,0 +1,42 @@
+[
+  {
+    "id": "diabetes",
+    "name": "DIABETES",
+    "icon": "🩺"
+  },
+  {
+    "id": "pregnancy_nursing",
+    "name": "PREGNANT_NURSING",
+    "icon": "🤰"
+  },
+  {
+    "id": "heart_disease",
+    "name": "HEART_DISEASE",
+    "icon": "❤️"
+  },
+  {
+    "id": "arthritis",
+    "name": "ARTHRITIS",
+    "icon": "🦴"
+  },
+  {
+    "id": "kidney_disease",
+    "name": "KIDNEY_DISEASE",
+    "icon": "🫘"
+  },
+  {
+    "id": "liver_disease",
+    "name": "LIVER_DISEASE",
+    "icon": "🫀"
+  },
+  {
+    "id": "osteoporosis",
+    "name": "OSTEOPOROSIS",
+    "icon": "🦴"
+  },
+  {
+    "id": "anemia",
+    "name": "ANEMIA",
+    "icon": "🩸"
+  }
+]
