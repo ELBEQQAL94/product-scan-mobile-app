@@ -11,6 +11,7 @@ import diseases from "@/data/diseases.json";
 import { Disease } from "@/types/health-setup";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
+import ActionButton from "@/components/shared/ActionButton";
 
 const HealthSetup: FC = () => {
   const [items, setItems] = useState<Disease[]>([]);
@@ -54,29 +55,23 @@ const HealthSetup: FC = () => {
           />
         ))}
       </ScrollView>
-      <View style={{ margin: 10, width: "100%", padding: 16, paddingTop: 10 }}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: Colors.LIGHT_GREEN,
-            padding: 10,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: 25,
-            paddingTop: 15,
-            paddingBottom: 15,
+      <View>
+        <ActionButton
+          containerStyles={{ ...styles.action_button }}
+          label={"click me"}
+          icon="⟶"
+          onPress={function (): void {
+            throw new Error("Function not implemented.");
           }}
-        >
-          <Text
-            style={{
-              color: Colors.WHITE,
-              textAlign: "center",
-              ...Typography.button,
-            }}
-          >
-            click here
-          </Text>
-        </TouchableOpacity>
+        />
+        <ActionButton
+          containerStyles={{ ...styles.action_button }}
+          buttonStyles={{ backgroundColor: Colors.GRAY }}
+          label={"cancel"}
+          onPress={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
       </View>
     </View>
   );
@@ -92,6 +87,9 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
     gap: 2,
+  },
+  action_button: {
+    margin: 0,
   },
 });
 
