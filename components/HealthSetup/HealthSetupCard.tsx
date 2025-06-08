@@ -9,11 +9,15 @@ import {
 import { i18n } from "@/i18n";
 import { Disease } from "@/types/health-setup";
 import { Colors } from "@/themes/colors";
+import HealthSetupLabel from "./HealthSetupLabel";
+import CheckMark from "./CheckMark";
 
 interface HealthSetupCardProps {
   item: Disease;
   onPress: (id: string) => void;
 }
+
+const TEST_ID = "health-setup-card";
 
 const HealthSetupCard: FC<HealthSetupCardProps> = ({ item, onPress }) => {
   const scaleAnim = useRef(new Animated.Value(1)).current;
@@ -37,6 +41,7 @@ const HealthSetupCard: FC<HealthSetupCardProps> = ({ item, onPress }) => {
       reset_check_mark_animation(),
     ]).start();
   };
+
   const process_icon_bounce_animation = (): Animated.CompositeAnimation[] => {
     return [
       Animated.timing(iconBounceAnim, {
@@ -140,26 +145,17 @@ const HealthSetupCard: FC<HealthSetupCardProps> = ({ item, onPress }) => {
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       onPress={handlePress}
+      testID={`${TEST_ID}-touchable`}
+      accessibilityRole="button"
+      accessibilityLabel={`Health condition: ${item.name}`}
+      accessibilityState={{ selected: item.isSelected }}
     >
-      <Animated.View
-        style={[
-          styles.checkmark,
-          {
-            opacity: item.isSelected ? 1 : 0,
-            transform: [{ scale: checkmarkScale }],
-          },
-        ]}
-      >
-        <Text style={styles.checkmark_text}>✓</Text>
-      </Animated.View>
-      <Animated.View>
-        <Animated.Text
-          style={[styles.icon, { transform: [{ scale: iconBounceAnim }] }]}
-        >
-          {item.icon}
-        </Animated.Text>
-        <Text style={[styles.label]}>{i18n.t(item.name)}</Text>
-      </Animated.View>
+      <CheckMark isSelected={item.isSelected} checkmarkScale={checkmarkScale} />
+      <HealthSetupLabel
+        name={item.name}
+        icon={item.icon}
+        iconBounceAnim={iconBounceAnim}
+      />
     </TouchableOpacity>
   );
 };
@@ -178,39 +174,6 @@ const styles = StyleSheet.create({
     width: 120,
     justifyContent: "center",
     alignItems: "center",
-  },
-  label: {
-    color: Colors.WHITE,
-    textAlign: "center",
-    fontSize: 15,
-  },
-  icon: {
-    textAlign: "center",
-    fontSize: 30,
-  },
-  checkmark: {
-    position: "absolute",
-    top: 8,
-    right: 8,
-    width: 24,
-    height: 24,
-    backgroundColor: Colors.YELLOW,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  checkmark_text: {
-    color: Colors.LIGHT_GREEN,
-    fontSize: 14,
-    fontWeight: "bold",
   },
 });
 
