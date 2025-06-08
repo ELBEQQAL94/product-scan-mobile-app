@@ -9,9 +9,10 @@ interface ActionButtonProps {
   icon?: string;
   label: string;
   onPress: () => void;
-  testID?: string; // Add testID for testing
   disabled?: boolean; // Add disabled state for better UX
 }
+
+const TEST_ID = "action-button";
 
 const ActionButton: FC<ActionButtonProps> = ({
   label,
@@ -19,13 +20,12 @@ const ActionButton: FC<ActionButtonProps> = ({
   buttonStyles,
   icon,
   onPress,
-  testID = "action-button",
   disabled = false,
 }) => {
   return (
     <View
       style={[styles.container, { ...containerStyles }]}
-      testID={`${testID}-container`}
+      testID={`${TEST_ID}-container`}
     >
       <TouchableOpacity
         style={[
@@ -35,14 +35,14 @@ const ActionButton: FC<ActionButtonProps> = ({
         ]}
         onPress={onPress}
         disabled={disabled}
-        testID={`${testID}-touchable`}
+        testID={`${TEST_ID}-touchable`}
         accessibilityRole="button"
         accessibilityLabel={`${label} ${icon || ""}`.trim()}
         accessibilityState={{ disabled }}
       >
         <Text
           style={[styles.button_text, disabled && styles.disabled_text]}
-          testID={`${testID}-text`}
+          testID={`${TEST_ID}-text`}
         >
           {label} {icon}
         </Text>
