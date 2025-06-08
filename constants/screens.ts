@@ -1,5 +1,5 @@
 export const Screens = {
-    HOME_SCREEN : "/",
-    PRODUCT_DETAILS_SCREEN : "/product-details",
-    ON_BOARDING_SCREEN : ""
-}
+  HOME_SCREEN: "/",
+  PRODUCT_DETAILS_SCREEN: "/product-details",
+  HEALTH_SETUP_SCREEN: "/health-setup",
+};

@@ -1,26 +1,29 @@
-import { useEffect, useState } from 'react';
-import { BarcodeScanningResult } from 'expo-camera';
-import { Href, useRouter } from 'expo-router';
-import { Screens } from '@/constants/screens';
-import MainScreen from '@/components/Home/MainScreen';
-import OnBoarding from '@/components/Home/OnBoarding';
-import { get_item } from '@/utils';
+import { useEffect, useState } from "react";
+import { BarcodeScanningResult } from "expo-camera";
+import { Href, useRouter } from "expo-router";
+import { Screens } from "@/constants/screens";
+import MainScreen from "@/components/Home/MainScreen";
+import OnBoarding from "@/components/Home/OnBoarding";
+import { get_item } from "@/utils";
+import HealthSetup from "./health-setup";
 
 const HomeScreen = () => {
-
   // Hooks
   const router = useRouter();
 
   // States
   const [scanned, setScanned] = useState<boolean>(false);
-  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState<boolean>(false);
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] =
+    useState<boolean>(false);
 
   const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
     setScanned(true);
     const bar_code = result.data;
 
     if (bar_code) {
-      router.push(`${Screens.PRODUCT_DETAILS_SCREEN}?bar_code=${bar_code}` as Href);
+      router.push(
+        `${Screens.PRODUCT_DETAILS_SCREEN}?bar_code=${bar_code}` as Href
+      );
     }
   };
 
@@ -32,7 +35,7 @@ const HomeScreen = () => {
         setHasCompletedOnboarding(convertToBool);
       }
     } catch (error) {
-      console.log('checkOnboardingStatus get an error: ', error);
+      console.log("checkOnboardingStatus get an error: ", error);
     }
   };
 
@@ -41,10 +44,11 @@ const HomeScreen = () => {
   }, []);
 
   if (hasCompletedOnboarding) {
-    return <OnBoarding />
+    return <OnBoarding />;
   }
 
-  return <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />;
-}
+  // return <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />;
+  return <HealthSetup />;
+};
 
 export default HomeScreen;

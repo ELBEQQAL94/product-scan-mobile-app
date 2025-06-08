@@ -1,0 +1,217 @@
+import { FC, useEffect, useRef } from "react";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+} from "react-native";
+import { i18n } from "@/i18n";
+import { Disease } from "@/types/health-setup";
+import { Colors } from "@/themes/colors";
+
+interface HealthSetupCardProps {
+  item: Disease;
+  onPress: (id: string) => void;
+}
+
+const HealthSetupCard: FC<HealthSetupCardProps> = ({ item, onPress }) => {
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const iconBounceAnim = useRef(new Animated.Value(1)).current;
+  const glowOpacity = useRef(new Animated.Value(0)).current;
+  const checkmarkScale = useRef(new Animated.Value(0)).current;
+
+  const handle_animations = () => {
+    Animated.parallel([
+      Animated.sequence([
+        ...process_icon_bounce_animation(),
+        process_glow_effect_animation(),
+        process_check_mark_animation(),
+      ]),
+    ]).start();
+  };
+
+  const reset_animations = () => {
+    Animated.parallel([
+      reset_glow_effect_animation(),
+      reset_check_mark_animation(),
+    ]).start();
+  };
+  const process_icon_bounce_animation = (): Animated.CompositeAnimation[] => {
+    return [
+      Animated.timing(iconBounceAnim, {
+        toValue: 4,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      Animated.spring(iconBounceAnim, {
+        toValue: 1,
+        friction: 4,
+        tension: 100,
+        useNativeDriver: true,
+      }),
+    ];
+  };
+
+  const process_glow_effect_animation = (): Animated.CompositeAnimation => {
+    return Animated.timing(glowOpacity, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    });
+  };
+
+  const reset_glow_effect_animation = (): Animated.CompositeAnimation => {
+    return Animated.timing(glowOpacity, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    });
+  };
+
+  const process_check_mark_animation = (): Animated.CompositeAnimation => {
+    return Animated.spring(checkmarkScale, {
+      toValue: 1,
+      friction: 6,
+      tension: 100,
+      useNativeDriver: true,
+    });
+  };
+
+  const reset_check_mark_animation = (): Animated.CompositeAnimation => {
+    return Animated.timing(checkmarkScale, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true,
+    });
+  };
+
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.95,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePress = () => {
+    // Quick pulse animation on press
+    Animated.sequence([
+      Animated.timing(scaleAnim, {
+        toValue: 0.9,
+        duration: 50,
+        useNativeDriver: true,
+      }),
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        friction: 4,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    onPress(item.id);
+  };
+
+  useEffect(() => {
+    if (item.isSelected) {
+      handle_animations();
+    } else {
+      reset_animations();
+    }
+  }, [item.isSelected]);
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.card_container,
+        {
+          backgroundColor: item.isSelected
+            ? Colors.GLOVO_GREEN
+            : Colors.LIGHT_GREEN,
+          transform: [{ scale: scaleAnim }],
+        },
+      ]}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={handlePress}
+    >
+      <Animated.View
+        style={[
+          styles.checkmark,
+          {
+            opacity: item.isSelected ? 1 : 0,
+            transform: [{ scale: checkmarkScale }],
+          },
+        ]}
+      >
+        <Text style={styles.checkmark_text}>✓</Text>
+      </Animated.View>
+      <Animated.View>
+        <Animated.Text
+          style={[styles.icon, { transform: [{ scale: iconBounceAnim }] }]}
+        >
+          {item.icon}
+        </Animated.Text>
+        <Text style={[styles.label]}>{i18n.t(item.name)}</Text>
+      </Animated.View>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  card_container: {
+    color: Colors.WHITE,
+    borderRadius: 15,
+    marginVertical: 8,
+    marginHorizontal: 5,
+    position: "relative",
+    elevation: 0, // Remove default Android shadow
+    shadowOpacity: 0, // Remove default iOS shadow
+    flexBasis: "30%",
+    height: 120,
+    width: 120,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  label: {
+    color: Colors.WHITE,
+    textAlign: "center",
+    fontSize: 15,
+  },
+  icon: {
+    textAlign: "center",
+    fontSize: 30,
+  },
+  checkmark: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    width: 24,
+    height: 24,
+    backgroundColor: Colors.YELLOW,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  checkmark_text: {
+    color: Colors.LIGHT_GREEN,
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+});
+
+export default HealthSetupCard;
