@@ -1,3 +1,4 @@
+import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import { FC } from "react";
@@ -44,7 +45,7 @@ const ActionButton: FC<ActionButtonProps> = ({
           style={[styles.button_text, disabled && styles.disabled_text]}
           testID={`${TEST_ID}-text`}
         >
-          {label} {icon}
+          {i18n.t(label)} {icon}
         </Text>
       </TouchableOpacity>
     </View>

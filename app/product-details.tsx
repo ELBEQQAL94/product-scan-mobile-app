@@ -1,12 +1,6 @@
 import Loading from "@/components/ProductDetails/Loading";
 import ProductNotFound from "@/components/ProductDetails/ProductNotFound";
-import ScanAgainButton from "@/components/ProductDetails/CommonButton";
-import {
-  CachedProduct,
-  Ingredient,
-  OpenFoodData,
-  Product,
-} from "@/constants/responses";
+import { CachedProduct, Ingredient, OpenFoodData } from "@/constants/responses";
 import { Screens } from "@/constants/screens";
 import { i18n } from "@/i18n";
 import { chat, product_details } from "@/services";

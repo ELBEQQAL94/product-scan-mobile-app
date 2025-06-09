@@ -1,0 +1,172 @@
+[
+  {
+    "id": "tree_nuts",
+    "name": "TREE_NUTS",
+    "icon": "🥜"
+  },
+  {
+    "id": "dairy",
+    "name": "DAIRY",
+    "icon": "🥛"
+  },
+  {
+    "id": "gluten",
+    "name": "GLUTEN",
+    "icon": "🌾"
+  },
+  {
+    "id": "eggs",
+    "name": "EGGS",
+    "icon": "🥚"
+  },
+  {
+    "id": "shellfish",
+    "name": "SHELLFISH",
+    "icon": "🦐"
+  },
+  {
+    "id": "soy",
+    "name": "SOY",
+    "icon": "🫘"
+  },
+  {
+    "id": "fish",
+    "name": "FISH",
+    "icon": "🐟"
+  },
+  {
+    "id": "sesame",
+    "name": "SESAME",
+    "icon": "🌰"
+  },
+  {
+    "id": "peanuts",
+    "name": "PEANUTS",
+    "icon": "🥜"
+  },
+  {
+    "id": "mollusks",
+    "name": "MOLLUSKS",
+    "icon": "🦪"
+  },
+  {
+    "id": "sulfites",
+    "name": "SULFITES",
+    "icon": "🍷"
+  },
+  {
+    "id": "msg",
+    "name": "MSG",
+    "icon": "🥢"
+  },
+  {
+    "id": "nightshades",
+    "name": "NIGHTSHADES",
+    "icon": "🍅"
+  },
+  {
+    "id": "histamine",
+    "name": "HISTAMINE",
+    "icon": "🍯"
+  },
+  {
+    "id": "artificial_colors",
+    "name": "ARTIFICIAL_COLORS",
+    "icon": "🌈"
+  },
+  {
+    "id": "corn",
+    "name": "CORN",
+    "icon": "🌽"
+  },
+  {
+    "id": "citrus",
+    "name": "CITRUS",
+    "icon": "🍊"
+  },
+  {
+    "id": "strawberries",
+    "name": "STRAWBERRIES",
+    "icon": "🍓"
+  },
+  {
+    "id": "chocolate",
+    "name": "CHOCOLATE",
+    "icon": "🍫"
+  },
+  {
+    "id": "mushrooms",
+    "name": "MUSHROOMS",
+    "icon": "🍄"
+  },
+  {
+    "id": "kiwi",
+    "name": "KIWI",
+    "icon": "🥝"
+  },
+  {
+    "id": "avocado",
+    "name": "AVOCADO",
+    "icon": "🥑"
+  },
+  {
+    "id": "banana",
+    "name": "BANANA",
+    "icon": "🍌"
+  },
+  {
+    "id": "coconut",
+    "name": "COCONUT",
+    "icon": "🥥"
+  },
+  {
+    "id": "mustard",
+    "name": "MUSTARD",
+    "icon": "🌶️"
+  },
+  {
+    "id": "celery",
+    "name": "CELERY",
+    "icon": "🥬"
+  },
+  {
+    "id": "vegetarian",
+    "name": "VEGETARIAN",
+    "icon": "🌱"
+  },
+  {
+    "id": "vegan",
+    "name": "VEGAN",
+    "icon": "🌿"
+  },
+  {
+    "id": "keto",
+    "name": "KETO",
+    "icon": "🥩"
+  },
+  {
+    "id": "low_carb",
+    "name": "LOW_CARB",
+    "icon": "🍞"
+  },
+  {
+    "id": "low_sodium",
+    "name": "LOW_SODIUM",
+    "icon": "🧂"
+  },
+  {
+    "id": "low_sugar",
+    "name": "LOW_SUGAR",
+    "icon": "🍯"
+  },
+  {
+    "id": "paleo",
+    "name": "PALEO",
+    "icon": "🥗"
+  },
+  {
+    "id": "gluten_free",
+    "name": "GLUTEN_FREE",
+    "icon": "🚫"
+  }
+]

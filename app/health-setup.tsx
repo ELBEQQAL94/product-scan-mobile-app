@@ -1,44 +1,81 @@
 import HealthSetupCard from "@/components/HealthSetup/HealthSetupCard";
 import { FC, useEffect, useState, useCallback, useMemo } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import diseases from "@/data/diseases.json";
+import allergies from "@/data/allergies.json";
 import { Disease } from "@/types/health-setup";
 import { Colors } from "@/themes/colors";
-import { Typography } from "@/themes/typography";
 import ActionButton from "@/components/shared/ActionButton";
+import { Href, useRouter } from "expo-router";
+import { Screens } from "@/constants/screens";
+import { Step } from "@/enums/step";
 
 const HealthSetup: FC = () => {
-  const [items, setItems] = useState<Disease[]>([]);
-
-  // Fix the bug and optimize with useCallback
-  const toggleSelection = useCallback((id: string) => {
-    setItems((prevItems) =>
-      prevItems.map(
-        (item) =>
-          item.id === id ? { ...item, isSelected: !item.isSelected } : item // Return the original item unchanged
-      )
-    );
-  }, []);
-
-  // Memoize the initial data transformation
-  const initialItems = useMemo(
-    () =>
-      diseases.map((disease) => ({
-        ...disease,
-        isSelected: false,
-      })),
-    []
+  // States
+  const [currentStep, setCurrentStep] = useState<Step>(Step.DISEASES);
+  const [selectedDiseases, setSelectedDiseases] = useState<Set<string>>(
+    new Set()
+  );
+  const [selectedAllergies, setSelectedAllergies] = useState<Set<string>>(
+    new Set()
   );
 
-  useEffect(() => {
-    setItems(initialItems);
-  }, [initialItems]);
+  // Hooks
+  const router = useRouter();
+
+  const handleNext = useCallback(() => {
+    if (currentStep === Step.DISEASES) {
+      setCurrentStep(Step.ALERGIES);
+      return;
+    }
+    router.push(Screens.HOME_SCREEN as Href);
+  }, [currentStep, router]);
+
+  const handleSkip = useCallback(() => {
+    if (currentStep === Step.DISEASES) {
+      setCurrentStep(Step.ALERGIES);
+      return;
+    }
+    router.push(Screens.HOME_SCREEN as Href);
+  }, [currentStep, router]);
+
+  const toggleSelection = useCallback(
+    (id: string) => {
+      if (currentStep === Step.DISEASES) {
+        setSelectedDiseases((prev) => {
+          const newSet = new Set(prev);
+          if (newSet.has(id)) {
+            newSet.delete(id);
+          } else {
+            newSet.add(id);
+          }
+          return newSet;
+        });
+        return;
+      }
+      setSelectedAllergies((prev) => {
+        const newSet = new Set(prev);
+        if (newSet.has(id)) {
+          newSet.delete(id);
+        } else {
+          newSet.add(id);
+        }
+        return newSet;
+      });
+    },
+    [currentStep]
+  );
+
+  const currentData = useMemo(() => {
+    const rawData = currentStep === Step.DISEASES ? diseases : allergies;
+    const selectedSet =
+      currentStep === Step.DISEASES ? selectedDiseases : selectedAllergies;
+
+    return rawData.map((item) => ({
+      ...item,
+      isSelected: selectedSet.has(item.id),
+    }));
+  }, [currentStep, selectedDiseases, selectedAllergies]);
 
   return (
     <View style={styles.container}>
@@ -47,7 +84,7 @@ const HealthSetup: FC = () => {
         bounces={true}
         scrollEventThrottle={16}
       >
-        {items.slice(0, 7).map((disease) => (
+        {currentData.slice(0, 7).map((disease) => (
           <HealthSetupCard
             key={disease.id}
             item={disease}
@@ -56,22 +93,7 @@ const HealthSetup: FC = () => {
         ))}
       </ScrollView>
       <View>
-        <ActionButton
-          containerStyles={{ ...styles.action_button }}
-          label={"click me"}
-          icon="⟶"
-          onPress={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-        <ActionButton
-          containerStyles={{ ...styles.action_button }}
-          buttonStyles={{ backgroundColor: Colors.GRAY }}
-          label={"cancel"}
-          onPress={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
+        <ActionButton label={"CONTINUE"} icon="⟶" onPress={handleNext} />
       </View>
     </View>
   );
@@ -87,9 +109,6 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
     gap: 2,
-  },
-  action_button: {
-    margin: 0,
   },
 });
 
