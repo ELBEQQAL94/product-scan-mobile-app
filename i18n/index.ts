@@ -445,6 +445,6 @@ export const i18n = new I18n({
   },
 });
 
-export const DEFAULT_LANGUAGE_APP = "fr";
+export const DEFAULT_LANGUAGE_APP = "ar";
 
 i18n.locale = DEFAULT_LANGUAGE_APP;
