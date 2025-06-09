@@ -5,7 +5,7 @@ import { Screens } from "@/constants/screens";
 import MainScreen from "@/components/Home/MainScreen";
 import OnBoarding from "@/components/Home/OnBoarding";
 import { get_item } from "@/utils";
-import HealthSetup from "./health-setup";
+import HealthSetup from "../health-setup";
 
 const HomeScreen = () => {
   // Hooks
