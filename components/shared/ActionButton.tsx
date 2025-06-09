@@ -1,16 +1,32 @@
 import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
-import { FC } from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { ComponentType, FC } from "react";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
+
+interface IconProps {
+  style?: TextStyle | ViewStyle;
+  size?: number;
+  color?: string;
+  name?: string;
+  // Remove testID from IconProps since most icon libraries don't support it
+}
 
 interface ActionButtonProps {
-  containerStyles?: Record<string, string | number>;
-  buttonStyles?: Record<string, string>;
-  icon?: string;
+  containerStyles?: ViewStyle; // Fixed: Use ViewStyle instead of Record
+  buttonStyles?: ViewStyle; // Fixed: Use ViewStyle instead of Record
+  icon?: ComponentType<IconProps>;
+  iconProps?: Partial<IconProps>;
   label: string;
   onPress: () => void;
-  disabled?: boolean; // Add disabled state for better UX
+  disabled?: boolean;
 }
 
 const TEST_ID = "action-button";
@@ -19,34 +35,42 @@ const ActionButton: FC<ActionButtonProps> = ({
   label,
   containerStyles,
   buttonStyles,
-  icon,
+  icon: Icon,
+  iconProps,
   onPress,
   disabled = false,
 }) => {
+  const defaultIconProps: IconProps = {
+    style: styles.icon,
+    color: disabled ? Colors.GRAY : Colors.WHITE,
+    size: 20,
+    ...iconProps,
+  };
+
   return (
     <View
-      style={[styles.container, { ...containerStyles }]}
+      style={[styles.container, containerStyles]} // Fixed: Removed spread operator
       testID={`${TEST_ID}-container`}
     >
       <TouchableOpacity
         style={[
           styles.button_container,
-          { ...buttonStyles },
+          buttonStyles, // Fixed: Removed spread operator
           disabled && styles.disabled_button,
         ]}
         onPress={onPress}
         disabled={disabled}
         testID={`${TEST_ID}-touchable`}
         accessibilityRole="button"
-        accessibilityLabel={`${label} ${icon || ""}`.trim()}
         accessibilityState={{ disabled }}
       >
         <Text
           style={[styles.button_text, disabled && styles.disabled_text]}
           testID={`${TEST_ID}-text`}
         >
-          {i18n.t(label)} {icon}
+          {i18n.t(label)}
         </Text>
+        {Icon && <Icon {...defaultIconProps} />}
       </TouchableOpacity>
     </View>
   );
@@ -63,6 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.LIGHT_GREEN,
     padding: 10,
     display: "flex",
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25,
@@ -80,6 +105,11 @@ const styles = StyleSheet.create({
   },
   disabled_text: {
     opacity: 0.7,
+  },
+  icon: {
+    color: Colors.WHITE,
+    marginLeft: 10,
+    ...Typography.label,
   },
 });
 
