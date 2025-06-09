@@ -1,3 +1,4 @@
+import { Language } from "@/enums/language";
 import { I18n } from "i18n-js";
 
 export const i18n = new I18n({
@@ -87,6 +88,7 @@ export const i18n = new I18n({
     PALEO: "Paleo",
     GLUTEN_FREE: "Gluten-Free",
     CONTINUE: "Continue",
+    HEALTH_PROFILE_SETUP: "Health Profile Setup",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -173,6 +175,8 @@ export const i18n = new I18n({
     LOW_SUGAR: "قليل السكر",
     PALEO: "باليو",
     GLUTEN_FREE: "خالي من الغلوتين",
+    CONTINUE: "التالي",
+    HEALTH_PROFILE_SETUP: "إعداد الملف الصحي",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -262,6 +266,7 @@ export const i18n = new I18n({
     PALEO: "Paléo",
     GLUTEN_FREE: "Sans gluten",
     CONTINUE: "Continuer",
+    HEALTH_PROFILE_SETUP: "Configuration du profil de santé",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -351,6 +356,7 @@ export const i18n = new I18n({
     PALEO: "Paleo",
     GLUTEN_FREE: "Sin gluten",
     CONTINUE: "Continuar",
+    HEALTH_PROFILE_SETUP: "Configuración del perfil de salud",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -442,9 +448,10 @@ export const i18n = new I18n({
     PALEO: "Paleo",
     GLUTEN_FREE: "Glutenfrei",
     CONTINUE: "Weiter",
+    HEALTH_PROFILE_SETUP: "Gesundheitsprofil-Einrichtung",
   },
 });
 
-export const DEFAULT_LANGUAGE_APP = "ar";
+export const DEFAULT_LANGUAGE_APP = Language.AR;
 
 i18n.locale = DEFAULT_LANGUAGE_APP;

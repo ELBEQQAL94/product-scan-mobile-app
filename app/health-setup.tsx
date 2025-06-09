@@ -1,14 +1,15 @@
 import HealthSetupCard from "@/components/HealthSetup/HealthSetupCard";
-import { FC, useEffect, useState, useCallback, useMemo } from "react";
+import { FC, useState, useCallback, useMemo } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import diseases from "@/data/diseases.json";
 import allergies from "@/data/allergies.json";
-import { Disease } from "@/types/health-setup";
 import { Colors } from "@/themes/colors";
 import ActionButton from "@/components/shared/ActionButton";
 import { Href, useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
 import { Step } from "@/enums/step";
+import { LanguageKey } from "@/constants/keys";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 const HealthSetup: FC = () => {
   // States
@@ -24,14 +25,6 @@ const HealthSetup: FC = () => {
   const router = useRouter();
 
   const handleNext = useCallback(() => {
-    if (currentStep === Step.DISEASES) {
-      setCurrentStep(Step.ALERGIES);
-      return;
-    }
-    router.push(Screens.HOME_SCREEN as Href);
-  }, [currentStep, router]);
-
-  const handleSkip = useCallback(() => {
     if (currentStep === Step.DISEASES) {
       setCurrentStep(Step.ALERGIES);
       return;
@@ -93,7 +86,15 @@ const HealthSetup: FC = () => {
         ))}
       </ScrollView>
       <View>
-        <ActionButton label={"CONTINUE"} icon="⟶" onPress={handleNext} />
+        <ActionButton
+          label={LanguageKey.CONTINUE}
+          icon={FontAwesome6}
+          iconProps={{
+            name: "arrow-right-long",
+            size: 24,
+          }}
+          onPress={handleNext}
+        />
       </View>
     </View>
   );
