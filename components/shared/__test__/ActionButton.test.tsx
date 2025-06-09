@@ -22,6 +22,13 @@ jest.mock("@/themes/typography", () => ({
   },
 }));
 
+// Mock the i18n module to return the key as-is for testing
+jest.mock("@/i18n", () => ({
+  i18n: {
+    t: (key: string) => key, // Return the key unchanged for testing
+  },
+}));
+
 describe("ActionButton Component", () => {
   const defaultProps = {
     label: "Test Button",
@@ -61,6 +68,15 @@ describe("ActionButton Component", () => {
       expect(buttonText).toBeTruthy();
       expect(buttonText.props.children).not.toContain("⟶");
     });
+
+    it("should render with disabled state", () => {
+      const { getByTestId } = render(
+        <ActionButton {...defaultProps} disabled={true} />
+      );
+
+      const button = getByTestId("action-button-touchable");
+      expect(button.props.accessibilityState.disabled).toBe(true);
+    });
   });
 
   describe("Interactions", () => {
@@ -90,12 +106,31 @@ describe("ActionButton Component", () => {
       expect(mockOnPress).toHaveBeenCalledTimes(3);
     });
 
+    it("should not call onPress when button is disabled", () => {
+      const mockOnPress = jest.fn();
+      const { getByRole } = render(
+        <ActionButton {...defaultProps} onPress={mockOnPress} disabled={true} />
+      );
+
+      const button = getByRole("button");
+      fireEvent.press(button);
+
+      expect(mockOnPress).not.toHaveBeenCalled();
+    });
+
     it("should be accessible for screen readers", () => {
       const { getByRole } = render(<ActionButton {...defaultProps} />);
 
       const button = getByRole("button");
       expect(button).toBeTruthy();
       expect(button.props.accessible).toBe(true);
+    });
+
+    it("should have correct accessibility label with icon", () => {
+      const { getByRole } = render(<ActionButton {...defaultProps} icon="⟶" />);
+
+      const button = getByRole("button");
+      expect(button.props.accessibilityLabel).toBe("Test Button ⟶");
     });
   });
 
@@ -174,6 +209,14 @@ describe("ActionButton Component", () => {
         )
       ).not.toThrow();
     });
+
+    it("should render with testIDs for testing", () => {
+      const { getByTestId } = render(<ActionButton {...defaultProps} />);
+
+      expect(getByTestId("action-button-container")).toBeTruthy();
+      expect(getByTestId("action-button-touchable")).toBeTruthy();
+      expect(getByTestId("action-button-text")).toBeTruthy();
+    });
   });
 });
 
@@ -194,6 +237,18 @@ describe("ActionButton Snapshots", () => {
         onPress={jest.fn()}
         containerStyles={{ margin: 20 }}
         buttonStyles={{ backgroundColor: "#FF0000" }}
+        disabled={false}
+      />
+    ).toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it("should match snapshot when disabled", () => {
+    const tree = render(
+      <ActionButton
+        label="Disabled Button"
+        onPress={jest.fn()}
+        disabled={true}
       />
     ).toJSON();
     expect(tree).toMatchSnapshot();

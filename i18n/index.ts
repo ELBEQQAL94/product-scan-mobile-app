@@ -86,6 +86,7 @@ export const i18n = new I18n({
     LOW_SUGAR: "Low Sugar",
     PALEO: "Paleo",
     GLUTEN_FREE: "Gluten-Free",
+    CONTINUE: "Continue",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -260,6 +261,7 @@ export const i18n = new I18n({
     LOW_SUGAR: "Faible en sucre",
     PALEO: "Paléo",
     GLUTEN_FREE: "Sans gluten",
+    CONTINUE: "Continuer",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -348,6 +350,7 @@ export const i18n = new I18n({
     LOW_SUGAR: "Bajo en azúcar",
     PALEO: "Paleo",
     GLUTEN_FREE: "Sin gluten",
+    CONTINUE: "Continuar",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -438,6 +441,7 @@ export const i18n = new I18n({
     LOW_SUGAR: "Zuckerarm",
     PALEO: "Paleo",
     GLUTEN_FREE: "Glutenfrei",
+    CONTINUE: "Weiter",
   },
 });
 
