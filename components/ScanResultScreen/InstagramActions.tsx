@@ -17,13 +17,20 @@ const InstagramActions: FC = () => {
       }}
     >
       <View style={{ marginBottom: 10 }}>
-        <AntDesign name="hearto" size={24} color={Colors.GLOVO_GREEN} />
+        {/* <AntDesign name="hearto" size={30} color={Colors.GLOVO_GREEN} /> */}
+        <FontAwesome name="heart" size={30} color={Colors.GLOVO_GREEN} />
+      </View>
+      <View
+        style={{
+          marginBottom: 10,
+        }}
+      >
+        <FontAwesome name="commenting-o" size={30} color={Colors.GLOVO_GREEN} />
+        <Text style={{ textAlign: "center", fontSize: 18 }}>20</Text>
       </View>
       <View style={{ marginBottom: 10 }}>
-        <FontAwesome name="commenting-o" size={24} color={Colors.GLOVO_GREEN} />
-      </View>
-      <View style={{ marginBottom: 10 }}>
-        <FontAwesome name="share" size={24} color={Colors.GLOVO_GREEN} />
+        <FontAwesome name="share" size={30} color={Colors.GLOVO_GREEN} />
+        <Text style={{ textAlign: "center", fontSize: 18 }}>12</Text>
       </View>
     </View>
   );

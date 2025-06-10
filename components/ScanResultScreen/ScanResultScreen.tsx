@@ -1,12 +1,41 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { ScrollView, View, Image, Text, StyleSheet } from "react-native";
 import HealthScore from "./HealthScore";
 import { Typography } from "@/themes/typography";
 import InstagramActions from "./InstagramActions";
 import { Colors } from "@/themes/colors";
+import * as Location from "expo-location";
 
 const ScanResultScreen: FC = () => {
-  const arr: number[] = [];
+  const [location, setLocation] = useState<Location.LocationObject | null>(
+    null
+  );
+
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  async function getCurrentLocation() {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location);
+  }
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
+  let text = "Waiting...";
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = JSON.stringify(location);
+  }
+  console.log("text: ", text);
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
