@@ -1,7 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react-native";
-import { Animated } from "react-native";
-import HealthSetupCard from "@/components/HealthSetup/HealthSetupCard";
+import HealthSetupCard from "@/components/HealthSetupScreen/HealthSetupCard";
 import { Disease } from "@/types/health-setup";
 
 // Mock child components

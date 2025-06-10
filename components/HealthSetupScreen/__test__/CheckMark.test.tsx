@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react-native";
 import { Animated } from "react-native";
-import CheckMark from "@/components/HealthSetup/CheckMark";
+import CheckMark from "@/components/HealthSetupScreen/CheckMark";
 
 // Mock the themes
 jest.mock("@/themes/colors", () => ({

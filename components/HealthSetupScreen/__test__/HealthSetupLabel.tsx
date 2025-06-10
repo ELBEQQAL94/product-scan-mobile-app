@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react-native";
 import { Animated } from "react-native";
-import HealthSetupLabel from "@/components/HealthSetup/HealthSetupLabel";
+import HealthSetupLabel from "@/components/HealthSetupScreen/HealthSetupLabel";
 
 // Mock i18n
 jest.mock("@/i18n", () => ({

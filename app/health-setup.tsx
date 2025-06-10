@@ -1,4 +1,4 @@
-import HealthSetupCard from "@/components/HealthSetup/HealthSetupCard";
+import HealthSetupCard from "@/components/HealthSetupScreen/HealthSetupCard";
 import { FC, useState, useCallback, useMemo } from "react";
 import { ScrollView, StyleSheet, View, Text } from "react-native";
 import diseases from "@/data/diseases.json";

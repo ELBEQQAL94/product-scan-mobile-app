@@ -1,6 +1,14 @@
 import { i18n } from "@/i18n";
-import { useState } from "react";
-import { View, Text, FlatList, Modal, TouchableOpacity, StyleSheet, Image, useColorScheme } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Modal,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  useColorScheme,
+} from "react-native";
 
 interface SelectLanguageProps {
   currentLanguage: string;
@@ -9,17 +17,17 @@ interface SelectLanguageProps {
   changeLanguage: (language_code: string) => void;
 }
 
-const SelectLanguage: React.FC<SelectLanguageProps> = ({ 
-  currentLanguage, 
-  modalVisible, 
+const SelectLanguage: React.FC<SelectLanguageProps> = ({
+  currentLanguage,
+  modalVisible,
   setModalVisible,
-  changeLanguage
+  changeLanguage,
 }) => {
-  // States  
+  // States
   const colorScheme = useColorScheme();
 
   const colors = {
-    text: colorScheme === 'dark' ? 'white' : 'black',
+    text: colorScheme === "dark" ? "white" : "black",
   };
 
   const languages = [
@@ -27,7 +35,7 @@ const SelectLanguage: React.FC<SelectLanguageProps> = ({
     { code: "ar", name: "العربية" },
     { code: "fr", name: "Français" },
     { code: "es", name: "Español" },
-    { code: "de", name: "Deutsch" }
+    { code: "de", name: "Deutsch" },
   ];
 
   return (
@@ -37,7 +45,7 @@ const SelectLanguage: React.FC<SelectLanguageProps> = ({
         onPress={() => setModalVisible(true)}
       >
         <Image
-          source={require('@/assets/images/language.png')}
+          source={require("@/assets/images/language.png")}
           resizeMode="contain"
           style={{ tintColor: colors.text, width: 20, height: 20 }}
         />
@@ -60,7 +68,7 @@ const SelectLanguage: React.FC<SelectLanguageProps> = ({
                 <TouchableOpacity
                   style={[
                     styles.languageItem,
-                    currentLanguage === item.code && styles.selectedLanguage
+                    currentLanguage === item.code && styles.selectedLanguage,
                   ]}
                   onPress={() => changeLanguage(item.code)}
                 >
