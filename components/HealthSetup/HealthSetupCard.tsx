@@ -30,8 +30,8 @@ const HealthSetupCard: FC<HealthSetupCardProps> = ({ item, onPress }) => {
       Animated.sequence([
         ...process_icon_bounce_animation(),
         process_glow_effect_animation(),
-        process_check_mark_animation(),
       ]),
+      process_check_mark_animation(),
     ]).start();
   };
 

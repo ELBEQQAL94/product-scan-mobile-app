@@ -78,10 +78,8 @@ const ActionButton: FC<ActionButtonProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
     width: "100%",
-    padding: 16,
-    paddingTop: 10,
+    padding: 30,
   },
   button_container: {
     backgroundColor: Colors.LIGHT_GREEN,
@@ -97,7 +95,7 @@ const styles = StyleSheet.create({
   button_text: {
     color: Colors.WHITE,
     textAlign: "center",
-    ...Typography.button,
+    ...Typography.h3,
   },
   disabled_button: {
     backgroundColor: Colors.GRAY,
