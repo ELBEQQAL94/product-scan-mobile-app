@@ -1,5 +1,5 @@
-import Loading from "@/components/ProductDetails/Loading";
-import ProductNotFound from "@/components/ProductDetails/ProductNotFound";
+import Loading from "@/components/ProductDetailsScreen/Loading";
+import ProductNotFound from "@/components/ProductDetailsScreen/ProductNotFound";
 import { CachedProduct, Ingredient, OpenFoodData } from "@/constants/responses";
 import { Screens } from "@/constants/screens";
 import { i18n } from "@/i18n";
@@ -14,10 +14,10 @@ import {
   ScrollView,
   useColorScheme,
 } from "react-native";
-import CommonButton from "@/components/ProductDetails/CommonButton";
-import ConnectionError from "@/components/ProductDetails/ConnectionError";
+import CommonButton from "@/components/ProductDetailsScreen/CommonButton";
+import ConnectionError from "@/components/ProductDetailsScreen/ConnectionError";
 import { get_product_by_bar_code, save_product_by_bar_code } from "@/utils";
-import SelectLanguage from "@/components/SelectLanguage";
+import SelectLanguage from "@/components/shared/SelectLanguage";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 
 const ProductDetails: React.FC = () => {
