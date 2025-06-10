@@ -1,6 +1,6 @@
 import HealthSetupCard from "@/components/HealthSetup/HealthSetupCard";
 import { FC, useState, useCallback, useMemo } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 import diseases from "@/data/diseases.json";
 import allergies from "@/data/allergies.json";
 import { Colors } from "@/themes/colors";
@@ -85,23 +85,22 @@ const HealthSetup: FC = () => {
           />
         ))}
       </ScrollView>
-      <View>
-        <ActionButton
-          label={LanguageKey.CONTINUE}
-          icon={FontAwesome6}
-          iconProps={{
-            name: "arrow-right-long",
-            size: 24,
-          }}
-          onPress={handleNext}
-        />
-      </View>
+      <ActionButton
+        label={LanguageKey.CONTINUE}
+        icon={FontAwesome6}
+        iconProps={{
+          name: "arrow-right-long",
+          size: 24,
+        }}
+        onPress={handleNext}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    padding: 10,
     flex: 1,
     backgroundColor: Colors.GLOVO_YELLOW,
   },

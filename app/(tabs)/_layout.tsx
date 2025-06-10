@@ -9,36 +9,32 @@ import * as SplashScreen from "expo-splash-screen";
 import "react-native-reanimated";
 import { Colors } from "@/themes/colors";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
 export default function TabLayout() {
-  const router = useRouter();
-  // const [loaded] = useFonts({
-  //   SpaceMono: require("../../assets/fonts/SpaceMono-Regular.ttf"),
-  // });
-
-  // useEffect(() => {
-  //   if (loaded) {
-  //     SplashScreen.hideAsync();
-  //   }
-  //   router.push(Screens.HEALTH_SETUP_SCREEN as Href);
-  // }, [loaded]);
-
-  // if (!loaded) {
-  //   return null;
-  // }
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors.GLOVO_GREEN,
         tabBarInactiveTintColor: Colors.GRAY,
+        tabBarStyle: {
+          height: 80,
+          paddingBottom: 10,
+          paddingTop: 10,
+        },
+        tabBarItemStyle: {
+          paddingVertical: 8,
+          paddingHorizontal: 4,
+        },
+        tabBarLabelStyle: {
+          paddingTop: 4,
+          fontSize: 12,
+        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
+          headerShown: false,
           tabBarIcon: () => (
             <MaterialCommunityIcons
               name="barcode-scan"

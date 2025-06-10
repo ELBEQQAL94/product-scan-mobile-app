@@ -21,9 +21,14 @@ import { LanguageKey } from "@/constants/keys";
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function TabLayout() {
+export default function Layout() {
   const colorScheme = useColorScheme();
   const router = useRouter();
+
+  // Add this useEffect to hide splash screen
+  useEffect(() => {
+    SplashScreen.hideAsync();
+  }, []);
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>

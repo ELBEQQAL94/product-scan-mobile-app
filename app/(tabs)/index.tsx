@@ -5,7 +5,9 @@ import { Screens } from "@/constants/screens";
 import MainScreen from "@/components/Home/MainScreen";
 import OnBoarding from "@/components/Home/OnBoarding";
 import { get_item } from "@/utils";
+import { View, Text } from "react-native";
 import HealthSetup from "../health-setup";
+import ScanResultScreen from "@/components/ScanResultScreen/ScanResultScreen";
 
 const HomeScreen = () => {
   // Hooks
@@ -47,8 +49,11 @@ const HomeScreen = () => {
     return <OnBoarding />;
   }
 
-  // return <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />;
-  return <HealthSetup />;
+  // return (
+  //   <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />
+  // );
+  // return <HealthSetup />;
+  return <ScanResultScreen />;
 };
 
 export default HomeScreen;
