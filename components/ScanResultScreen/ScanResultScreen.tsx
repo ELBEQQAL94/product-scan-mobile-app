@@ -1,41 +1,36 @@
 import { FC, useEffect, useState } from "react";
-import { ScrollView, View, Image, Text, StyleSheet } from "react-native";
+import {
+  ScrollView,
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  Button,
+} from "react-native";
 import HealthScore from "./HealthScore";
 import { Typography } from "@/themes/typography";
 import InstagramActions from "./InstagramActions";
 import { Colors } from "@/themes/colors";
 import * as Location from "expo-location";
+import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
+import { useSelectedCountry } from "@/hooks/useSelectedCountry";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ScanResultScreen: FC = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null
   );
-
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  async function getCurrentLocation() {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
+  const { getCurrentLocation } = useSelectedCountry();
+  async function clear() {
+    await AsyncStorage.clear();
   }
 
-  useEffect(() => {
-    getCurrentLocation();
-  }, []);
-
-  let text = "Waiting...";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
-  console.log("text: ", text);
-
+  return (
+    <View>
+      <Button onPress={getCurrentLocation} title="location" />
+      <Button onPress={clear} title="clear cache" />
+    </View>
+  );
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
