@@ -1,16 +1,3 @@
-// const CustomScanTabButton: FC<CustomScanTabButtonProps> = ({ focused }) => {
-//   return (
-//     <View
-//       style={[
-//         styles.scan_tab_button,
-//         { backgroundColor: focused ? Colors.GLOVO_GREEN : Colors.GLOVO_GREEN },
-//       ]}
-//     >
-//       <MaterialCommunityIcons name="barcode-scan" size={28} color="white" />
-//     </View>
-//   );
-// };
-
 import { render, screen } from "@testing-library/react-native";
 import CustomScanTabButton, {
   CustomScanTabButton_TEST_ID,
