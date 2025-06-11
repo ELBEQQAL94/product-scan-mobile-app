@@ -100,3 +100,8 @@ export const LanguageKey = {
 
   HEALTH_PROFILE_SETUP: "HEALTH_PROFILE_SETUP",
 } as const;
+
+export const AsyncStorageKey = {
+  LOCATION_TIMESTAMP: "location_timestamp",
+  USER_COUNTRY: "user_country",
+};
