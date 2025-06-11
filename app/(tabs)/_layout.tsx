@@ -8,6 +8,8 @@ import { Tabs, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import "react-native-reanimated";
 import { Colors } from "@/themes/colors";
+import { View, StyleSheet } from "react-native";
+import CustomScanTabButton from "@/components/ScanScreen/CustomScanTabButton";
 
 export default function TabLayout() {
   return (
@@ -56,6 +58,17 @@ export default function TabLayout() {
               color={Colors.GLOVO_GREEN}
             />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="scan"
+        options={{
+          title: "Home",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <CustomScanTabButton focused={focused} />
+          ),
+          tabBarLabel: () => null,
         }}
       />
       <Tabs.Screen
