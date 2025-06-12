@@ -5,14 +5,18 @@ import { Typography } from "@/themes/typography";
 import InstagramActions from "./InstagramActions";
 import ActionButton from "../shared/ActionButton";
 import { LanguageKey } from "@/constants/keys";
+import PersonalizedMessage from "./PersonalizedMessage";
+import { Colors } from "@/themes/colors";
 
 const ScanResultScreen: FC = () => {
   const suggest_better_products = () => {
     console.log("better options clicked");
   };
 
+  const add_to_compare = () => console.log("add to compare");
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, padding: 16 }}>
       <ScrollView>
         <View
           style={{
@@ -44,10 +48,16 @@ const ScanResultScreen: FC = () => {
           </Text>
         </View>
         <HealthScore />
+        <PersonalizedMessage />
         <View style={{ margin: 25 }}>
           <ActionButton
             label={LanguageKey.SEE_BETTER_OPTIONS}
             onPress={suggest_better_products}
+          />
+          <ActionButton
+            label={LanguageKey.ADD_TO_COMPARE}
+            onPress={add_to_compare}
+            buttonStyles={{ backgroundColor: Colors.GLOVO_GREEN }}
           />
         </View>
       </ScrollView>
