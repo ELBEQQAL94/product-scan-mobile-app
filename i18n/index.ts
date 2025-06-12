@@ -89,6 +89,7 @@ export const i18n = new I18n({
     GLUTEN_FREE: "Gluten-Free",
     CONTINUE: "Continue",
     HEALTH_PROFILE_SETUP: "Health Profile Setup",
+    SEE_BETTER_OPTIONS: "See Better Options",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -177,6 +178,7 @@ export const i18n = new I18n({
     GLUTEN_FREE: "خالي من الغلوتين",
     CONTINUE: "التالي",
     HEALTH_PROFILE_SETUP: "إعداد الملف الصحي",
+    SEE_BETTER_OPTIONS: "اطلع على خيارات أفضل",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -267,6 +269,7 @@ export const i18n = new I18n({
     GLUTEN_FREE: "Sans gluten",
     CONTINUE: "Continuer",
     HEALTH_PROFILE_SETUP: "Configuration du profil de santé",
+    SEE_BETTER_OPTIONS: "Voir de meilleures options",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -357,6 +360,7 @@ export const i18n = new I18n({
     GLUTEN_FREE: "Sin gluten",
     CONTINUE: "Continuar",
     HEALTH_PROFILE_SETUP: "Configuración del perfil de salud",
+    SEE_BETTER_OPTIONS: "Bessere Optionen anzeigen",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -449,6 +453,7 @@ export const i18n = new I18n({
     GLUTEN_FREE: "Glutenfrei",
     CONTINUE: "Weiter",
     HEALTH_PROFILE_SETUP: "Gesundheitsprofil-Einrichtung",
+    SEE_BETTER_OPTIONS: "Bessere Optionen anzeigen",
   },
 });
 
