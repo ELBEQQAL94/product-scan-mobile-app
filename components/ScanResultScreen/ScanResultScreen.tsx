@@ -1,36 +1,16 @@
-import { FC, useEffect, useState } from "react";
-import {
-  ScrollView,
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  Button,
-} from "react-native";
+import { FC } from "react";
+import { ScrollView, View, Image, Text } from "react-native";
 import HealthScore from "./HealthScore";
 import { Typography } from "@/themes/typography";
 import InstagramActions from "./InstagramActions";
-import { Colors } from "@/themes/colors";
-import * as Location from "expo-location";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
-import { useSelectedCountry } from "@/hooks/useSelectedCountry";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import ActionButton from "../shared/ActionButton";
+import { LanguageKey } from "@/constants/keys";
 
 const ScanResultScreen: FC = () => {
-  const [location, setLocation] = useState<Location.LocationObject | null>(
-    null
-  );
-  const { getCurrentLocation } = useSelectedCountry();
-  async function clear() {
-    await AsyncStorage.clear();
-  }
+  const suggest_better_products = () => {
+    console.log("better options clicked");
+  };
 
-  return (
-    <View>
-      <Button onPress={getCurrentLocation} title="location" />
-      <Button onPress={clear} title="clear cache" />
-    </View>
-  );
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
@@ -64,6 +44,12 @@ const ScanResultScreen: FC = () => {
           </Text>
         </View>
         <HealthScore />
+        <View style={{ margin: 25 }}>
+          <ActionButton
+            label={LanguageKey.SEE_BETTER_OPTIONS}
+            onPress={suggest_better_products}
+          />
+        </View>
       </ScrollView>
       <InstagramActions />
     </View>
