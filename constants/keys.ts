@@ -85,6 +85,7 @@ export const LanguageKey = {
   PERFECT_FOR_YOU: "PERFECT_FOR_YOU",
   NOT_GOOD_FOR_YOU: "NOT_GOOD_FOR_YOU",
   ADD_TO_COMPARE: "ADD_TO_COMPARE",
+  SCANNING_PRODUCT: "SCANNING_PRODUCT",
 } as const;
 
 export const AsyncStorageKey = {

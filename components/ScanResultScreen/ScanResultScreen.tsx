@@ -14,7 +14,6 @@ const ScanResultScreen: FC = () => {
   };
 
   const add_to_compare = () => console.log("add to compare");
-
   return (
     <View style={{ flex: 1, padding: 16 }}>
       <ScrollView>
