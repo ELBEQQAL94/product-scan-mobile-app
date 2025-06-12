@@ -16,14 +16,6 @@ interface ValidationError {
   key?: string;
 }
 
-interface TranslationReport {
-  language: SupportedLanguage;
-  totalKeys: number;
-  missingKeys: string[];
-  extraKeys: string[];
-  emptyKeys: string[];
-}
-
 describe("i18n Translation Validation", () => {
   const supportedLanguages: SupportedLanguage[] = [
     "en",

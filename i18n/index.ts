@@ -90,6 +90,9 @@ export const i18n = new I18n({
     CONTINUE: "Continue",
     HEALTH_PROFILE_SETUP: "Health Profile Setup",
     SEE_BETTER_OPTIONS: "See Better Options",
+    NOT_GOOD_FOR_YOU: "Not good for you",
+    PERFECT_FOR_YOU: "Perfect for you",
+    ADD_TO_COMPARE: "Add to Compare",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -179,6 +182,9 @@ export const i18n = new I18n({
     CONTINUE: "التالي",
     HEALTH_PROFILE_SETUP: "إعداد الملف الصحي",
     SEE_BETTER_OPTIONS: "اطلع على خيارات أفضل",
+    NOT_GOOD_FOR_YOU: "ليس جيداً لك",
+    PERFECT_FOR_YOU: "مثالي لك",
+    ADD_TO_COMPARE: "أضف للمقارنة",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -270,6 +276,9 @@ export const i18n = new I18n({
     CONTINUE: "Continuer",
     HEALTH_PROFILE_SETUP: "Configuration du profil de santé",
     SEE_BETTER_OPTIONS: "Voir de meilleures options",
+    NOT_GOOD_FOR_YOU: "Pas bon pour toi",
+    PERFECT_FOR_YOU: "Parfait pour toi",
+    ADD_TO_COMPARE: "Ajouter à la comparaison",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -361,6 +370,9 @@ export const i18n = new I18n({
     CONTINUE: "Continuar",
     HEALTH_PROFILE_SETUP: "Configuración del perfil de salud",
     SEE_BETTER_OPTIONS: "Bessere Optionen anzeigen",
+    NOT_GOOD_FOR_YOU: "No es bueno para ti",
+    PERFECT_FOR_YOU: "Perfecto para ti ",
+    ADD_TO_COMPARE: "Añadir a comparar",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -454,6 +466,9 @@ export const i18n = new I18n({
     CONTINUE: "Weiter",
     HEALTH_PROFILE_SETUP: "Gesundheitsprofil-Einrichtung",
     SEE_BETTER_OPTIONS: "Bessere Optionen anzeigen",
+    NOT_GOOD_FOR_YOU: "Nicht gut für dich",
+    PERFECT_FOR_YOU: "Perfekt für dich",
+    ADD_TO_COMPARE: "Zum Vergleich hinzufügen",
   },
 });
 

@@ -19,6 +19,7 @@ const InstagramActions: FC = () => {
       <View style={{ marginBottom: 10 }}>
         {/* <AntDesign name="hearto" size={30} color={Colors.GLOVO_GREEN} /> */}
         <FontAwesome name="heart" size={30} color={Colors.GLOVO_GREEN} />
+        <Text style={{ textAlign: "center", fontSize: 18 }}>20</Text>
       </View>
       <View
         style={{

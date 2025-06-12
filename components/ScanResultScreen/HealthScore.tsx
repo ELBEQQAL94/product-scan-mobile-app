@@ -57,7 +57,7 @@ const HealthScore: FC = () => {
   }, []);
 
   return (
-    <View style={{ padding: 16 }}>
+    <View>
       <View
         style={{
           display: "flex",
@@ -90,7 +90,13 @@ const HealthScore: FC = () => {
             name="circle"
             size={10}
             color={Colors.BLACK}
-            style={{ marginLeft: 2 }}
+            style={{
+              marginLeft: 2,
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginRight: 2,
+            }}
           />
           <Entypo name="circle" size={10} color={Colors.BLACK} />
         </View>
