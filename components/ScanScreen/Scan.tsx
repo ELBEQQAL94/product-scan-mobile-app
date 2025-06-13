@@ -9,7 +9,6 @@ import {
   StyleSheet,
   Text,
   Alert,
-  TouchableOpacity,
   TextInput,
   Animated,
   KeyboardAvoidingView,
