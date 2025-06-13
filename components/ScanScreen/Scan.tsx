@@ -22,6 +22,7 @@ import ManualEntryView from "./ManualEntryView";
 import { Colors } from "@/themes/colors";
 import BottomControls from "./BottomControls";
 import { LanguageKey } from "@/constants/keys";
+import ScanningLoader from "../shared/ScanningLoader";
 
 const Scan: React.FC<{
   scanned: boolean;
@@ -52,7 +53,10 @@ const Scan: React.FC<{
 
   const handleManualSubmit = async () => {
     if (manualBarcode.length < 8) {
-      Alert.alert(i18n.t("INVALID_BARCODE"), i18n.t("BARCODE_TOO_SHORT"));
+      Alert.alert(
+        i18n.t(LanguageKey.INVALID_BARCODE),
+        i18n.t(LanguageKey.BARCODE_TOO_SHORT)
+      );
       return;
     }
 
@@ -95,6 +99,10 @@ const Scan: React.FC<{
         },
       ]
     );
+  }
+
+  if (isProcessing) {
+    return <ScanningLoader isVisible={isProcessing} />;
   }
 
   return (

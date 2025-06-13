@@ -1,14 +1,25 @@
 import { LanguageKey } from "@/constants/keys";
 import { i18n } from "@/i18n";
-import React, { useEffect, useRef } from "react";
+import { Colors } from "@/themes/colors";
+import React, { FC, useEffect, useRef } from "react";
 import { View, Animated, Text, StyleSheet, Dimensions } from "react-native";
 
-const { width } = Dimensions.get("window");
+interface ScanningLoaderProps {
+  isVisible: boolean;
+}
+
+export const SCANNING_LOADER_TEST_ID = "SCANNING_LOADER_TEST_ID";
 
 // Scanning line animation - mimics barcode scanner
-const ScanningLoader = ({ isVisible = true }) => {
+const ScanningLoader: FC<ScanningLoaderProps> = ({ isVisible = true }) => {
   const scanLine = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
+
+  // Move Dimensions.get() inside the component to avoid module-level execution
+  const screenWidth = Dimensions.get("window").width;
+
+  // Define frame height as a constant so we can use it in both styles and animation
+  const FRAME_HEIGHT = 200;
 
   useEffect(() => {
     if (isVisible) {
@@ -44,16 +55,25 @@ const ScanningLoader = ({ isVisible = true }) => {
     }
   }, [isVisible, scanLine, opacity]);
 
+  // Fix: Adjust the translateY range to match the actual frame height
   const translateY = scanLine.interpolate({
     inputRange: [0, 1],
-    outputRange: [-100, 100],
+    outputRange: [0, FRAME_HEIGHT - 2], // Start at top (0) and end at bottom (height - line thickness)
   });
 
   if (!isVisible) return null;
 
   return (
-    <Animated.View style={[styles.scan_container, { opacity }]}>
-      <View style={styles.scan_frame}>
+    <Animated.View
+      style={[styles.scan_container, { opacity }]}
+      testID={SCANNING_LOADER_TEST_ID}
+    >
+      <View
+        style={[
+          styles.scan_frame,
+          { height: FRAME_HEIGHT, width: screenWidth * 0.7 },
+        ]}
+      >
         {/* Corner brackets */}
         <View style={[styles.corner, styles.top_left]} />
         <View style={[styles.corner, styles.top_right]} />
@@ -77,18 +97,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: Colors.BLACK,
   },
   scan_frame: {
-    width: width * 0.7,
-    height: 200,
+    // width will be set inline using screenWidth
+    height: 200, // This will be overridden by the inline style
     position: "relative",
     borderColor: "transparent",
+    overflow: "hidden",
   },
   corner: {
     position: "absolute",
     width: 20,
     height: 20,
-    borderColor: "#00FF00",
+    borderColor: Colors.LIGHT_GREEN,
     borderWidth: 3,
   },
   top_left: {
@@ -120,15 +142,15 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 2,
-    backgroundColor: "#FF0000",
-    shadowColor: "#FF0000",
+    backgroundColor: Colors.GLOVO_GREEN,
+    shadowColor: Colors.GLOVO_GREEN,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
     shadowRadius: 5,
     elevation: 5,
   },
   scan_text: {
-    color: "#FFFFFF",
+    color: Colors.WHITE,
     fontSize: 16,
     fontWeight: "600",
     marginTop: 30,
@@ -140,7 +162,7 @@ const styles = StyleSheet.create({
     height: 30,
   },
   bar: {
-    backgroundColor: "#007AFF",
+    backgroundColor: Colors.BRIGHT_BLUE,
     height: 25,
     marginHorizontal: 1,
   },
