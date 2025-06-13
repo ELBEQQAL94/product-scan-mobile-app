@@ -69,16 +69,7 @@ const HomeScreen = () => {
   //   <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />
   // );
   // return <HealthSetup />;
-  return (
-    <Scan
-      scanned={false}
-      handleBarcodeScanned={function (
-        result: BarcodeScanningResult
-      ): Promise<void> {
-        throw new Error("Function not implemented.");
-      }}
-    />
-  );
+  return <Scan scanned={false} handleBarcodeScanned={handleBarcodeScanned} />;
 };
 
 export default HomeScreen;
