@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { BarcodeScanningResult } from "expo-camera";
 import { Href, useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
-import MainScreen from "@/components/HomeScreen/MainScreen";
 import OnBoarding from "@/components/HomeScreen/OnBoarding";
 import { get_item } from "@/utils";
 import { View, Text } from "react-native";
 import HealthSetup from "../health-setup";
 import ScanResultScreen from "@/components/ScanResultScreen/ScanResultScreen";
 import * as Location from "expo-location";
+import Scan from "@/components/ScanScreen/Scan";
 
 const HomeScreen = () => {
   // Hooks
@@ -69,7 +69,16 @@ const HomeScreen = () => {
   //   <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />
   // );
   // return <HealthSetup />;
-  return <ScanResultScreen />;
+  return (
+    <Scan
+      scanned={false}
+      handleBarcodeScanned={function (
+        result: BarcodeScanningResult
+      ): Promise<void> {
+        throw new Error("Function not implemented.");
+      }}
+    />
+  );
 };
 
 export default HomeScreen;
