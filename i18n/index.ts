@@ -94,6 +94,20 @@ export const i18n = new I18n({
     PERFECT_FOR_YOU: "Perfect for you",
     ADD_TO_COMPARE: "Add to Compare",
     SCANNING_PRODUCT: "Scanning product...",
+    ENTER_BARCODE_MANUALLY: "Enter Barcode Manually",
+    TYPE_BARCODE_NUMBERS: "Type the barcode numbers manually",
+    BARCODE_PLACEHOLDER: "Enter barcode numbers",
+    DIGITS: "digits",
+    PROCESSING: "Processing...",
+    SCAN_PRODUCT: "Scan Product",
+    CAMERA: "Camera",
+    MANUAL: "Manual",
+    POSITION_BARCODE_IN_FRAME: "Position barcode within the frame",
+    FIND_NUMBERS_BELOW_BARCODE:
+      "Find barcode numbers usually below the barcode lines",
+    TAP_MANUAL_TO_TYPE_BARCODE: "Tap Manual to enter barcode numbers by typing",
+    INVALID_BARCODE: "Invalid Barcode",
+    BARCODE_TOO_SHORT: "Barcode must be at least 8 digits long",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -187,6 +201,21 @@ export const i18n = new I18n({
     PERFECT_FOR_YOU: "مثالي لك",
     ADD_TO_COMPARE: "أضف للمقارنة",
     SCANNING_PRODUCT: "جاري مسح المنتج...",
+    ENTER_BARCODE_MANUALLY: "أدخل الرمز الشريطي يدوياً",
+    TYPE_BARCODE_NUMBERS: "اكتب أرقام الرمز الشريطي يدوياً",
+    BARCODE_PLACEHOLDER: "أدخل أرقام الرمز الشريطي",
+    DIGITS: "أرقام",
+    PROCESSING: "جاري المعالجة...",
+    SCAN_PRODUCT: "مسح المنتج",
+    CAMERA: "كاميرا",
+    MANUAL: "يدوي",
+    POSITION_BARCODE_IN_FRAME: "ضع الرمز الشريطي داخل الإطار",
+    FIND_NUMBERS_BELOW_BARCODE:
+      "ابحث عن أرقام الرمز الشريطي عادة تحت خطوط الرمز الشريطي",
+    TAP_MANUAL_TO_TYPE_BARCODE:
+      "اضغط على يدوي لإدخال أرقام الرمز الشريطي بالكتابة ",
+    INVALID_BARCODE: "رمز شريطي غير صالح",
+    BARCODE_TOO_SHORT: "يجب أن يحتوي الرمز الشريطي على 8 أرقام على الأقل ",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -282,6 +311,19 @@ export const i18n = new I18n({
     PERFECT_FOR_YOU: "Parfait pour toi",
     ADD_TO_COMPARE: "Ajouter à la comparaison",
     SCANNING_PRODUCT: "Numérisation du produit...",
+    POSITION_BARCODE_IN_FRAME: "Positionnez le code-barres dans le cadre",
+    FIND_NUMBERS_BELOW_BARCODE:
+      "Trouvez les numéros du code-barres généralement sous les lignes du code-barres",
+    TAP_MANUAL_TO_TYPE_BARCODE:
+      "Appuyez sur Manuel pour saisir les numéros du code-barres en tapant",
+    INVALID_BARCODE: "Code-barres invalide",
+    BARCODE_TOO_SHORT: "Le code-barres doit contenir au moins 8 chiffres",
+    ENTER_BARCODE_MANUALLY: "Saisir le code-barres manuellement",
+    TYPE_BARCODE_NUMBERS: "Tapez les numéros du code-barres manuellement",
+    BARCODE_PLACEHOLDER: "Saisissez les numéros du code-barres",
+    DIGITS: "chiffres",
+    PROCESSING: "Traitement en cours...",
+    SCAN_PRODUCT: "Scanner le produit",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -377,6 +419,20 @@ export const i18n = new I18n({
     PERFECT_FOR_YOU: "Perfecto para ti ",
     ADD_TO_COMPARE: "Añadir a comparar",
     SCANNING_PRODUCT: "Escaneando producto...",
+    POSITION_BARCODE_IN_FRAME: "Posiciona el código de barras dentro del marco",
+    FIND_NUMBERS_BELOW_BARCODE:
+      "Encuentra los números del código de barras generalmente debajo de las líneas del código de barras",
+    TAP_MANUAL_TO_TYPE_BARCODE:
+      "Toca Manual para ingresar los números del código de barras escribiendo",
+    INVALID_BARCODE: "Código de barras inválido",
+    BARCODE_TOO_SHORT: "El código de barras debe tener al menos 8 dígitos",
+    ENTER_BARCODE_MANUALLY: "Ingresar código de barras manualmente",
+    TYPE_BARCODE_NUMBERS:
+      "Escribe los números del código de barras manualmente",
+    BARCODE_PLACEHOLDER: "Ingresa los números del código de barras",
+    DIGITS: "dígitos",
+    PROCESSING: "Procesando...",
+    SCAN_PRODUCT: "Escanear producto",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -474,6 +530,20 @@ export const i18n = new I18n({
     PERFECT_FOR_YOU: "Perfekt für dich",
     ADD_TO_COMPARE: "Zum Vergleich hinzufügen",
     SCANNING_PRODUCT: "Produkt wird gescannt...",
+    POSITION_BARCODE_IN_FRAME:
+      "Positionieren Sie den Barcode innerhalb des Rahmens",
+    FIND_NUMBERS_BELOW_BARCODE:
+      "Finden Sie die Barcode-Nummern normalerweise unter den Barcode-Linien",
+    TAP_MANUAL_TO_TYPE_BARCODE:
+      "Tippen Sie auf Manuell, um Barcode-Nummern durch Eingabe einzugeben",
+    INVALID_BARCODE: "Ungültiger Barcode",
+    BARCODE_TOO_SHORT: "Der Barcode muss mindestens 8 Ziffern lang sein",
+    ENTER_BARCODE_MANUALLY: "Barcode manuell eingeben",
+    TYPE_BARCODE_NUMBERS: "Geben Sie die Barcode-Nummern manuell ein",
+    BARCODE_PLACEHOLDER: "Barcode-Nummern eingeben",
+    DIGITS: "Ziffern",
+    PROCESSING: "Verarbeitung läuft...",
+    SCAN_PRODUCT: "Produkt scannen",
   },
 });
 
