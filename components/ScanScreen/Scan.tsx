@@ -14,7 +14,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import CameraViewContainer from "./CameraViewContainer";
 import ManualEntryView from "./ManualEntryView";
@@ -22,6 +22,9 @@ import { Colors } from "@/themes/colors";
 import BottomControls from "./BottomControls";
 import { LanguageKey } from "@/constants/keys";
 import ScanningLoader from "../shared/ScanningLoader";
+import { get_score } from "@/services";
+import { openFoodResponseMockData } from "@/mock/openFoodResponseData";
+import ScanResultScreen from "../ScanResultScreen/ScanResultScreen";
 
 const Scan: React.FC<{
   scanned: boolean;
@@ -37,6 +40,8 @@ const Scan: React.FC<{
   const slideAnim = useRef(new Animated.Value(0)).current;
   const inputRef = useRef<TextInput>(null);
 
+  // const fetch_score_result = async () => get_score(openFoodResponseMockData);
+
   useEffect(() => {
     Animated.timing(slideAnim, {
       toValue: isManualMode ? 1 : 0,
@@ -48,7 +53,13 @@ const Scan: React.FC<{
       // Focus input when switching to manual mode
       setTimeout(() => inputRef.current?.focus(), 350);
     }
+    console.log("start");
+    // fetch_score_result();
   }, [isManualMode]);
+
+  // useCallback(() => {
+  //   fetch_score_result();
+  // }, []);
 
   const handleManualSubmit = async () => {
     if (manualBarcode.length < 8) {
@@ -103,6 +114,8 @@ const Scan: React.FC<{
   if (isProcessing) {
     return <ScanningLoader isVisible={isProcessing} />;
   }
+
+  return <ScanResultScreen />;
 
   return (
     <KeyboardAvoidingView

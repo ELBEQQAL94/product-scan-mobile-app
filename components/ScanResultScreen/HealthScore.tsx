@@ -1,10 +1,16 @@
+import { LanguageKey } from "@/constants/keys";
+import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 import { FC, useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Animated } from "react-native";
 
-const HealthScore: FC = () => {
+interface HealthScoreProps {
+  score: number;
+}
+
+const HealthScore: FC<HealthScoreProps> = ({ score }) => {
   const colorValues = useRef([
     new Animated.Value(0),
     new Animated.Value(0),
@@ -32,11 +38,23 @@ const HealthScore: FC = () => {
     return animations;
   };
 
+  const process_color_by_score = (): string => {
+    if (score === 50) return Colors.ORANGE;
+    if (score > 50) return Colors.LIGHT_GREEN;
+    return Colors.RED;
+  };
+
+  const process_text_by_score = (): string => {
+    if (score === 50) return i18n.t(LanguageKey.AVOID_THIS_PRODUCT);
+    if (score > 50) return i18n.t(LanguageKey.EXCELLENT_CHOICE);
+    return i18n.t(LanguageKey.NOT_RECOMMENDED);
+  };
+
   // Function to interpolate color based on animation value
   const get_interpolated_color = (colorValue: Animated.Value) => {
     return colorValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [Colors.WHITE, Colors.LIGHT_GREEN], // From black to green
+      outputRange: [Colors.WHITE, process_color_by_score()], // From black to green
     });
   };
 
@@ -100,16 +118,16 @@ const HealthScore: FC = () => {
           />
           <Entypo name="circle" size={10} color={Colors.BLACK} />
         </View>
-        <Text style={{ marginLeft: 10, ...Typography.h2 }}>83/100</Text>
+        <Text style={{ marginLeft: 10, ...Typography.h2 }}>{score}/100</Text>
       </View>
 
       <View
         style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
         {/* Static large green circle */}
-        <FontAwesome name="circle" size={24} color={Colors.LIGHT_GREEN} />
-        <Text style={{ marginLeft: 10, ...Typography.h3 }}>
-          EXCELLENT CHOICE
+        <FontAwesome name="circle" size={24} color={process_color_by_score()} />
+        <Text style={{ flex: 1, marginLeft: 10, ...Typography.h3 }}>
+          {process_text_by_score()}
         </Text>
       </View>
     </View>

@@ -7,6 +7,10 @@ import ActionButton from "../shared/ActionButton";
 import { LanguageKey } from "@/constants/keys";
 import PersonalizedMessage from "./PersonalizedMessage";
 import { Colors } from "@/themes/colors";
+import {
+  scanResultResponseDataMockEs,
+  scanResultResponseWithProfileHealthSetupDataMock,
+} from "@/mock/scanResultResponseData";
 
 const ScanResultScreen: FC = () => {
   const suggest_better_products = () => {
@@ -46,8 +50,14 @@ const ScanResultScreen: FC = () => {
             Organic Greek Yogurt
           </Text>
         </View>
-        <HealthScore />
-        <PersonalizedMessage />
+        <HealthScore
+          score={scanResultResponseWithProfileHealthSetupDataMock.score}
+        />
+        <PersonalizedMessage
+          recommendations={
+            scanResultResponseWithProfileHealthSetupDataMock.recommendations
+          }
+        />
         <View style={{ margin: 25 }}>
           <ActionButton
             label={LanguageKey.SEE_BETTER_OPTIONS}

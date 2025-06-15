@@ -108,6 +108,9 @@ export const i18n = new I18n({
     TAP_MANUAL_TO_TYPE_BARCODE: "Tap Manual to enter barcode numbers by typing",
     INVALID_BARCODE: "Invalid Barcode",
     BARCODE_TOO_SHORT: "Barcode must be at least 8 digits long",
+    EXCELLENT_CHOICE: "EXCELLENT CHOICE",
+    AVOID_THIS_PRODUCT: "AVOID THIS PRODUCT",
+    NOT_RECOMMENDED: "NOT RECOMMENDED",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -216,6 +219,9 @@ export const i18n = new I18n({
       "اضغط على يدوي لإدخال أرقام الرمز الشريطي بالكتابة ",
     INVALID_BARCODE: "رمز شريطي غير صالح",
     BARCODE_TOO_SHORT: "يجب أن يحتوي الرمز الشريطي على 8 أرقام على الأقل ",
+    EXCELLENT_CHOICE: "خيار ممتاز",
+    AVOID_THIS_PRODUCT: "تجنب هذا المنتج",
+    NOT_RECOMMENDED: "غير موصى به",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -324,6 +330,9 @@ export const i18n = new I18n({
     DIGITS: "chiffres",
     PROCESSING: "Traitement en cours...",
     SCAN_PRODUCT: "Scanner le produit",
+    EXCELLENT_CHOICE: "EXCELLENT CHOIX",
+    AVOID_THIS_PRODUCT: "ÉVITEZ CE PRODUIT",
+    NOT_RECOMMENDED: "NON RECOMMANDÉ",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -433,6 +442,9 @@ export const i18n = new I18n({
     DIGITS: "dígitos",
     PROCESSING: "Procesando...",
     SCAN_PRODUCT: "Escanear producto",
+    EXCELLENT_CHOICE: "EXCELENTE ELECCIÓN",
+    AVOID_THIS_PRODUCT: "EVITAR ESTE PRODUCTO",
+    NOT_RECOMMENDED: "NO RECOMENDADO",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -544,6 +556,9 @@ export const i18n = new I18n({
     DIGITS: "Ziffern",
     PROCESSING: "Verarbeitung läuft...",
     SCAN_PRODUCT: "Produkt scannen",
+    EXCELLENT_CHOICE: "AUSGEZEICHNETE WAHL",
+    AVOID_THIS_PRODUCT: "PRODUKT MEIDEN",
+    NOT_RECOMMENDED: "NICHT EMPFOHLEN",
   },
 });
 
