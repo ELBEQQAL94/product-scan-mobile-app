@@ -4,11 +4,9 @@ import { Href, useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
 import OnBoarding from "@/components/HomeScreen/OnBoarding";
 import { get_item } from "@/utils";
-import { View, Text } from "react-native";
-import HealthSetup from "../health-setup";
-import ScanResultScreen from "@/components/ScanResultScreen/ScanResultScreen";
-import * as Location from "expo-location";
 import Scan from "@/components/ScanScreen/Scan";
+import { get_score } from "@/services";
+import { openFoodResponseMockData } from "@/mock/openFoodResponseData";
 
 const HomeScreen = () => {
   // Hooks
@@ -18,21 +16,6 @@ const HomeScreen = () => {
   const [scanned, setScanned] = useState<boolean>(false);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] =
     useState<boolean>(false);
-  const [location, setLocation] = useState<Location.LocationObject | null>(
-    null
-  );
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  async function getCurrentLocation() {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-  }
 
   const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
     setScanned(true);
@@ -57,9 +40,15 @@ const HomeScreen = () => {
     }
   };
 
-  useEffect(() => {
-    checkOnboardingStatus();
-  }, []);
+  // useEffect(() => {
+  //   checkOnboardingStatus();
+  // }, []);
+  const fetchScore = async () => await get_score(openFoodResponseMockData);
+
+  // useEffect(() => {
+  //   console.log("start get score");
+  //   fetchScore();
+  // }, []);
 
   if (hasCompletedOnboarding) {
     return <OnBoarding />;

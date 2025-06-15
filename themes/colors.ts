@@ -25,4 +25,10 @@ export const Colors = {
 
   // Blue
   BRIGHT_BLUE: "#007AFF",
+
+  // Red
+  RED: "#F44336",
+
+  // Orange
+  ORANGE: "#FF9800",
 };

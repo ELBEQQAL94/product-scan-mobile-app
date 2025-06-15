@@ -1,20 +1,23 @@
 import OpenAI from "openai";
 import axios from "axios";
-import { prompt } from "@/prompt";
 import { OpenFoodResponse, OpenStreetMapResponse } from "@/constants/responses";
+import { prompt } from "@/prompt";
 
-export const chat = async (data: OpenFoodResponse) => {
+export const get_score = async (data: OpenFoodResponse) => {
   const client = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY });
   const content = prompt(data);
+  const OPENAI_MODEL = process.env.EXPO_PUBLIC_OPENAI_MODEL || "gpt-4.1-nano";
+
   try {
     const completion = await client.chat.completions.create({
-      model: "gpt-4o",
+      model: OPENAI_MODEL,
       messages: [
         {
           role: "user",
           content,
         },
       ],
+      response_format: { type: "json_object" },
     });
     const answer = completion.choices[0].message.content;
     console.log("AI Answer: ", answer);
