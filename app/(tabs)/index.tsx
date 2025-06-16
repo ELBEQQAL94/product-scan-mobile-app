@@ -5,7 +5,7 @@ import { Screens } from "@/constants/screens";
 import OnBoarding from "@/components/HomeScreen/OnBoarding";
 import { get_item } from "@/utils";
 import Scan from "@/components/ScanScreen/Scan";
-import { get_score } from "@/services";
+import { get_nutri_score, get_score } from "@/services";
 import { openFoodResponseMockData } from "@/mock/openFoodResponseData";
 
 const HomeScreen = () => {
@@ -44,11 +44,12 @@ const HomeScreen = () => {
   //   checkOnboardingStatus();
   // }, []);
   const fetchScore = async () => await get_score(openFoodResponseMockData);
-
-  // useEffect(() => {
-  //   console.log("start get score");
-  //   fetchScore();
-  // }, []);
+  const fetch_nutri_score = async () =>
+    get_nutri_score(openFoodResponseMockData);
+  useEffect(() => {
+    console.log("fetch_nutri_score");
+    fetch_nutri_score();
+  }, []);
 
   if (hasCompletedOnboarding) {
     return <OnBoarding />;

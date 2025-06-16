@@ -11,8 +11,12 @@ import {
   scanResultResponseDataMockEs,
   scanResultResponseWithProfileHealthSetupDataMock,
 } from "@/mock/scanResultResponseData";
+import { openFoodResponseMockData } from "@/mock/openFoodResponseData";
 
 const ScanResultScreen: FC = () => {
+  // Mock not subscriber user
+  const isSubcriber = true;
+
   const suggest_better_products = () => {
     console.log("better options clicked");
   };
@@ -51,9 +55,14 @@ const ScanResultScreen: FC = () => {
           </Text>
         </View>
         <HealthScore
-          score={scanResultResponseWithProfileHealthSetupDataMock.score}
+          score={
+            isSubcriber
+              ? scanResultResponseWithProfileHealthSetupDataMock.score
+              : openFoodResponseMockData.product.nutriscore_score
+          }
         />
         <PersonalizedMessage
+          isSubcriber={isSubcriber}
           recommendations={
             scanResultResponseWithProfileHealthSetupDataMock.recommendations
           }

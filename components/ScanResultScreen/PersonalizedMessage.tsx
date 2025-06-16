@@ -6,10 +6,12 @@ import { Ionicons } from "@expo/vector-icons";
 
 interface PersonalizedMessageProps {
   recommendations: Recommendations[];
+  isSubcriber: boolean;
 }
 
 const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
   recommendations,
+  isSubcriber,
 }) => {
   const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
 
@@ -139,6 +141,14 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
 
   const assessment = getOverallAssessment();
 
+  if (!isSubcriber) {
+    return (
+      <View>
+        <Text>Details not allowed</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={{ marginTop: 40 }}>
       {/* Overall Assessment Section */}
@@ -190,233 +200,8 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
           </View>
         </View>
       )}
-
-      {/* Additional Considerations */}
-      {moderateRecs.length > 0 && (
-        <View style={{ marginBottom: 20 }}>
-          <View
-            style={{
-              backgroundColor: "#fbfbfb",
-              borderRadius: 8,
-              padding: 20,
-              borderWidth: 1,
-              borderColor: "#e8e8e8",
-            }}
-          >
-            {moderateRecs.map((rec, index) =>
-              renderRecommendationItem(
-                rec,
-                priorityRecs.length + index,
-                index < moderateRecs.length - 1
-              )
-            )}
-          </View>
-        </View>
-      )}
-
-      {/* Positive Points */}
-      {lowRecs.length > 0 && (
-        <View style={{ marginBottom: 20 }}>
-          <View
-            style={{
-              backgroundColor: "#f9f9f9",
-              borderRadius: 8,
-              padding: 20,
-              borderWidth: 1,
-              borderColor: "#e5e5e5",
-            }}
-          >
-            {lowRecs.map((rec, index) =>
-              renderRecommendationItem(
-                rec,
-                priorityRecs.length + moderateRecs.length + index,
-                index < lowRecs.length - 1
-              )
-            )}
-          </View>
-        </View>
-      )}
     </View>
   );
 };
 
 export default PersonalizedMessage;
-
-// Alternative ultra-minimal version with just bullet points
-export const MinimalListRecommendations: FC<PersonalizedMessageProps> = ({
-  recommendations,
-}) => {
-  const criticalAndHigh = recommendations.filter(
-    (rec) => rec.severity === "critical" || rec.severity === "high"
-  );
-  const moderate = recommendations.filter((rec) => rec.severity === "moderate");
-  const low = recommendations.filter((rec) => rec.severity === "low");
-
-  return (
-    <View style={{ marginTop: 40 }}>
-      {/* High Priority */}
-      {criticalAndHigh.length > 0 && (
-        <View style={{ marginBottom: 32 }}>
-          <Text
-            style={{
-              ...Typography.h2,
-              color: "#000",
-              marginBottom: 16,
-              fontWeight: "700",
-            }}
-          >
-            Health Concerns
-          </Text>
-
-          {criticalAndHigh.map((rec, index) => (
-            <View key={index} style={{ marginBottom: 12 }}>
-              <Text
-                style={{
-                  ...Typography.bodyLarge,
-                  color: "#333",
-                  lineHeight: 24,
-                }}
-              >
-                • {rec.recommendation}
-              </Text>
-            </View>
-          ))}
-        </View>
-      )}
-
-      {/* Moderate Priority */}
-      {moderate.length > 0 && (
-        <View style={{ marginBottom: 32 }}>
-          <Text
-            style={{
-              ...Typography.h3,
-              color: "#000",
-              marginBottom: 16,
-              fontWeight: "600",
-            }}
-          >
-            Consider This
-          </Text>
-
-          {moderate.map((rec, index) => (
-            <View key={index} style={{ marginBottom: 12 }}>
-              <Text
-                style={{
-                  ...Typography.bodyMedium,
-                  color: "#555",
-                  lineHeight: 22,
-                }}
-              >
-                • {rec.recommendation}
-              </Text>
-            </View>
-          ))}
-        </View>
-      )}
-
-      {/* Positive */}
-      {low.length > 0 && (
-        <View>
-          <Text
-            style={{
-              ...Typography.h3,
-              color: "#000",
-              marginBottom: 16,
-              fontWeight: "600",
-            }}
-          >
-            Good Points
-          </Text>
-
-          {low.map((rec, index) => (
-            <View key={index} style={{ marginBottom: 12 }}>
-              <Text
-                style={{
-                  ...Typography.bodyMedium,
-                  color: "#555",
-                  lineHeight: 22,
-                }}
-              >
-                • {rec.recommendation}
-              </Text>
-            </View>
-          ))}
-        </View>
-      )}
-    </View>
-  );
-};
-
-// Super clean card-based version
-export const CardBasedRecommendations: FC<PersonalizedMessageProps> = ({
-  recommendations,
-}) => {
-  return (
-    <View style={{ marginTop: 40 }}>
-      <Text
-        style={{
-          ...Typography.h2,
-          color: "#000",
-          marginBottom: 24,
-          fontWeight: "700",
-          textAlign: "center",
-        }}
-      >
-        Health Analysis
-      </Text>
-
-      {recommendations.map((rec, index) => (
-        <View
-          key={index}
-          style={{
-            backgroundColor: "white",
-            borderRadius: 12,
-            padding: 20,
-            marginBottom: 16,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 8,
-            elevation: 4,
-            borderWidth: 1,
-            borderColor: "#f0f0f0",
-          }}
-        >
-          <Text
-            style={{
-              ...Typography.bodyLarge,
-              fontWeight: "600",
-              color: "#333",
-              marginBottom: 8,
-              lineHeight: 24,
-            }}
-          >
-            {rec.recommendation}
-          </Text>
-
-          <Text
-            style={{
-              ...Typography.bodyMedium,
-              color: "#666",
-              lineHeight: 22,
-            }}
-          >
-            {rec.explanation}
-          </Text>
-
-          <Text
-            style={{
-              ...Typography.caption,
-              color: "#999",
-              marginTop: 8,
-              textTransform: "uppercase",
-              letterSpacing: 0.5,
-            }}
-          >
-            {rec.severity} priority
-          </Text>
-        </View>
-      ))}
-    </View>
-  );
-};
