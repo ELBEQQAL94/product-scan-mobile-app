@@ -1,9 +1,12 @@
 import OpenAI from "openai";
 import axios from "axios";
-import { OpenFoodResponse, OpenStreetMapResponse } from "@/constants/responses";
+import {
+  OpenFoodResponseAPI,
+  OpenStreetMapResponse,
+} from "@/constants/responses";
 import { prompt } from "@/prompt";
 
-export const get_score = async (data: OpenFoodResponse) => {
+export const get_score = async (data: OpenFoodResponseAPI) => {
   const client = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY });
   const content = prompt(data);
   const OPENAI_MODEL = process.env.EXPO_PUBLIC_OPENAI_MODEL || "gpt-4.1-nano";
@@ -29,17 +32,17 @@ export const get_score = async (data: OpenFoodResponse) => {
 
 export const product_details = async (
   bar_code: string
-): Promise<undefined | OpenFoodResponse> => {
+): Promise<undefined | OpenFoodResponseAPI> => {
   try {
     try {
       const BASE_FOOD_URL = `https://world.openfoodfacts.org/api/v0/product/${bar_code}.json`;
       const response = await axios.get(BASE_FOOD_URL);
-      return response.data as OpenFoodResponse;
+      return response.data as OpenFoodResponseAPI;
     } catch (foodError: unknown) {
       console.log("Food facts failed, trying beauty facts");
       const base_beauty_url = `https://world.openbeautyfacts.org/api/v2/product/${bar_code}.json`;
       const beautyResponse = await axios.get(base_beauty_url);
-      return beautyResponse.data as OpenFoodResponse;
+      return beautyResponse.data as OpenFoodResponseAPI;
     }
   } catch (error: unknown) {
     console.log("product details get an error: ", error);
@@ -63,4 +66,8 @@ export const get_country = async (
   } catch (error: unknown) {
     console.log("open street map get an error: ", JSON.stringify(error));
   }
+};
+
+export const get_nutri_score = (data: OpenFoodResponseAPI): number | null => {
+  return data.product.nutriscore_score ?? null;
 };

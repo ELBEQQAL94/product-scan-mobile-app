@@ -1,86 +1,60 @@
-export interface Product {
-  countries?: string;
-  image_url: string;
-  ingredients?: Ingredient[];
-  labels: string;
-  product_name: string;
-  product_name_ar: string;
-  product_name_en: string;
-  product_name_fr: string;
-  product_type: string;
-}
-
-export interface OpenFoodData {
-  status: number;
-  product: Product;
-}
-
-interface AggregatedOrigins {
-  epi_score: string;
-  origin: string;
-  percent: number;
-  transportation_score: number;
-}
-
-export interface Ingredient {
+export interface Ingredients {
   id: string;
-  text: string;
+  is_in_taxonomy: number;
+  percent?: number;
+  percent_estimate: number;
+  percent_max: number;
+  percent_min: number;
   rank?: number;
-  is_in_taxonomy?: number;
-  percent: number;
-  percent_estimate?: number;
-  percent_max?: number;
-  percent_min?: number;
-  has_sub_ingredients?: string;
+  text?: string;
   vegan?: string;
   vegetarian?: string;
-  from_palm_oil?: string;
-  ciqual_food_code?: string;
+  has_sub_ingredients?: string;
   ciqual_proxy_food_code?: string;
   ecobalyse_code?: string;
+  from_palm_oil?: string;
+  ciqual_food_code?: string;
 }
 
-interface OpenFoodProduct {
+export interface Product {
   _id: string;
   _keywords: string[];
-  added_countries_tags: any[];
+  added_countries_tags: string[];
   additives_n: number;
-  additives_original_tags: any[];
-  additives_tags: any[];
+  additives_original_tags: string[];
+  additives_tags: string[];
   allergens: string;
   allergens_from_ingredients: string;
   allergens_from_user: string;
   allergens_hierarchy: string[];
   allergens_lc: string;
   allergens_tags: string[];
-  amino_acids_tags: any[];
+  amino_acids_tags: string[];
   brands: string;
   brands_tags: string[];
   categories: string;
   categories_hierarchy: string[];
   categories_lc: string;
-  categories_properties: {
-    "agribalyse_proxy_food_code:en": string;
-  };
+  categories_properties?: Record<string, string>;
   categories_properties_tags: string[];
   categories_tags: string[];
-  checkers_tags: any[];
-  cities_tags: any[];
+  checkers_tags: string[];
+  cities_tags: string[];
   code: string;
   codes_tags: string[];
   compared_to_category: string;
   complete: number;
   completeness: number;
   correctors_tags: string[];
-  countries?: string;
+  countries: string;
   countries_beforescanbot: string;
   countries_hierarchy: string[];
   countries_lc: string;
   countries_tags: string[];
   created_t: number;
   creator: string;
-  data_quality_bugs_tags: any[];
-  data_quality_errors_tags: any[];
+  data_quality_bugs_tags: string[];
+  data_quality_errors_tags: string[];
   data_quality_info_tags: string[];
   data_quality_tags: string[];
   data_quality_warnings_tags: string[];
@@ -90,24 +64,20 @@ interface OpenFoodProduct {
   ecoscore_data: {
     adjustments: {
       origins_of_ingredients: {
-        aggregated_origins: AggregatedOrigins[];
         epi_score: number;
         epi_value: number;
         origins_from_categories: string[];
         origins_from_origins_field: string[];
         transportation_score: number;
-        transportation_scores: { key: string };
+        transportation_scores?: Record<string, number>;
         transportation_value: number;
-        transportation_values: { key: string };
+        transportation_values?: Record<string, number>;
         value: number;
-        values: { key: string };
+        values?: Record<string, number>;
       };
-      packaging: {
-        value: number;
-        warning: string;
-      };
+      packaging?: Record<string, string | number>;
       production_system: {
-        labels: any[];
+        labels: string[];
         value: number;
         warning: string;
       };
@@ -116,32 +86,9 @@ interface OpenFoodProduct {
         value: number;
       };
     };
-    agribalyse: {
-      agribalyse_proxy_food_code: string;
-      co2_agriculture: number;
-      co2_consumption: number;
-      co2_distribution: number;
-      co2_packaging: number;
-      co2_processing: number;
-      co2_total: number;
-      co2_transportation: number;
-      code: string;
-      dqr: string;
-      ef_agriculture: number;
-      ef_consumption: number;
-      ef_distribution: number;
-      ef_packaging: number;
-      ef_processing: number;
-      ef_total: number;
-      ef_transportation: number;
-      is_beverage: number;
-      name_en: string;
-      name_fr: string;
-      score: number;
-      version: string;
-    };
+    agribalyse: Record<string, string | number>;
     grade: string;
-    grades: { key: string };
+    grades: Record<string, string>;
     missing: {
       labels: number;
       packagings: number;
@@ -149,7 +96,7 @@ interface OpenFoodProduct {
     missing_data_warning: number;
     missing_key_data: number;
     score: number;
-    scores: { key: string };
+    scores: Record<string, number>;
     status: string;
   };
   ecoscore_grade: string;
@@ -157,7 +104,7 @@ interface OpenFoodProduct {
   ecoscore_tags: string[];
   editors_tags: string[];
   emb_codes: string;
-  emb_codes_tags: any[];
+  emb_codes_tags: string[];
   entry_dates_tags: string[];
   expiration_date: string;
   food_groups: string;
@@ -183,19 +130,156 @@ interface OpenFoodProduct {
   image_thumb_url: string;
   image_url: string;
   informers_tags: string[];
-  ingredients: Ingredient[];
+  ingredients: Ingredients[];
+  ingredients_analysis_tags: string[];
+  ingredients_hierarchy: string[];
+  ingredients_lc: string;
+  ingredients_n: string;
+  ingredients_n_tags: string[];
+  ingredients_non_nutritive_sweeteners_n: number;
+  ingredients_original_tags: string[];
+  ingredients_percent_analysis: number;
+  ingredients_sweeteners_n: number;
+  ingredients_tags: string[];
+  ingredients_text: string;
+  ingredients_text_ar: string;
+  ingredients_text_en: string;
+  ingredients_text_fr: string;
+  ingredients_text_with_allergens: string;
+  ingredients_text_with_allergens_ar: string;
+  ingredients_text_with_allergens_en: string;
+  ingredients_text_with_allergens_fr: string;
+  ingredients_with_specified_percent_n: number;
+  ingredients_with_specified_percent_sum: number;
+  ingredients_with_unspecified_percent_n: number;
+  ingredients_with_unspecified_percent_sum: number;
+  ingredients_without_ciqual_codes: string[];
+  ingredients_without_ciqual_codes_n: number;
+  ingredients_without_ecobalyse_ids: string[];
+  ingredients_without_ecobalyse_ids_n: number;
+  interface_version_created: string;
+  interface_version_modified: string;
+  known_ingredients_n: number;
   labels: string;
-  nutriments: { key: string | number };
+  labels_hierarchy: string[];
+  labels_lc: string;
+  labels_tags: string[];
+  lang: string;
+  languages: Record<string, number>;
+  languages_codes: Record<string, number>;
+  languages_hierarchy: string[];
+  languages_tags: string[];
+  last_edit_dates_tags: string[];
+  last_editor: string;
+  last_image_dates_tags: string[];
+  last_image_t: number;
+  last_modified_by: string;
+  last_modified_t: number;
+  last_updated_t: number;
+  lc: string;
+  link: string;
+  main_countries_tags: string[];
+  manufacturing_places: string;
+  manufacturing_places_tags: string[];
+  max_imgid: string;
+  minerals_tags: string[];
+  misc_tags: string[];
+  no_nutrition_data: string;
+  nova_group_debug: string;
+  nova_group_error: string;
+  nova_groups_tags: string[];
+  nucleotides_tags: string[];
+  nutrient_levels: Record<string, string>;
+  nutrient_levels_tags: string[];
+  nutriments: Record<string, string | number>;
+  nutriscore_2021_tags: string[];
+  nutriscore_2023_tags: string[];
+  nutriscore_grade: string;
+  nutriscore_score: number;
+  nutriscore_score_opposite: number;
+  nutriscore_tags: string[];
+  nutriscore_version: string;
+  nutrition_data: string;
+  nutrition_data_per: string;
+  nutrition_data_prepared: string;
+  nutrition_data_prepared_per: string;
+  nutrition_grade_fr: string;
+  nutrition_grades: string;
+  nutrition_grades_tags: string[];
+  nutrition_score_beverage: number;
+  nutrition_score_debug: string;
+  obsolete: string;
+  obsolete_since_date: string;
+  origin: string;
+  origin_ar: string;
+  origin_en: string;
+  origin_fr: string;
+  origins: string;
+  origins_hierarchy: string[];
+  origins_lc: string;
+  origins_tags: string[];
+  other_nutritional_substances_tags: string[];
+  packaging_materials_tags: string[];
+  packaging_recycling_tags: string[];
+  packaging_shapes_tags: string[];
+  packaging_text: string;
+  packaging_text_ar: string;
+  packaging_text_en: string;
+  packaging_text_fr: string;
+  packagings: string[];
+  packagings_complete: number;
+  photographers_tags: string[];
+  pnns_groups_1: string;
+  pnns_groups_1_tags: string[];
+  pnns_groups_2: string;
+  pnns_groups_2_tags: string[];
+  popularity_key: number;
+  popularity_tags: string[];
   product_name: string;
   product_name_ar: string;
   product_name_en: string;
   product_name_fr: string;
+  product_quantity: string;
   product_type: string;
+  purchase_places: string;
+  purchase_places_tags: string[];
+  quantity: string;
+  removed_countries_tags: string[];
+  rev: number;
+  scans_n: number;
+  schema_version: number;
+  serving_quantity: string;
+  serving_quantity_unit: string;
+  serving_size: string;
+  states: string;
+  states_hierarchy: string[];
+  states_tags: string[];
+  stores: string;
+  stores_tags: string[];
+  teams: string;
+  teams_tags: string[];
+  traces: string;
+  traces_from_ingredients: string;
+  traces_from_user: string;
+  traces_hierarchy: string[];
+  traces_lc: string;
+  traces_tags: string[];
+  unique_scans_n: number;
+  unknown_ingredients_n: string;
+  unknown_nutrients_tags: string[];
+  update_key: string;
+  vitamins_tags: string[];
+  weighers_tags: string[];
 }
 
-export interface OpenFoodResponse {
+export interface OpenFoodData {
+  status: number;
+  product: Product;
+}
+
+export interface OpenFoodResponseAPI {
   code: string;
-  product: OpenFoodProduct;
+  product: Product;
   status: number;
   status_verbose: string;
 }
