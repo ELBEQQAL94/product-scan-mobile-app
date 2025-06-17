@@ -34,16 +34,9 @@ export const product_details = async (
   bar_code: string
 ): Promise<undefined | OpenFoodResponseAPI> => {
   try {
-    try {
-      const BASE_FOOD_URL = `https://world.openfoodfacts.org/api/v0/product/${bar_code}.json`;
-      const response = await axios.get(BASE_FOOD_URL);
-      return response.data as OpenFoodResponseAPI;
-    } catch (foodError: unknown) {
-      console.log("Food facts failed, trying beauty facts");
-      const base_beauty_url = `https://world.openbeautyfacts.org/api/v2/product/${bar_code}.json`;
-      const beautyResponse = await axios.get(base_beauty_url);
-      return beautyResponse.data as OpenFoodResponseAPI;
-    }
+    const BASE_FOOD_URL = `https://world.openfoodfacts.org/api/v0/product/${bar_code}.json`;
+    const response = await axios.get(BASE_FOOD_URL);
+    return response.data as OpenFoodResponseAPI;
   } catch (error: unknown) {
     console.log("product details get an error: ", error);
   }
