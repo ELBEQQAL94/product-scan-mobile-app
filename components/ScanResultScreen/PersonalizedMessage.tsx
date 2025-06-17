@@ -1,8 +1,14 @@
 import { Typography } from "@/themes/typography";
 import { Recommendations } from "@/types/scan-result";
 import { FC, useState } from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { Severity } from "@/enums/scan-result-with-ai";
+import RecommendationItem from "./RecommendationItem";
+import { i18n } from "@/i18n";
+import { LanguageKey } from "@/constants/keys";
+import PriorityIssues from "./PriorityIssues";
+import OverallAssessment from "./OverallAssessment";
 
 interface PersonalizedMessageProps {
   recommendations: Recommendations[];
@@ -17,13 +23,17 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
 
   // Group recommendations by severity
   const criticalRecs = recommendations.filter(
-    (rec) => rec.severity === "critical"
+    (rec: Recommendations) => rec.severity === Severity.CRITICAL
   );
-  const highRecs = recommendations.filter((rec) => rec.severity === "high");
+  const highRecs = recommendations.filter(
+    (rec) => rec.severity === Severity.HIGH
+  );
   const moderateRecs = recommendations.filter(
-    (rec) => rec.severity === "moderate"
+    (rec: Recommendations) => rec.severity === Severity.MODERATE
   );
-  const lowRecs = recommendations.filter((rec) => rec.severity === "low");
+  const lowRecs = recommendations.filter(
+    (rec: Recommendations) => rec.severity === Severity.LOW
+  );
 
   // Combine critical and high for priority section
   const priorityRecs = [...criticalRecs, ...highRecs];
@@ -118,23 +128,23 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
 
     if (hasHighPriority) {
       return {
-        title: "Not good for you",
-        subtitle: "This product has health concerns you should know about",
+        title: i18n.t(LanguageKey.NOT_GOOD_FOR_YOU),
+        subtitle: i18n.t(LanguageKey.THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS),
       };
     } else if (hasOnlyModerate) {
       return {
-        title: "Consider carefully",
-        subtitle: "Some points to consider before purchasing",
+        title: i18n.t(LanguageKey.CONSIDER_CAREFULLY),
+        subtitle: i18n.t(LanguageKey.SOME_POINTS_TOCONSIDER),
       };
     } else if (hasOnlyPositive) {
       return {
-        title: "Perfect for you",
-        subtitle: "This product has positive health aspects",
+        title: i18n.t(LanguageKey.PERFECT_FOR_YOU),
+        subtitle: i18n.t(LanguageKey.THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS),
       };
     } else {
       return {
-        title: "Health analysis",
-        subtitle: "Review the information below",
+        title: i18n.t(LanguageKey.HEALTH_ANALYSIS),
+        subtitle: i18n.t(LanguageKey.REVIEW_THE_INFORMATION_BELOW),
       };
     }
   };
@@ -144,64 +154,27 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
   if (!isSubcriber) {
     return (
       <View>
-        <Text>Details not allowed</Text>
+        <Text>display lock accordion item</Text>
       </View>
     );
   }
 
   return (
-    <View style={{ marginTop: 40 }}>
-      {/* Overall Assessment Section */}
-      <View style={{ marginBottom: 32 }}>
-        <Text
-          style={{
-            ...Typography.h1,
-            color: "#000",
-            marginBottom: 8,
-            fontWeight: "800",
-            letterSpacing: -0.8,
-            textAlign: "center",
-          }}
-        >
-          {assessment.title}
-        </Text>
-
-        <Text
-          style={{
-            ...Typography.bodyLarge,
-            color: "#666",
-            textAlign: "center",
-            lineHeight: 24,
-          }}
-        >
-          {assessment.subtitle}
-        </Text>
-      </View>
-
-      {/* Priority Issues Section */}
+    <View style={styles.container}>
+      <OverallAssessment assessment={assessment} />
       {priorityRecs.length > 0 && (
-        <View style={{ marginBottom: 20 }}>
-          <View
-            style={{
-              backgroundColor: "#fafafa",
-              borderRadius: 8,
-              padding: 20,
-              borderWidth: 1,
-              borderColor: "#e0e0e0",
-            }}
-          >
-            {priorityRecs.map((rec, index) =>
-              renderRecommendationItem(
-                rec,
-                index,
-                index < priorityRecs.length - 1
-              )
-            )}
-          </View>
-        </View>
+        <PriorityIssues
+          expandedItems={expandedItems}
+          toggleExpansion={toggleExpansion}
+          priorityRecs={priorityRecs}
+        />
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { marginTop: 40 },
+});
 
 export default PersonalizedMessage;

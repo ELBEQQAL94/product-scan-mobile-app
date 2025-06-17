@@ -1,13 +1,8 @@
-export enum Severity {
-  LOW = "low",
-  MODERATE = "moderate",
-  HIGH = "high",
-  CRITICAL = "critical",
-}
+import { Severity } from "@/enums/scan-result-with-ai";
 
 export interface Recommendations {
   recommendation: string;
-  severity: "low" | "moderate" | "high" | "critical";
+  severity: Severity;
   explanation: string;
 }
 
