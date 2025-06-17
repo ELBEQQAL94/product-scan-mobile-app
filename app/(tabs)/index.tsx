@@ -7,6 +7,7 @@ import { get_item } from "@/utils";
 import Scan from "@/components/ScanScreen/Scan";
 import { get_nutri_score, get_score } from "@/services";
 import { openFoodResponseMockData } from "@/mock/openFoodResponseData";
+import { get_products } from "@/external-services/firebase";
 
 const HomeScreen = () => {
   // Hooks
@@ -40,15 +41,11 @@ const HomeScreen = () => {
     }
   };
 
-  // useEffect(() => {
-  //   checkOnboardingStatus();
-  // }, []);
-  const fetchScore = async () => await get_score(openFoodResponseMockData);
-  const fetch_nutri_score = async () =>
-    get_nutri_score(openFoodResponseMockData);
+  const all_products = async () => await get_products();
+
   useEffect(() => {
-    console.log("fetch_nutri_score");
-    fetch_nutri_score();
+    console.log("fetch all products");
+    all_products();
   }, []);
 
   if (hasCompletedOnboarding) {
