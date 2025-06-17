@@ -152,11 +152,7 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
   const assessment = getOverallAssessment();
 
   if (!isSubcriber) {
-    return (
-      <View>
-        <Text>display lock accordion item</Text>
-      </View>
-    );
+    return;
   }
 
   return (
