@@ -118,6 +118,7 @@ export const i18n = new I18n({
       "This product has positive health aspects",
     HEALTH_ANALYSIS: "Health analysis",
     REVIEW_THE_INFORMATION_BELOW: "Review the information below",
+    GET_PERSONAL_ANALYSIS: "Get personal analysis",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -235,6 +236,7 @@ export const i18n = new I18n({
       "هذا المنتج له جوانب صحية إيجابية",
     HEALTH_ANALYSIS: "تحليل صحي",
     REVIEW_THE_INFORMATION_BELOW: "راجع المعلومات أدناه",
+    GET_PERSONAL_ANALYSIS: "احصل على تحليل شخصي",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -352,6 +354,7 @@ export const i18n = new I18n({
       "Ce produit a des aspects positifs pour la santé",
     HEALTH_ANALYSIS: "Analyse santé",
     REVIEW_THE_INFORMATION_BELOW: "Consultez les informations ci-dessous",
+    GET_PERSONAL_ANALYSIS: "Obtenir une analyse personnelle",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -470,6 +473,7 @@ export const i18n = new I18n({
       "Este producto tiene aspectos positivos para la salud",
     HEALTH_ANALYSIS: "Análisis de salud",
     REVIEW_THE_INFORMATION_BELOW: "Revisa la información a continuación",
+    GET_PERSONAL_ANALYSIS: "Obtener análisis personal",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -590,6 +594,8 @@ export const i18n = new I18n({
       "Dieses Produkt hat positive gesundheitliche Aspekte",
     HEALTH_ANALYSIS: "Gesundheitsanalyse",
     REVIEW_THE_INFORMATION_BELOW: "Überprüfen Sie die Informationen unten",
+    UNLOCK_SMART_FEATURES: "Unlock smart features",
+    GET_PERSONAL_ANALYSIS: "Persönliche Analyse erhalten",
   },
 });
 

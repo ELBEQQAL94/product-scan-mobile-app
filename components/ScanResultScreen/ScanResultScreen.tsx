@@ -1,5 +1,12 @@
 import { FC } from "react";
-import { ScrollView, View, Image, Text } from "react-native";
+import {
+  ScrollView,
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import HealthScore from "./HealthScore";
 import { Typography } from "@/themes/typography";
 import InstagramActions from "./InstagramActions";
@@ -12,10 +19,11 @@ import {
   scanResultResponseWithProfileHealthSetupDataMock,
 } from "@/mock/scanResultResponseData";
 import { openFoodResponseMockData } from "@/mock/openFoodResponseData";
+import PremiumUpgrade from "./PremiumUpgrade";
 
 const ScanResultScreen: FC = () => {
   // Mock not subscriber user
-  const isSubcriber = true;
+  const isSubcriber = false;
 
   const suggest_better_products = () => {
     console.log("better options clicked");
@@ -61,13 +69,18 @@ const ScanResultScreen: FC = () => {
               : openFoodResponseMockData.product.nutriscore_score
           }
         />
+        <PremiumUpgrade
+          onUpgradePress={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
         <PersonalizedMessage
           isSubcriber={isSubcriber}
           recommendations={
             scanResultResponseWithProfileHealthSetupDataMock.recommendations
           }
         />
-        <View style={{ margin: 25 }}>
+        {/* <View style={{ margin: 25 }}>
           <ActionButton
             label={LanguageKey.SEE_BETTER_OPTIONS}
             onPress={suggest_better_products}
@@ -77,11 +90,62 @@ const ScanResultScreen: FC = () => {
             onPress={add_to_compare}
             buttonStyles={{ backgroundColor: Colors.GLOVO_GREEN }}
           />
-        </View>
+        </View> */}
       </ScrollView>
-      <InstagramActions />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  upgradeHintContainer: {
+    backgroundColor: "#F8F9FA",
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 20,
+    borderLeftWidth: 3,
+    borderLeftColor: "#00C896", // Your brand color
+  },
+  upgradeContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  upgradeIcon: {
+    fontSize: 20,
+    marginRight: 10,
+  },
+  upgradeTextContainer: {
+    flex: 1,
+  },
+  upgradeTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#2C3E50",
+    marginBottom: 2,
+  },
+  upgradeSubtitle: {
+    fontSize: 14,
+    color: "#7F8C8D",
+  },
+  upgradeButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#00C896",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  upgradeButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
+    marginRight: 8,
+  },
+  upgradeArrow: {
+    color: "white",
+    fontSize: 16,
+  },
+});
 
 export default ScanResultScreen;
