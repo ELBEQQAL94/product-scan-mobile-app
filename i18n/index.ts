@@ -111,6 +111,13 @@ export const i18n = new I18n({
     EXCELLENT_CHOICE: "EXCELLENT CHOICE",
     AVOID_THIS_PRODUCT: "AVOID THIS PRODUCT",
     NOT_RECOMMENDED: "NOT RECOMMENDED",
+    HEALTH_CONCERNS: "This product has health concerns you should know about",
+    CONSIDER_CAREFULLY: "Consider carefully",
+    SOME_POINTS_TOCONSIDER: "Some points to consider before purchasing",
+    THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS:
+      "This product has positive health aspects",
+    HEALTH_ANALYSIS: "Health analysis",
+    REVIEW_THE_INFORMATION_BELOW: "Review the information below",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -222,6 +229,12 @@ export const i18n = new I18n({
     EXCELLENT_CHOICE: "خيار ممتاز",
     AVOID_THIS_PRODUCT: "تجنب هذا المنتج",
     NOT_RECOMMENDED: "غير موصى به",
+    CONSIDER_CAREFULLY: "فكر بعناية",
+    SOME_POINTS_TOCONSIDER: "بعض النقاط التي يجب مراعاتها قبل الشراء",
+    THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS:
+      "هذا المنتج له جوانب صحية إيجابية",
+    HEALTH_ANALYSIS: "تحليل صحي",
+    REVIEW_THE_INFORMATION_BELOW: "راجع المعلومات أدناه",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -333,6 +346,12 @@ export const i18n = new I18n({
     EXCELLENT_CHOICE: "EXCELLENT CHOIX",
     AVOID_THIS_PRODUCT: "ÉVITEZ CE PRODUIT",
     NOT_RECOMMENDED: "NON RECOMMANDÉ",
+    CONSIDER_CAREFULLY: "Considérez attentivement",
+    SOME_POINTS_TOCONSIDER: "Quelques points à considérer avant l'achat",
+    THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS:
+      "Ce produit a des aspects positifs pour la santé",
+    HEALTH_ANALYSIS: "Analyse santé",
+    REVIEW_THE_INFORMATION_BELOW: "Consultez les informations ci-dessous",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -445,6 +464,12 @@ export const i18n = new I18n({
     EXCELLENT_CHOICE: "EXCELENTE ELECCIÓN",
     AVOID_THIS_PRODUCT: "EVITAR ESTE PRODUCTO",
     NOT_RECOMMENDED: "NO RECOMENDADO",
+    CONSIDER_CAREFULLY: "Considera cuidadosamente",
+    SOME_POINTS_TOCONSIDER: "Algunos puntos a considerar antes de comprar",
+    THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS:
+      "Este producto tiene aspectos positivos para la salud",
+    HEALTH_ANALYSIS: "Análisis de salud",
+    REVIEW_THE_INFORMATION_BELOW: "Revisa la información a continuación",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -559,6 +584,12 @@ export const i18n = new I18n({
     EXCELLENT_CHOICE: "AUSGEZEICHNETE WAHL",
     AVOID_THIS_PRODUCT: "PRODUKT MEIDEN",
     NOT_RECOMMENDED: "NICHT EMPFOHLEN",
+    CONSIDER_CAREFULLY: "Sorgfältig überdenken",
+    SOME_POINTS_TOCONSIDER: "Einige Punkte vor dem Kauf zu beachten",
+    THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS:
+      "Dieses Produkt hat positive gesundheitliche Aspekte",
+    HEALTH_ANALYSIS: "Gesundheitsanalyse",
+    REVIEW_THE_INFORMATION_BELOW: "Überprüfen Sie die Informationen unten",
   },
 });
 
