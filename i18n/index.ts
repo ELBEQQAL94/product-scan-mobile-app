@@ -119,6 +119,7 @@ export const i18n = new I18n({
     HEALTH_ANALYSIS: "Health analysis",
     REVIEW_THE_INFORMATION_BELOW: "Review the information below",
     GET_PERSONAL_ANALYSIS: "Get personal analysis",
+    CONTINUE_WITH_GOOGLE: "Continue with Google",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -237,6 +238,7 @@ export const i18n = new I18n({
     HEALTH_ANALYSIS: "تحليل صحي",
     REVIEW_THE_INFORMATION_BELOW: "راجع المعلومات أدناه",
     GET_PERSONAL_ANALYSIS: "احصل على تحليل شخصي",
+    CONTINUE_WITH_GOOGLE: "المتابعة مع Google",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -355,6 +357,7 @@ export const i18n = new I18n({
     HEALTH_ANALYSIS: "Analyse santé",
     REVIEW_THE_INFORMATION_BELOW: "Consultez les informations ci-dessous",
     GET_PERSONAL_ANALYSIS: "Obtenir une analyse personnelle",
+    CONTINUE_WITH_GOOGLE: "Continuer avec Google",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -474,6 +477,7 @@ export const i18n = new I18n({
     HEALTH_ANALYSIS: "Análisis de salud",
     REVIEW_THE_INFORMATION_BELOW: "Revisa la información a continuación",
     GET_PERSONAL_ANALYSIS: "Obtener análisis personal",
+    CONTINUE_WITH_GOOGLE: "Continuar con Google",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -596,6 +600,7 @@ export const i18n = new I18n({
     REVIEW_THE_INFORMATION_BELOW: "Überprüfen Sie die Informationen unten",
     UNLOCK_SMART_FEATURES: "Unlock smart features",
     GET_PERSONAL_ANALYSIS: "Persönliche Analyse erhalten",
+    CONTINUE_WITH_GOOGLE: "Weiter mit Google",
   },
 });
 

@@ -8,6 +8,9 @@ import Scan from "@/components/ScanScreen/Scan";
 import { get_nutri_score, get_score } from "@/services";
 import { openFoodResponseMockData } from "@/mock/openFoodResponseData";
 import { get_products } from "@/external-services/firebase";
+import LoginScreen from "../login";
+import RegisterScreen from "../register";
+import { Button } from "react-native";
 
 const HomeScreen = () => {
   // Hooks
@@ -43,10 +46,7 @@ const HomeScreen = () => {
 
   const all_products = async () => await get_products();
 
-  useEffect(() => {
-    console.log("fetch all products");
-    all_products();
-  }, []);
+  const redirectTo = () => router.push(Screens.REGISTER_SCREEN);
 
   if (hasCompletedOnboarding) {
     return <OnBoarding />;
@@ -56,7 +56,8 @@ const HomeScreen = () => {
   //   <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />
   // );
   // return <HealthSetup />;
-  return <Scan scanned={false} handleBarcodeScanned={handleBarcodeScanned} />;
+  // return <Scan scanned={false} handleBarcodeScanned={handleBarcodeScanned} />;
+  return <Button title="login" onPress={redirectTo} />;
 };
 
 export default HomeScreen;

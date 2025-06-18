@@ -65,6 +65,7 @@ export const signInWithGoogle = async () => {
     }
   } catch (error: unknown) {
     // TODO add log error
+    console.log("signInWithGoogle get an error: ", error);
   }
 };
 

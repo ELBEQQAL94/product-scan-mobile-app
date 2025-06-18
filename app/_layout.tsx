@@ -58,6 +58,22 @@ export default function Layout() {
             },
           }}
         />
+        <Stack.Screen
+          name={Screens.LOGIN_SCREEN}
+          options={{
+            headerShown: false,
+            // Prevent going back to tabs when not authenticated
+            gestureEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name={Screens.REGISTER_SCREEN}
+          options={{
+            headerShown: false,
+            // Prevent going back to tabs when not authenticated
+            gestureEnabled: false,
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );
