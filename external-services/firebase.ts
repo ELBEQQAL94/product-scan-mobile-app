@@ -2,10 +2,8 @@ import { FirebaseError, initializeApp } from "firebase/app";
 import {
   getAuth,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signOut,
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithCredential,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -14,10 +12,14 @@ import {
   getDocs,
   where,
   query,
-  updateDoc,
-  doc,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { GoogleSignin, User } from "@react-native-google-signin/google-signin";
+import { GoogleAuthUserResponse, UserSchema } from "@/types/auth";
+import {
+  format_date_to_custom_string,
+  format_date_to_timestamp,
+} from "@/utils";
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -31,40 +33,63 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-// google auth signin
-const googleProvider = new GoogleAuthProvider();
 
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
+// Configure Google Sign-In
+GoogleSignin.configure({
+  webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
+});
+
 // register/create user account with google
 export const signInWithGoogle = async () => {
   try {
-    const res = await signInWithPopup(auth, googleProvider);
-    const user = res.user;
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+
+    // Get the users ID token
+    const signInResult = await GoogleSignin.signIn();
+
+    // Get idToken from userInfo
+    const idToken = signInResult.data?.idToken;
+
+    if (!idToken) {
+      throw new Error("No ID token received");
+    }
+
+    // Create a Google credential with the token
+    const googleCredential = GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    const res = await signInWithCredential(auth, googleCredential);
+    const user = res.user as unknown as GoogleAuthUserResponse;
 
     const q = query(collection(db, "users"), where("uid", "==", user.uid));
     const docs = await getDocs(q);
 
     if (user.email) {
-      // const userData: UserData = {
-      // 	uid: user.uid,
-      // 	username: user.displayName,
-      // 	auth_provider: 'google',
-      // 	email: user?.email?.trim().toLocaleLowerCase() || '',
-      // 	account_created_at: format_date_to_timestamp(),
-      // 	date_format: format_date_to_custom_string(),
-      // 	current_step: StepsEnum.PORDUCT_TYPE_STEP,
-      // 	product_type_info,
-      // };
-      const userData = {};
+      const userData: UserSchema = {
+        uid: user.uid,
+        username: user.displayName,
+        auth_provider: "google",
+        email: user?.email?.trim().toLowerCase() || "",
+        last_login: format_date_to_timestamp(),
+        is_email_verified: true,
+        is_subscribed: false,
+        created_at: format_date_to_timestamp(),
+        date_format: format_date_to_custom_string(),
+      };
 
       if (docs.docs.length === 0) {
         await addDoc(collection(db, "users"), userData);
       }
     }
-  } catch (error: unknown) {
-    // TODO add log error
+
+    return user;
+  } catch (error: any) {
+    console.log("signInWithGoogle error: ", error);
+    throw error;
   }
 };
 

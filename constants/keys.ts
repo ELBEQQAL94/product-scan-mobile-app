@@ -109,9 +109,11 @@ export const LanguageKey = {
   HEALTH_ANALYSIS: "HEALTH_ANALYSIS",
   REVIEW_THE_INFORMATION_BELOW: "REVIEW_THE_INFORMATION_BELOW",
   GET_PERSONAL_ANALYSIS: "GET_PERSONAL_ANALYSIS",
+  CONTINUE_WITH_GOOGLE: "CONTINUE_WITH_GOOGLE",
 } as const;
 
 export const AsyncStorageKey = {
   LOCATION_TIMESTAMP: "location_timestamp",
   USER_COUNTRY: "user_country",
+  HAS_COMPLETED_ONBOARDING: "hasCompletedOnboarding",
 };
