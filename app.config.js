@@ -4,8 +4,7 @@ export default {
       [
         "@react-native-google-signin/google-signin",
         {
-          iosUrlScheme:
-            "com.googleusercontent.apps.238005376912-nnvq5ki8h0qqagmjfg6g1qsbfq71hb33",
+          iosUrlScheme: process.env.EXPO_PUBLIC_IOSURLSCHEME,
           // Use the ANDROID client ID (client_type: 1)
           androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
           // Use the WEB client ID (client_type: 3)

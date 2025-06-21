@@ -81,8 +81,6 @@ export const signInWithGoogle = async () => {
         date_format: format_date_to_custom_string(),
       };
 
-      console.log("userData: ", userData);
-
       if (docs.docs.length === 0) {
         await addDoc(collection(db, "users"), userData);
       }
