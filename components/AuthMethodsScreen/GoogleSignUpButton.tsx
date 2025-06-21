@@ -15,7 +15,7 @@ const GoogleSignUpButton: FC = () => {
       // Handle successful sign-in (navigate to next screen, etc.)
       Alert.alert("welcome " + " " + authUser.displayName);
     } catch (error: unknown) {
-      Alert.alert("Error", "Failed to sign in with Google. Please try again.");
+      Alert.alert("Error", i18n.t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
       console.error("Google Sign-In Error:", error);
     } finally {
       setLoading(false);

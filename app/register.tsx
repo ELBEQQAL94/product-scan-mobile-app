@@ -59,9 +59,6 @@ const RegisterScreen: FC = () => {
           {step === "email" ? (
             <>
               <Text style={styles.title}>Create your account</Text>
-              <Text style={styles.description}>
-                Join millions of users worldwide
-              </Text>
               {/* Email Input */}
               <View style={styles.inputContainer}>
                 <Text style={styles.inputLabel}>Email</Text>

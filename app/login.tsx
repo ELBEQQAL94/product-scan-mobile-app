@@ -1,3 +1,5 @@
+import { LanguageKey } from "@/constants/keys";
+import { i18n } from "@/i18n";
 import { FC, useState } from "react";
 import {
   View,
@@ -35,10 +37,12 @@ const LoginScreen: FC = () => {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.logo}>Binance</Text>
-          <Text style={styles.subtitle}>Log in</Text>
+          <Text style={styles.subtitle}>{i18n.t(LanguageKey.LOG_IN)}</Text>
           {step === "password" && (
             <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-              <Text style={styles.backButtonText}>← Back</Text>
+              <Text style={styles.backButtonText}>
+                ← {i18n.t(LanguageKey.BACK)}
+              </Text>
             </TouchableOpacity>
           )}
         </View>
@@ -47,9 +51,11 @@ const LoginScreen: FC = () => {
         <View style={styles.formContainer}>
           {step === "email" ? (
             <>
-              <Text style={styles.title}>Welcome back</Text>
+              <Text style={styles.title}>
+                {i18n.t(LanguageKey.WELCOME_BACK)}
+              </Text>
               <Text style={styles.description}>
-                Enter your email to continue
+                {i18n.t(LanguageKey.ENTER_YOUR_EMAIL_TO_CONTINUE)}
               </Text>
 
               {/* Google Sign In Button */}
@@ -71,12 +77,14 @@ const LoginScreen: FC = () => {
 
               {/* Email Input */}
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Email</Text>
+                <Text style={styles.inputLabel}>
+                  {i18n.t(LanguageKey.EMAIL)}
+                </Text>
                 <TextInput
                   style={styles.input}
                   value={email}
                   onChangeText={setEmail}
-                  placeholder="Enter your email"
+                  placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
                   placeholderTextColor="#848E9C"
                   keyboardType="email-address"
                   autoCapitalize="none"
@@ -99,18 +107,24 @@ const LoginScreen: FC = () => {
                     !canProceed && styles.disabledButtonText,
                   ]}
                 >
-                  Next
+                  {i18n.t(LanguageKey.NEXT)}
                 </Text>
               </TouchableOpacity>
             </>
           ) : (
             <>
-              <Text style={styles.title}>Enter password</Text>
-              <Text style={styles.description}>Logging in as {email}</Text>
+              <Text style={styles.title}>
+                {i18n.t(LanguageKey.ENTER_PASSWORD)}
+              </Text>
+              <Text style={styles.description}>
+                {i18n.t(LanguageKey.LOGGING_IN_AS)} {email}
+              </Text>
 
               {/* Password Input */}
               <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Password</Text>
+                <Text style={styles.inputLabel}>
+                  {i18n.t(LanguageKey.PASSWORD)}
+                </Text>
                 <View style={styles.passwordContainer}>
                   <TextInput
                     style={styles.passwordInput}
@@ -147,14 +161,14 @@ const LoginScreen: FC = () => {
                     !canProceed && styles.disabledButtonText,
                   ]}
                 >
-                  Log In
+                  {i18n.t(LanguageKey.LOG_IN)}
                 </Text>
               </TouchableOpacity>
 
               {/* Forgot Password */}
               <TouchableOpacity style={styles.forgotPasswordContainer}>
                 <Text style={styles.forgotPasswordText}>
-                  Forgot your password?
+                  {i18n.t(LanguageKey.FORGOT_YOUR_PASSWORD)}
                 </Text>
               </TouchableOpacity>
             </>
@@ -164,7 +178,8 @@ const LoginScreen: FC = () => {
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>
-            Don't have an account? <Text style={styles.linkText}>Sign Up</Text>
+            {i18n.t(LanguageKey.DONT_HAVE_AN_ACCOUNT)}{" "}
+            <Text style={styles.linkText}>{i18n.t(LanguageKey.SIGN_UP)}</Text>
           </Text>
         </View>
       </View>
