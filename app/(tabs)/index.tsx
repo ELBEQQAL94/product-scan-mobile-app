@@ -11,6 +11,7 @@ import { get_products } from "@/external-services/firebase";
 import LoginScreen from "../login";
 import RegisterScreen from "../register";
 import { Button } from "react-native";
+import { AsyncStorageKey } from "@/constants/keys";
 
 const HomeScreen = () => {
   // Hooks
@@ -34,7 +35,9 @@ const HomeScreen = () => {
 
   const checkOnboardingStatus = async () => {
     try {
-      const hasCompletedOnboarding = await get_item("hasCompletedOnboarding");
+      const hasCompletedOnboarding = await get_item(
+        AsyncStorageKey.HAS_COMPLETED_ONBOARDING
+      );
       if (hasCompletedOnboarding) {
         const convertToBool = Boolean(hasCompletedOnboarding);
         setHasCompletedOnboarding(convertToBool);
