@@ -145,6 +145,10 @@ export const i18n = new I18n({
     CONFIRM_PASSWORD: "Confirm Password",
     CREATING_ACCOUNT_FOR: "Creating account for",
     CREATE_PASSWORD: "Create password",
+    PROFILE: "Profile",
+    HALAL: "Halal",
+    PRODUCT_LIST: "Product list",
+    HOME: "Home",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -290,6 +294,10 @@ export const i18n = new I18n({
     CREATING_ACCOUNT_FOR: "إنشاء حساب لـ",
     CREATE_PASSWORD: "إنشاء كلمة مرور",
     ENTER_YOUR_EMAIL: "أدخل بريدك الإلكتروني",
+    PROFILE: "الملف الشخصي",
+    HALAL: "حلال",
+    PRODUCT_LIST: "قائمة المنتجات",
+    HOME: "الرئيسية",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -435,6 +443,10 @@ export const i18n = new I18n({
     CREATING_ACCOUNT_FOR: "Création du compte pour",
     CREATE_PASSWORD: "Créer un mot de passe",
     ENTER_YOUR_EMAIL: "Entrez votre email",
+    PROFILE: "Profil",
+    HALAL: "Halal",
+    PRODUCT_LIST: "Liste des produits",
+    HOME: "Accueil",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -581,6 +593,10 @@ export const i18n = new I18n({
     CREATING_ACCOUNT_FOR: "Creando cuenta para",
     CREATE_PASSWORD: "Crear contraseña",
     ENTER_YOUR_EMAIL: "Ingresa tu email",
+    PROFILE: "Perfil",
+    HALAL: "Halal",
+    PRODUCT_LIST: "Lista de productos",
+    HOME: "Inicio",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -730,6 +746,10 @@ export const i18n = new I18n({
     CREATING_ACCOUNT_FOR: "Konto erstellen für",
     CREATE_PASSWORD: "Passwort erstellen",
     ENTER_YOUR_EMAIL: "E-Mail-Adresse eingeben",
+    PROFILE: "Profil",
+    HALAL: "Halal",
+    PRODUCT_LIST: "Produktliste",
+    HOME: "Startseite",
   },
 });
 

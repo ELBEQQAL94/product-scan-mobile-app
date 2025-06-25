@@ -135,6 +135,10 @@ export const LanguageKey = {
   CREATING_ACCOUNT_FOR: "CREATING_ACCOUNT_FOR",
   CREATE_PASSWORD: "CREATE_PASSWORD",
   ENTER_YOUR_EMAIL: "ENTER_YOUR_EMAIL",
+  PROFILE: "PROFILE",
+  HALAL: "HALAL",
+  PRODUCT_LIST: "PRODUCT_LIST",
+  HOME: "HOME",
 } as const;
 
 export const AsyncStorageKey = {
