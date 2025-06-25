@@ -3,6 +3,7 @@ import {
   Fontisto,
   Ionicons,
   MaterialCommunityIcons,
+  MaterialIcons,
 } from "@expo/vector-icons";
 import { Tabs, useRouter } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -38,8 +39,8 @@ export default function TabLayout() {
           title: "Home",
           headerShown: false,
           tabBarIcon: () => (
-            <MaterialCommunityIcons
-              name="barcode-scan"
+            <Ionicons
+              name="home-outline"
               size={24}
               color={Colors.GLOVO_GREEN}
             />
@@ -52,8 +53,8 @@ export default function TabLayout() {
           headerShown: false,
           title: "Product list",
           tabBarIcon: () => (
-            <Fontisto
-              name="shopping-basket"
+            <MaterialCommunityIcons
+              name="shopping-outline"
               size={24}
               color={Colors.GLOVO_GREEN}
             />
@@ -72,26 +73,26 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="halal"
+        options={{
+          headerShown: false,
+          title: "Halal",
+          tabBarIcon: () => (
+            <MaterialCommunityIcons
+              name="mosque"
+              size={24}
+              color={Colors.GLOVO_GREEN}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           headerShown: false,
           title: "Profile",
           tabBarIcon: () => (
             <FontAwesome5 name="user" size={24} color={Colors.GLOVO_GREEN} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          headerShown: false,
-          title: "Settings",
-          tabBarIcon: () => (
-            <Ionicons
-              name="settings-outline"
-              size={24}
-              color={Colors.GLOVO_GREEN}
-            />
           ),
         }}
       />
