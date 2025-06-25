@@ -22,6 +22,7 @@ import { LanguageKey } from "@/constants/keys";
 SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
+  // Hooks
   const colorScheme = useColorScheme();
   const router = useRouter();
 

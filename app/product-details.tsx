@@ -24,7 +24,7 @@ import { get_product_by_bar_code, save_product_by_bar_code } from "@/utils";
 import SelectLanguage from "@/components/shared/SelectLanguage";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 
-const ProductDetails: React.FC = () => {
+const ProductDetailsScreen: React.FC = () => {
   // Hooks
   const router = useRouter();
   const local = useLocalSearchParams();
@@ -770,4 +770,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProductDetails;
+export default ProductDetailsScreen;
