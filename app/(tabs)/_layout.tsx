@@ -1,18 +1,20 @@
 import {
   FontAwesome5,
-  Fontisto,
   Ionicons,
   MaterialCommunityIcons,
-  MaterialIcons,
 } from "@expo/vector-icons";
-import { Tabs, useRouter } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
+import { Tabs } from "expo-router";
 import "react-native-reanimated";
 import { Colors } from "@/themes/colors";
-import { View, StyleSheet } from "react-native";
 import CustomScanTabButton from "@/components/ScanScreen/CustomScanTabButton";
+import { i18n } from "@/i18n";
+import { LanguageKey } from "@/constants/keys";
+import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
+import { Language } from "@/enums/language";
 
 export default function TabLayout() {
+  const { currentLanguage } = useSelectedLanguage();
+  const is_arabic = currentLanguage === Language.AR;
   return (
     <Tabs
       screenOptions={{
@@ -36,7 +38,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: i18n.t(LanguageKey.HOME),
           headerShown: false,
           tabBarIcon: () => (
             <Ionicons
@@ -51,7 +53,7 @@ export default function TabLayout() {
         name="product-list"
         options={{
           headerShown: false,
-          title: "Product list",
+          title: i18n.t(LanguageKey.PRODUCT_LIST),
           tabBarIcon: () => (
             <MaterialCommunityIcons
               name="shopping-outline"
@@ -64,7 +66,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="scan"
         options={{
-          title: "Home",
+          title: i18n.t(LanguageKey.HOME),
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <CustomScanTabButton focused={focused} />
@@ -76,7 +78,7 @@ export default function TabLayout() {
         name="halal"
         options={{
           headerShown: false,
-          title: "Halal",
+          title: i18n.t(LanguageKey.HALAL),
           tabBarIcon: () => (
             <MaterialCommunityIcons
               name="mosque"
@@ -90,10 +92,13 @@ export default function TabLayout() {
         name="profile"
         options={{
           headerShown: false,
-          title: "Profile",
+          title: i18n.t(LanguageKey.PROFILE),
           tabBarIcon: () => (
             <FontAwesome5 name="user" size={24} color={Colors.GLOVO_GREEN} />
           ),
+          tabBarLabelStyle: {
+            fontSize: is_arabic ? 10 : 12,
+          },
         }}
       />
     </Tabs>
