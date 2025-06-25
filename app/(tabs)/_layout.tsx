@@ -1,7 +1,9 @@
 import {
+  FontAwesome,
   FontAwesome5,
   Ionicons,
   MaterialCommunityIcons,
+  MaterialIcons,
 } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import "react-native-reanimated";
@@ -40,9 +42,9 @@ export default function TabLayout() {
         options={{
           title: i18n.t(LanguageKey.HOME),
           headerShown: false,
-          tabBarIcon: () => (
+          tabBarIcon: ({ focused }) => (
             <Ionicons
-              name="home-outline"
+              name={focused ? "home" : "home-outline"}
               size={24}
               color={Colors.GLOVO_GREEN}
             />
@@ -54,9 +56,9 @@ export default function TabLayout() {
         options={{
           headerShown: false,
           title: i18n.t(LanguageKey.PRODUCT_LIST),
-          tabBarIcon: () => (
+          tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons
-              name="shopping-outline"
+              name={focused ? "shopping" : "shopping-outline"}
               size={24}
               color={Colors.GLOVO_GREEN}
             />
@@ -79,13 +81,20 @@ export default function TabLayout() {
         options={{
           headerShown: false,
           title: i18n.t(LanguageKey.HALAL),
-          tabBarIcon: () => (
-            <MaterialCommunityIcons
-              name="mosque"
-              size={24}
-              color={Colors.GLOVO_GREEN}
-            />
-          ),
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <MaterialIcons
+                name="mosque"
+                size={24}
+                color={Colors.GLOVO_GREEN}
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name="mosque"
+                size={24}
+                color={Colors.GLOVO_GREEN}
+              />
+            ),
         }}
       />
       <Tabs.Screen
@@ -93,9 +102,12 @@ export default function TabLayout() {
         options={{
           headerShown: false,
           title: i18n.t(LanguageKey.PROFILE),
-          tabBarIcon: () => (
-            <FontAwesome5 name="user" size={24} color={Colors.GLOVO_GREEN} />
-          ),
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <FontAwesome name="user" size={24} color={Colors.GLOVO_GREEN} />
+            ) : (
+              <FontAwesome5 name="user" size={24} color={Colors.GLOVO_GREEN} />
+            ),
           tabBarLabelStyle: {
             fontSize: is_arabic ? 10 : 12,
           },
