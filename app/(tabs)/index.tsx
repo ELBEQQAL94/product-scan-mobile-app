@@ -59,8 +59,8 @@ const HomeScreen = () => {
   //   <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />
   // );
   // return <HealthSetup />;
-  // return <Scan scanned={false} handleBarcodeScanned={handleBarcodeScanned} />;
-  return <Button title="login" onPress={redirectTo} />;
+  return <Scan scanned={false} handleBarcodeScanned={handleBarcodeScanned} />;
+  // return <Button title="login" onPress={redirectTo} />;
 };
 
 export default HomeScreen;
