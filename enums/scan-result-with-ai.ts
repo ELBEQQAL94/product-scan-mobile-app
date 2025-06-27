@@ -4,3 +4,8 @@ export enum Severity {
   MODERATE = "moderate",
   LOW = "low",
 }
+
+export enum HalalCheckStatus {
+  HALAL = "HALAL",
+  HARAM = "HARAM",
+}

@@ -71,15 +71,13 @@ ANALYSIS REQUIREMENTS:
 HALAL STATUS CATEGORIES:
 - "HALAL": No haram ingredients found, all are halal or confirmed synthetic/plant-based
 - "HARAM": Contains confirmed haram ingredients
-- "QUESTIONABLE": Contains ingredients that may be haram depending on source
-- "INSUFFICIENT_DATA": Critical ingredient information is missing
 
 RESPONSE LANGUAGE: ${lang}
 
 Provide your analysis in the following JSON format only:
 
 {
-  "status": "HALAL|HARAM|QUESTIONABLE|INSUFFICIENT_DATA",
+  "status": "HALAL|HARAM",
   "summary": "Brief summary of the overall assessment",
 }
 

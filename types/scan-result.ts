@@ -1,4 +1,4 @@
-import { Severity } from "@/enums/scan-result-with-ai";
+import { HalalCheckStatus, Severity } from "@/enums/scan-result-with-ai";
 
 export interface Recommendations {
   recommendation: string;
@@ -12,6 +12,6 @@ export interface ScanResultResponse {
 }
 
 export interface HalalProductResponse {
-  status: "HALAL" | "HARAM" | "DOUBTFUL";
+  status: HalalCheckStatus;
   summary: string;
 }
