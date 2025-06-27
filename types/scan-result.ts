@@ -10,3 +10,8 @@ export interface ScanResultResponse {
   score: number;
   recommendations: Recommendations[];
 }
+
+export interface HalalProductResponse {
+  status: "HALAL" | "HARAM" | "DOUBTFUL";
+  summary: string;
+}

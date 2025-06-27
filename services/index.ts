@@ -4,11 +4,9 @@ import {
   OpenFoodResponseAPI,
   OpenStreetMapResponse,
 } from "@/constants/responses";
-import { prompt } from "@/prompt";
 
-export const get_score = async (data: OpenFoodResponseAPI) => {
+export const ai_scan = async (data: OpenFoodResponseAPI, content: string) => {
   const client = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY });
-  const content = prompt(data);
   const OPENAI_MODEL = process.env.EXPO_PUBLIC_OPENAI_MODEL || "gpt-4.1-nano";
 
   try {
