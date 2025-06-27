@@ -5,13 +5,12 @@ import { Screens } from "@/constants/screens";
 import OnBoarding from "@/components/HomeScreen/OnBoarding";
 import { get_item } from "@/utils";
 import Scan from "@/components/ScanScreen/Scan";
-import { get_nutri_score, get_score } from "@/services";
+import { ai_scan } from "@/services";
 import { openFoodResponseMockData } from "@/mock/openFoodResponseData";
 import { get_products } from "@/external-services/firebase";
-import LoginScreen from "../login";
-import RegisterScreen from "../register";
-import { Button } from "react-native";
 import { AsyncStorageKey } from "@/constants/keys";
+import { halal_prompt } from "@/prompt/halal-prompt";
+import { Language } from "@/enums/language";
 
 const HomeScreen = () => {
   // Hooks
@@ -50,6 +49,9 @@ const HomeScreen = () => {
   const all_products = async () => await get_products();
 
   const redirectTo = () => router.push(Screens.REGISTER_SCREEN);
+  const content = halal_prompt(openFoodResponseMockData, Language.DE);
+
+  console.log("content: ", content);
 
   if (hasCompletedOnboarding) {
     return <OnBoarding />;

@@ -115,8 +115,6 @@ const Scan: React.FC<{
     return <ScanningLoader isVisible={isProcessing} />;
   }
 
-  return <ScanResultScreen />;
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
