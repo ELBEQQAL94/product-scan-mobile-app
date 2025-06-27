@@ -20,6 +20,7 @@ import {
 } from "@/mock/scanResultResponseData";
 import { openFoodResponseMockData } from "@/mock/openFoodResponseData";
 import PremiumUpgrade from "./PremiumUpgrade";
+import ProductImage from "../shared/ProductImage";
 
 const ScanResultScreen: FC = () => {
   // Mock not subscriber user
@@ -33,23 +34,7 @@ const ScanResultScreen: FC = () => {
   return (
     <View style={{ flex: 1, padding: 16 }}>
       <ScrollView>
-        <View
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 20,
-          }}
-        >
-          <Image
-            source={{
-              uri: "https://images.openfoodfacts.org/images/products/611/103/100/5064/front_fr.9.200.jpg",
-            }}
-            resizeMode="contain"
-            width={150}
-            height={150}
-          />
-        </View>
+        <ProductImage imageUri="https://images.openfoodfacts.org/images/products/611/103/100/5064/front_fr.9.200.jpg" />
         <View
           style={{
             display: "flex",

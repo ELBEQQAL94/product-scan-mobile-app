@@ -11,6 +11,9 @@ import { get_products } from "@/external-services/firebase";
 import { AsyncStorageKey } from "@/constants/keys";
 import { halal_prompt } from "@/prompt/halal-prompt";
 import { Language } from "@/enums/language";
+import HalalResultScan from "@/components/HalalResultScanScreen/HalalResultScan";
+import { checkHalalProductResponseInAr } from "@/mock/checkHalalProductResponse";
+import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 
 const HomeScreen = () => {
   // Hooks
@@ -20,6 +23,7 @@ const HomeScreen = () => {
   const [scanned, setScanned] = useState<boolean>(false);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] =
     useState<boolean>(false);
+  const { currentLanguage } = useSelectedLanguage();
 
   const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
     setScanned(true);
@@ -61,7 +65,16 @@ const HomeScreen = () => {
   //   <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />
   // );
   // return <HealthSetup />;
-  return <Scan scanned={false} handleBarcodeScanned={handleBarcodeScanned} />;
+  return (
+    <HalalResultScan
+      imageUri={
+        "https://images.openfoodfacts.org/images/products/611/103/100/5064/front_fr.9.200.jpg"
+      }
+      halaScanResult={checkHalalProductResponseInAr}
+      currentLanguage={currentLanguage}
+    />
+  );
+  // return <Scan scanned={false} handleBarcodeScanned={handleBarcodeScanned} />;
   // return <Button title="login" onPress={redirectTo} />;
 };
 

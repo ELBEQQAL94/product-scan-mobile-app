@@ -149,6 +149,7 @@ export const i18n = new I18n({
     HALAL: "Halal",
     PRODUCT_LIST: "Product list",
     HOME: "Home",
+    HARAM: "HARAM",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -298,6 +299,7 @@ export const i18n = new I18n({
     HALAL: "حلال",
     PRODUCT_LIST: "قائمة المنتجات",
     HOME: "الرئيسية",
+    HARAM: "حرام",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -447,6 +449,7 @@ export const i18n = new I18n({
     HALAL: "Halal",
     PRODUCT_LIST: "Liste des produits",
     HOME: "Accueil",
+    HARAM: "HARAM",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -597,6 +600,7 @@ export const i18n = new I18n({
     HALAL: "Halal",
     PRODUCT_LIST: "Lista de productos",
     HOME: "Inicio",
+    HARAM: "HARAM",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -750,6 +754,7 @@ export const i18n = new I18n({
     HALAL: "Halal",
     PRODUCT_LIST: "Produktliste",
     HOME: "Startseite",
+    HARAM: "HARAM",
   },
 });
 
