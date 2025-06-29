@@ -1,5 +1,9 @@
 import { AsyncStorageKey } from "@/constants/keys";
-import { CachedProduct } from "@/constants/responses";
+import {
+  CachedProduct,
+  OpenFoodData,
+  ProductScanResult,
+} from "@/constants/responses";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const checkOnboardingStatus = async () => {
@@ -47,7 +51,7 @@ export const clear_items = async () => {
 
 export const save_product_by_bar_code = async (
   bar_code: string,
-  product: CachedProduct
+  product: ProductScanResult
 ) => {
   try {
     await AsyncStorage.setItem(bar_code, JSON.stringify(product));
@@ -60,10 +64,10 @@ export const save_product_by_bar_code = async (
 
 export const get_product_by_bar_code = async (
   bar_code: string
-): Promise<CachedProduct | null | undefined> => {
+): Promise<ProductScanResult | undefined> => {
   try {
     const product = await AsyncStorage.getItem(bar_code);
-    return product != null ? JSON.parse(product) : null;
+    return product != null ? JSON.parse(product) : undefined;
   } catch (error) {
     console.error(
       `get product by bar_code: ${bar_code} get an error: ${error}`

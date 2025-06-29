@@ -3,7 +3,7 @@ import { BarcodeScanningResult } from "expo-camera";
 import { Href, useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
 import OnBoarding from "@/components/HomeScreen/OnBoarding";
-import { get_item } from "@/utils";
+import { clear_items, get_item, get_product_by_bar_code } from "@/utils";
 import Scan from "@/components/ScanScreen/Scan";
 import { ai_scan } from "@/services";
 import { openFoodResponseMockData } from "@/mock/openFoodResponseData";
@@ -30,11 +30,12 @@ const HomeScreen = () => {
     const bar_code = result.data;
 
     if (bar_code) {
-      router.push(
-        `${Screens.PRODUCT_DETAILS_SCREEN}?bar_code=${bar_code}` as Href
-      );
+      redirect_to_scan_result(bar_code);
     }
   };
+
+  const redirect_to_scan_result = (bar_code: string) =>
+    router.push(`${Screens.SCAN_RESULT_SCREEN}?bar_code=${bar_code}`);
 
   const checkOnboardingStatus = async () => {
     try {
@@ -50,32 +51,17 @@ const HomeScreen = () => {
     }
   };
 
-  const all_products = async () => await get_products();
-
-  const redirectTo = () => router.push(Screens.REGISTER_SCREEN);
-  const content = halal_prompt(openFoodResponseMockData, Language.DE);
-
-  console.log("content: ", content);
-
   if (hasCompletedOnboarding) {
     return <OnBoarding />;
   }
 
-  // return (
-  //   <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />
-  // );
-  // return <HealthSetup />;
   return (
-    <HalalResultScan
-      imageUri={
-        "https://images.openfoodfacts.org/images/products/611/103/100/5064/front_fr.9.200.jpg"
-      }
-      halaScanResult={checkHalalProductResponseInAr}
-      currentLanguage={currentLanguage}
+    <Scan
+      scanned={scanned}
+      handleBarcodeScanned={handleBarcodeScanned}
+      redirectToScanResult={redirect_to_scan_result}
     />
   );
-  // return <Scan scanned={false} handleBarcodeScanned={handleBarcodeScanned} />;
-  // return <Button title="login" onPress={redirectTo} />;
 };
 
 export default HomeScreen;

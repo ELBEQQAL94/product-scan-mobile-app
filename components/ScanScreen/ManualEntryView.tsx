@@ -28,7 +28,6 @@ interface ManualEntryViewProps {
   isManualMode: boolean;
   inputRef?: React.RefObject<TextInput>;
   manualBarcode: string;
-  isProcessing: boolean;
   setManualBarcode: (text: string) => void;
   handleManualSubmit: () => void;
 }
@@ -41,7 +40,6 @@ const ManualEntryView: FC<ManualEntryViewProps> = ({
   isManualMode,
   inputRef,
   manualBarcode,
-  isProcessing,
   setManualBarcode,
   handleManualSubmit,
 }) => {
@@ -98,27 +96,23 @@ const ManualEntryView: FC<ManualEntryViewProps> = ({
           </Text>
         </View>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             styles.submit_button,
-            (manualBarcode.length < 8 || isProcessing) &&
-              styles.submit_button_disabled,
+            manualBarcode.length < 8 && styles.submit_button_disabled,
           ]}
           onPress={handleManualSubmit}
-          disabled={manualBarcode.length < 8 || isProcessing}
+          disabled={manualBarcode.length < 8}
         >
           <Text
             style={[
               styles.submit_button_text,
-              (manualBarcode.length < 8 || isProcessing) &&
-                styles.submit_button_text_disabled,
+              manualBarcode.length < 8 && styles.submit_button_text_disabled,
             ]}
           >
-            {isProcessing
-              ? i18n.t(LanguageKey.PROCESSING)
-              : i18n.t(LanguageKey.SCANNING_PRODUCT)}
+            {i18n.t(LanguageKey.SCAN_PRODUCT)}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </Animated.View>
   );

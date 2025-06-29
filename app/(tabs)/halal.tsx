@@ -16,7 +16,7 @@ const HalalScreen: FC = () => {
     const bar_code = result.data;
 
     if (bar_code) {
-      router.push(`${Screens.PRODUCT_DETAILS_SCREEN}?bar_code=${bar_code}`);
+      router.push(`${Screens.SCAN_RESULT_SCREEN}?bar_code=${bar_code}`);
     }
   };
 

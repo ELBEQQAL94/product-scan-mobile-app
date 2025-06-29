@@ -4,8 +4,12 @@ import {
   OpenFoodResponseAPI,
   OpenStreetMapResponse,
 } from "@/constants/responses";
+import { ScanResultResponse } from "@/types/scan-result";
 
-export const ai_scan = async (data: OpenFoodResponseAPI, content: string) => {
+export const ai_scan = async (
+  data: OpenFoodResponseAPI,
+  content: string
+): Promise<ScanResultResponse | undefined> => {
   const client = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY });
   const OPENAI_MODEL = process.env.EXPO_PUBLIC_OPENAI_MODEL || "gpt-4.1-nano";
 
@@ -21,8 +25,12 @@ export const ai_scan = async (data: OpenFoodResponseAPI, content: string) => {
       response_format: { type: "json_object" },
     });
     const answer = completion.choices[0].message.content;
-    console.log("AI Answer: ", answer);
-    return answer;
+
+    if (answer) {
+      const parsedAnswer = JSON.parse(answer);
+      return parsedAnswer;
+    }
+    return;
   } catch (error) {
     console.log("chat get an error: ", error);
   }

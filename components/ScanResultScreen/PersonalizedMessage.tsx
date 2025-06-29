@@ -16,7 +16,7 @@ interface PersonalizedMessageProps {
 }
 
 const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
-  recommendations,
+  recommendations = [],
   isSubcriber,
 }) => {
   const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
@@ -129,7 +129,7 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
     if (hasHighPriority) {
       return {
         title: i18n.t(LanguageKey.NOT_GOOD_FOR_YOU),
-        subtitle: i18n.t(LanguageKey.THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS),
+        subtitle: i18n.t(LanguageKey.THIS_PRODUCT_HAS_NEGATIVE_HEALTH_ASPECTS),
       };
     } else if (hasOnlyModerate) {
       return {

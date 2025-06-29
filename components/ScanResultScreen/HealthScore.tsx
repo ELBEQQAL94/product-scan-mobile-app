@@ -11,6 +11,7 @@ interface HealthScoreProps {
 }
 
 const HealthScore: FC<HealthScoreProps> = ({ score }) => {
+  console.log("score: ", score);
   const colorValues = useRef([
     new Animated.Value(0),
     new Animated.Value(0),

@@ -1,4 +1,4 @@
-import { OpenFoodData } from "@/constants/responses";
+import { OpenFoodData, OpenFoodResponseAPI } from "@/constants/responses";
 import { Language } from "@/enums/language";
 import { UserHealthSetupProfile } from "@/types/health-setup";
 
@@ -177,8 +177,8 @@ const generatePersonalizedInstructions = (
   return instructions;
 };
 
-export const prompt = (
-  data: OpenFoodData,
+export const ai_product_scan_prompt = (
+  data: OpenFoodResponseAPI,
   userHealthSetupProfile: UserHealthSetupProfile | null = null,
   language: Language = Language.AR
 ) => {
