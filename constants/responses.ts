@@ -1,3 +1,5 @@
+import { Recommendations } from "@/types/scan-result";
+
 export interface Ingredients {
   id: string;
   is_in_taxonomy: number;
@@ -315,4 +317,12 @@ export interface OpenStreetMapResponse {
   name: string;
   display_name: string;
   address: Address;
+}
+
+export interface ProductScanResult {
+  status: number;
+  score: number;
+  image_url: string;
+  recommendations: Recommendations[];
+  product_name: string;
 }

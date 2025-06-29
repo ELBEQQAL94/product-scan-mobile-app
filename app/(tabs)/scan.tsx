@@ -7,7 +7,7 @@ import OnBoarding from "@/components/HomeScreen/OnBoarding";
 import { get_item } from "@/utils";
 import { View, Text } from "react-native";
 import HealthSetup from "../health-setup";
-import ScanResultScreen from "@/components/ScanResultScreen/ScanResultScreen";
+import ScanResultScreen from "@/components/ScanResultScreen";
 import * as Location from "expo-location";
 
 const ScanScreen = () => {
@@ -39,9 +39,7 @@ const ScanScreen = () => {
     const bar_code = result.data;
 
     if (bar_code) {
-      router.push(
-        `${Screens.PRODUCT_DETAILS_SCREEN}?bar_code=${bar_code}` as Href
-      );
+      router.push(`${Screens.SCAN_RESULT_SCREEN}?bar_code=${bar_code}` as Href);
     }
   };
 
@@ -68,7 +66,6 @@ const ScanScreen = () => {
   return (
     <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />
   );
-  return <ScanResultScreen />;
 };
 
 export default ScanScreen;

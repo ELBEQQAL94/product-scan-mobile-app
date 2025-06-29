@@ -1,6 +1,6 @@
 export const Screens = {
   HOME_SCREEN: "",
-  PRODUCT_DETAILS_SCREEN: "product-details",
+  SCAN_RESULT_SCREEN: "scan-result",
   HEALTH_SETUP_SCREEN: "health-setup",
   AUTH_METHODS_SCREEN: "auth-methods",
   REGISTER_SCREEN: "register",

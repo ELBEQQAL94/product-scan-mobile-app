@@ -1,9 +1,5 @@
 import { i18n } from "@/i18n";
-import {
-  BarcodeScanningResult,
-  CameraView,
-  useCameraPermissions,
-} from "expo-camera";
+import { BarcodeScanningResult, useCameraPermissions } from "expo-camera";
 import {
   View,
   StyleSheet,
@@ -15,32 +11,32 @@ import {
   Platform,
 } from "react-native";
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Ionicons } from "@expo/vector-icons";
 import CameraViewContainer from "./CameraViewContainer";
 import ManualEntryView from "./ManualEntryView";
 import { Colors } from "@/themes/colors";
 import BottomControls from "./BottomControls";
 import { LanguageKey } from "@/constants/keys";
 import ScanningLoader from "../shared/ScanningLoader";
-import { get_score } from "@/services";
-import { openFoodResponseMockData } from "@/mock/openFoodResponseData";
-import ScanResultScreen from "../ScanResultScreen/ScanResultScreen";
 
-const Scan: React.FC<{
+interface ScanProps {
   scanned: boolean;
   handleBarcodeScanned: (result: BarcodeScanningResult) => Promise<void>;
-}> = ({ scanned, handleBarcodeScanned }) => {
+  redirectToScanResult: (bar_code: string) => void;
+}
+
+const Scan: React.FC<ScanProps> = ({
+  scanned,
+  handleBarcodeScanned,
+  redirectToScanResult,
+}) => {
   // Hooks
   const [permission, requestPermission] = useCameraPermissions();
   const [isManualMode, setIsManualMode] = useState<boolean>(false);
   const [manualBarcode, setManualBarcode] = useState<string>("");
-  const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   // Animation
   const slideAnim = useRef(new Animated.Value(0)).current;
   const inputRef = useRef<TextInput>(null);
-
-  // const fetch_score_result = async () => get_score(openFoodResponseMockData);
 
   useEffect(() => {
     Animated.timing(slideAnim, {
@@ -53,13 +49,7 @@ const Scan: React.FC<{
       // Focus input when switching to manual mode
       setTimeout(() => inputRef.current?.focus(), 350);
     }
-    console.log("start");
-    // fetch_score_result();
   }, [isManualMode]);
-
-  // useCallback(() => {
-  //   fetch_score_result();
-  // }, []);
 
   const handleManualSubmit = async () => {
     if (manualBarcode.length < 8) {
@@ -70,14 +60,11 @@ const Scan: React.FC<{
       return;
     }
 
-    setIsProcessing(true);
-
     try {
+      redirectToScanResult(manualBarcode);
       setManualBarcode("");
     } catch (error) {
       console.error("Manual barcode processing error:", error);
-    } finally {
-      setIsProcessing(false);
     }
   };
 
@@ -111,10 +98,6 @@ const Scan: React.FC<{
     );
   }
 
-  if (isProcessing) {
-    return <ScanningLoader isVisible={isProcessing} />;
-  }
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -131,7 +114,6 @@ const Scan: React.FC<{
         isManualMode={isManualMode}
         inputRef={inputRef}
         manualBarcode={manualBarcode}
-        isProcessing={isProcessing}
         setManualBarcode={setManualBarcode}
         handleManualSubmit={handleManualSubmit}
       />
