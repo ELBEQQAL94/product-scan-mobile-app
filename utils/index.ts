@@ -103,3 +103,8 @@ export const format_date_to_custom_string = (): string => {
 
   return `${localDate} ${localTime}`;
 };
+
+export const is_email_valid = (email: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};

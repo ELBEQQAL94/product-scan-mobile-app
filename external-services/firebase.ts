@@ -4,6 +4,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithCredential,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -119,59 +120,41 @@ export const logInWithEmailAndPassword = async (userInfo: any) => {
 };
 
 // register with email and password
-// export const registerWithEmailAndPassword = async (userInfo: RegisterValues) => {
+export const registerWithEmailAndPassword = async (userInfo: any) => {
+  try {
+    const { email, password } = userInfo;
+    const formatedEmail = email.trim().toLocaleLowerCase();
 
-// 	const userAction: UserAction = {
-// 		action_type: ActionTypeEnum.CREATE_NEW_ACCOUNT,
-// 		action_description: '',
-// 		action_data: null,
-// 		created_at: format_date_to_timestamp(),
-// 		date_format: format_date_to_custom_string(),
-// 	}
+    const res = await createUserWithEmailAndPassword(
+      auth,
+      formatedEmail,
+      password
+    );
+    const user = res.user;
 
-// 	try {
-// 		const { email, password, username } = userInfo;
-// 		const formatedEmail = email.trim().toLocaleLowerCase();
+    // const userData: UserData = {
+    // 	uid: user.uid,
+    // 	email: formatedEmail,
+    // 	account_created_at: format_date_to_timestamp(),
+    // 	date_format: format_date_to_custom_string(),
+    // 	current_step: StepsEnum.PORDUCT_TYPE_STEP,
+    // 	username,
+    // 	auth_provider: 'email',
+    // 	product_type_info,
+    // };
 
-// 		const res = await createUserWithEmailAndPassword(
-// 			auth,
-// 			formatedEmail,
-// 			password
-// 		);
-// 		const user = res.user;
-// 		const product_type_info: ProductTypeStepDataType = {
-// 			store_name: '',
-// 			product_type: ProductTypeEnum.PHYSICAL_PRODUCT
-// 		};
-// 		const userData: UserData = {
-// 			uid: user.uid,
-// 			email: formatedEmail,
-// 			account_created_at: format_date_to_timestamp(),
-// 			date_format: format_date_to_custom_string(),
-// 			current_step: StepsEnum.PORDUCT_TYPE_STEP,
-// 			username,
-// 			auth_provider: 'email',
-// 			product_type_info,
-// 		};
+    await addDoc(collection(db, "users"), { email });
+    return user;
+  } catch (error: unknown) {
+    console.log(`register with email/password get en error: ${error}`);
 
-// 		await addDoc(collection(db, 'users'), userData);
-// 		userAction.action_description = 'Create new user.';
-// 		userAction.action_data = JSON.stringify(userData);
-// 		await createLog(userAction);
-// 		return user;
-// 	} catch (error: unknown) {
-
-// 		userAction.action_description = 'Create new user get an error.';
-// 		userAction.action_data = JSON.stringify(error);
-// 		await createLog(userAction);
-
-// 		if (error instanceof FirebaseError) {
-// 			if (error.code === 'auth/email-already-in-use') {
-// 				throw Error('auth/email-already-in-use');
-// 			}
-// 		}
-// 	}
-// };
+    if (error instanceof FirebaseError) {
+      if (error.code === "auth/email-already-in-use") {
+        throw Error("auth/email-already-in-use");
+      }
+    }
+  }
+};
 
 // Kill current session
 // export const logout = async () => {

@@ -1,5 +1,15 @@
 import GoogleSignUpButton from "@/components/AuthMethodsScreen/GoogleSignUpButton";
+import Header from "@/components/RegisterScreen/Header";
+import Devider from "@/components/shared/Devider";
+import Input from "@/components/shared/form/Input";
+import { LanguageKey } from "@/constants/keys";
+import { Language } from "@/enums/language";
+import { RegisterSteps } from "@/enums/register";
+import { registerWithEmailAndPassword } from "@/external-services/firebase";
+import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
+import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
+import { is_email_valid } from "@/utils";
 import { FC, useState } from "react";
 import {
   View,
@@ -12,75 +22,82 @@ import {
 } from "react-native";
 
 const RegisterScreen: FC = () => {
-  const [step, setStep] = useState<"email" | "password">("email");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  // States
+  const [step, setStep] = useState<RegisterSteps>(RegisterSteps.EMAIL);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleNext = () => {
-    if (step === "email" && email.trim()) {
-      setStep("password");
+  // Hooks
+  const { is_arabic } = useSelectedLanguage();
+
+  const handle_next = () => {
+    const email_trimmed = email.trim();
+    if (step === RegisterSteps.EMAIL && is_email_valid(email_trimmed)) {
+      setErrorMessage(null);
+      setStep(RegisterSteps.PASSWORD);
+    } else {
+      setErrorMessage(i18n.t(LanguageKey.EMAIL_NOT_VALID));
     }
   };
 
-  const handleBack = () => {
-    if (step === "password") {
-      setStep("email");
+  const handle_back = () => {
+    if (step === RegisterSteps.PASSWORD) {
+      setStep(RegisterSteps.EMAIL);
     }
+  };
+
+  const register_account = async () => {
+    if (
+      step === RegisterSteps.PASSWORD &&
+      confirmPassword.length > 0 &&
+      password !== confirmPassword
+    ) {
+      setErrorMessage(i18n.t(LanguageKey.PASSWORDS_DO_NOT_MATCH));
+      return;
+    }
+    setErrorMessage(null);
+    await registerWithEmailAndPassword({ email, password });
   };
 
   const canProceed =
-    step === "email"
+    step === RegisterSteps.EMAIL
       ? email.trim().length > 0
-      : password.length > 0 &&
-        confirmPassword.length > 0 &&
-        password === confirmPassword;
-
-  const passwordsMatch = password === confirmPassword;
+      : password.length > 0 && confirmPassword.length > 0;
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.logo}>myscan</Text>
-          <Text style={styles.subtitle}>Sign up</Text>
-          {step === "password" && (
-            <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-              <Text style={styles.backButtonText}>← Back</Text>
-            </TouchableOpacity>
-          )}
-        </View>
+        <Header step={step} handleBack={handle_back} />
 
         {/* Main Content */}
         <View style={styles.formContainer}>
-          {step === "email" ? (
+          {step === RegisterSteps.EMAIL ? (
             <>
-              <Text style={styles.title}>Create your account</Text>
+              <Text style={styles.title}>
+                {i18n.t(LanguageKey.CREATE_YOUR_ACCOUNT)}
+              </Text>
               {/* Email Input */}
-              <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Email</Text>
-                <TextInput
-                  style={styles.input}
-                  value={email}
-                  onChangeText={setEmail}
-                  placeholder="Enter your email"
-                  placeholderTextColor="#848E9C"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-              </View>
-
+              <Input
+                errorMessage={errorMessage}
+                label={i18n.t(LanguageKey.EMAIL)}
+                value={email}
+                onChangeText={setEmail}
+                placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
+                isArabic={is_arabic()}
+                keyboardType="email-address"
+              />
               {/* Next Button */}
               <TouchableOpacity
                 style={[
                   styles.nextButton,
                   !canProceed && styles.disabledButton,
                 ]}
-                onPress={handleNext}
+                onPress={handle_next}
                 disabled={!canProceed}
               >
                 <Text
@@ -93,13 +110,7 @@ const RegisterScreen: FC = () => {
                 </Text>
               </TouchableOpacity>
 
-              {/* Divider */}
-              <View style={styles.divider}>
-                <View style={styles.dividerLine} />
-                <Text style={styles.dividerText}>or</Text>
-                <View style={styles.dividerLine} />
-              </View>
-              {/* Google Sign Up Button */}
+              <Devider />
               <GoogleSignUpButton />
 
               {/* Terms */}
@@ -117,32 +128,33 @@ const RegisterScreen: FC = () => {
               </Text>
 
               {/* Password Input */}
-              <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Password</Text>
-                <View style={styles.passwordContainer}>
-                  <TextInput
-                    style={styles.passwordInput}
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholder="Enter your password"
-                    placeholderTextColor="#848E9C"
-                    secureTextEntry={!showPassword}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                  />
-                  <TouchableOpacity
-                    onPress={() => setShowPassword(!showPassword)}
-                    style={styles.eyeButton}
-                  >
-                    <Text style={styles.eyeButtonText}>
-                      {showPassword ? "🙈" : "👁️"}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
+              <Input
+                errorMessage={errorMessage}
+                label={i18n.t(LanguageKey.PASSWORD)}
+                value={password}
+                onChangeText={setPassword}
+                placeholder={i18n.t(LanguageKey.ENTER_PASSWORD)}
+                secureTextEntry={!showPassword}
+                showPassword={showPassword}
+                isIconVisible={true}
+                isArabic={is_arabic()}
+                setVisibility={setShowPassword}
+              />
 
               {/* Confirm Password Input */}
-              <View style={styles.inputContainer}>
+              <Input
+                errorMessage={errorMessage}
+                label={i18n.t(LanguageKey.CONFIRM_PASSWORD)}
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                placeholder={i18n.t(LanguageKey.CONFIRM_PASSWORD)}
+                secureTextEntry={!showConfirmPassword}
+                showPassword={showConfirmPassword}
+                isIconVisible={true}
+                isArabic={is_arabic()}
+                setVisibility={setShowConfirmPassword}
+              />
+              {/* <View style={styles.inputContainer}>
                 <Text style={styles.inputLabel}>Confirm Password</Text>
                 <View
                   style={[
@@ -174,7 +186,7 @@ const RegisterScreen: FC = () => {
                 {confirmPassword.length > 0 && !passwordsMatch && (
                   <Text style={styles.errorText}>Passwords do not match</Text>
                 )}
-              </View>
+              </View> */}
 
               {/* Sign Up Button */}
               <TouchableOpacity
@@ -183,6 +195,7 @@ const RegisterScreen: FC = () => {
                   !canProceed && styles.disabledButton,
                 ]}
                 disabled={!canProceed}
+                onPress={register_account}
               >
                 <Text
                   style={[
@@ -295,21 +308,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     color: Colors.BLACK,
-  },
-  divider: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 24,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#2B3139",
-  },
-  dividerText: {
-    marginHorizontal: 16,
-    fontSize: 14,
-    color: "#848E9C",
   },
   inputContainer: {
     marginBottom: 24,
