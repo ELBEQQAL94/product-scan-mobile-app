@@ -51,6 +51,10 @@ const HomeScreen = () => {
     }
   };
 
+  useEffect(() => {
+    router.push(Screens.REGISTER_SCREEN);
+  }, []);
+
   if (hasCompletedOnboarding) {
     return <OnBoarding />;
   }

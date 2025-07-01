@@ -128,7 +128,7 @@ export const i18n = new I18n({
     ENTER_YOUR_EMAIL: "Enter your email",
     OR: "or",
     EMAIL: "Email",
-    ENTER_PASSWORD: "Enter password",
+    ENTER_PASSWORD: "Enter your password",
     LOGGING_IN_AS: "Logging in as",
     PASSWORD: "Password",
     LOG_IN: "Log In",
@@ -144,7 +144,7 @@ export const i18n = new I18n({
     ALREADY_HAVE_AN_ACCOUNT: "Already have an account?",
     CREATE_ACCOUNT: "Create Account",
     PASSWORDS_DO_NOT_MATCH: "Passwords do not match",
-    CONFIRM_PASSWORD: "Confirm Password",
+    CONFIRM_PASSWORD: "Confirm your password",
     CREATING_ACCOUNT_FOR: "Creating account for",
     CREATE_PASSWORD: "Create password",
     PROFILE: "Profile",
@@ -152,6 +152,8 @@ export const i18n = new I18n({
     PRODUCT_LIST: "Product list",
     HOME: "Home",
     HARAM: "HARAM",
+    EMAIL_NOT_VALID:
+      "The email format is incorrect. Please check and try again.",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -303,6 +305,8 @@ export const i18n = new I18n({
     PRODUCT_LIST: "قائمة المنتجات",
     HOME: "الرئيسية",
     HARAM: "حرام",
+    EMAIL_NOT_VALID:
+      "تنسيق البريد الإلكتروني غير صحيح. يرجى التحقق والمحاولة مرة أخرى.",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -455,6 +459,8 @@ export const i18n = new I18n({
     PRODUCT_LIST: "Liste des produits",
     HOME: "Accueil",
     HARAM: "HARAM",
+    EMAIL_NOT_VALID:
+      "Le format de l'e-mail est incorrect. Veuillez vérifier et réessayer.",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -609,6 +615,8 @@ export const i18n = new I18n({
     PRODUCT_LIST: "Lista de productos",
     HOME: "Inicio",
     HARAM: "HARAM",
+    EMAIL_NOT_VALID:
+      "El formato del correo electrónico es incorrecto. Por favor, verifique e intente nuevamente.",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -765,6 +773,8 @@ export const i18n = new I18n({
     PRODUCT_LIST: "Produktliste",
     HOME: "Startseite",
     HARAM: "HARAM",
+    EMAIL_NOT_VALID:
+      "Das E-Mail-Format ist falsch. Bitte überprüfen Sie es und versuchen Sie es erneut.",
   },
 });
 

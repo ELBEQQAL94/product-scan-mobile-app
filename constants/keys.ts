@@ -116,7 +116,7 @@ export const LanguageKey = {
   WELCOME_BACK: "WELCOME_BACK",
   ENTER_YOUR_EMAIL_TO_CONTINUE: "ENTER_YOUR_EMAIL_TO_CONTINUE",
   OR: "OR",
-  EMAIL: "Email",
+  EMAIL: "EMAIL",
   ENTER_PASSWORD: "ENTER_PASSWORD",
   LOGGING_IN_AS: "LOGGING_IN_AS",
   PASSWORD: "PASSWORD",
@@ -141,6 +141,7 @@ export const LanguageKey = {
   HALAL: "HALAL",
   PRODUCT_LIST: "PRODUCT_LIST",
   HOME: "HOME",
+  EMAIL_NOT_VALID: "EMAIL_NOT_VALID",
 } as const;
 
 export const AsyncStorageKey = {

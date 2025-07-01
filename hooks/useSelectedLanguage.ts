@@ -14,9 +14,17 @@ export const useSelectedLanguage = () => {
     setModalVisible(false);
   };
 
+  const is_arabic = () => currentLanguage === Language.AR;
+
   useEffect(() => {
     setCurrentLanguage(i18n.locale as Language);
   }, [currentLanguage]);
 
-  return { modalVisible, setModalVisible, currentLanguage, change_language };
+  return {
+    modalVisible,
+    setModalVisible,
+    currentLanguage,
+    change_language,
+    is_arabic,
+  };
 };
