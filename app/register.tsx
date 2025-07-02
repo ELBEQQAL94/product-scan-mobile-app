@@ -15,7 +15,13 @@ import { is_email_valid } from "@/utils";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { FC, useState } from "react";
-import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  ToastAndroid,
+} from "react-native";
 
 const RegisterScreen: FC = () => {
   // States
@@ -32,6 +38,10 @@ const RegisterScreen: FC = () => {
   // Hooks
   const router = useRouter();
   const { is_arabic } = useSelectedLanguage();
+
+  const show_toast = () => {
+    ToastAndroid.show(i18n.t(LanguageKey.ACCOUNT_CREATED), ToastAndroid.SHORT);
+  };
 
   const handle_next = () => {
     const email_trimmed = email.trim();
@@ -63,6 +73,7 @@ const RegisterScreen: FC = () => {
       await registerWithEmailAndPassword({ email, password });
       setLoading(false);
       setErrorMessage(null);
+      show_toast();
       router.push(Screens.LOGIN_SCREEN);
     } catch (error: unknown) {
       if (error instanceof Error) {
