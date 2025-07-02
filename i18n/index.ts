@@ -157,6 +157,7 @@ export const i18n = new I18n({
     EMAIL_ALREADY_IN_USE: "This email address is already in use",
     TRY_LATER: "Please try again later",
     WEAK_PASSWORD: "Password should be at least 6 characters",
+    ACCOUNT_CREATED: "Your account has been successfully created. Welcome!",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -313,6 +314,7 @@ export const i18n = new I18n({
     EMAIL_ALREADY_IN_USE: "عنوان البريد الإلكتروني هذا مُستخدم بالفعل",
     TRY_LATER: "يرجى المحاولة مرة أخرى لاحقاً",
     WEAK_PASSWORD: "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+    ACCOUNT_CREATED: "تم إنشاء حسابك بنجاح. مرحباً بك!",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -470,6 +472,7 @@ export const i18n = new I18n({
     EMAIL_ALREADY_IN_USE: "Cette adresse e-mail est déjà utilisée",
     TRY_LATER: "Veuillez réessayer plus tard",
     WEAK_PASSWORD: "Le mot de passe doit contenir au moins 6 caractères",
+    ACCOUNT_CREATED: "Votre compte a été créé avec succès. Bienvenue !",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -629,6 +632,7 @@ export const i18n = new I18n({
     EMAIL_ALREADY_IN_USE: "Esta dirección de correo electrónico ya está en uso",
     TRY_LATER: "Por favor, inténtelo de nuevo más tarde",
     WEAK_PASSWORD: "La contraseña debe tener al menos 6 caracteres",
+    ACCOUNT_CREATED: "Tu cuenta ha sido creada exitosamente. ¡Bienvenido!",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -790,6 +794,7 @@ export const i18n = new I18n({
     EMAIL_ALREADY_IN_USE: "Diese E-Mail-Adresse wird bereits verwendet",
     TRY_LATER: "Bitte versuchen Sie es später erneut",
     WEAK_PASSWORD: "Das Passwort sollte mindestens 6 Zeichen haben",
+    ACCOUNT_CREATED: "Ihr Konto wurde erfolgreich erstellt. Willkommen!",
   },
 });
 

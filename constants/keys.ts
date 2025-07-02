@@ -145,6 +145,7 @@ export const LanguageKey = {
   EMAIL_ALREADY_IN_USE: "EMAIL_ALREADY_IN_USE",
   TRY_LATER: "TRY_LATER",
   WEAK_PASSWORD: "WEAK_PASSWORD",
+  ACCOUNT_CREATED: "ACCOUNT_CREATED",
 } as const;
 
 export const AsyncStorageKey = {
