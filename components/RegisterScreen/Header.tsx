@@ -1,27 +1,11 @@
-import { LanguageKey } from "@/constants/keys";
-import { RegisterSteps } from "@/enums/register";
-import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { FC } from "react";
-import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 
-interface HeaderProps {
-  step: RegisterSteps;
-  handleBack: () => void;
-}
-
-const Header: FC<HeaderProps> = ({ step, handleBack }) => {
+const Header: FC = () => {
   return (
     <View style={styles.header}>
       <Text style={styles.logo}>myscan</Text>
-      <Text style={styles.subtitle}>{i18n.t(LanguageKey.SIGN_UP)}</Text>
-      {step === RegisterSteps.PASSWORD && (
-        <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>
-            ← {i18n.t(LanguageKey.BACK)}
-          </Text>
-        </TouchableOpacity>
-      )}
     </View>
   );
 };

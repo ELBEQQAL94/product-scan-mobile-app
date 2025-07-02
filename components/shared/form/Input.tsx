@@ -54,7 +54,7 @@ const Input: FC<InputProps> = ({
         style={[styles.input_container, errorMessage && styles.error_border]}
       >
         <TextInput
-          style={[styles.input, { textAlign: isArabic ? "right" : "left" }]}
+          style={styles.input}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}

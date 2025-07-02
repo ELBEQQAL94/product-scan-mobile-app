@@ -21,6 +21,8 @@ import {
   format_date_to_custom_string,
   format_date_to_timestamp,
 } from "@/utils";
+import { ActionTypeEnum, UserAction } from "@/enums/logs";
+import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
 
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
@@ -121,6 +123,15 @@ export const logInWithEmailAndPassword = async (userInfo: any) => {
 
 // register with email and password
 export const registerWithEmailAndPassword = async (userInfo: any) => {
+  const NOW_DATE = format_date_to_custom_string();
+  const NOW_DATE_TIMESTAMP = format_date_to_timestamp();
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.REGISTER_ACCOUNT,
+    action_description: "user create new account with email/password.",
+    action_data: JSON.stringify(userInfo),
+    date_format: NOW_DATE,
+  };
+
   try {
     const { email, password } = userInfo;
     const formatedEmail = email.trim().toLocaleLowerCase();
@@ -132,25 +143,33 @@ export const registerWithEmailAndPassword = async (userInfo: any) => {
     );
     const user = res.user;
 
-    // const userData: UserData = {
-    // 	uid: user.uid,
-    // 	email: formatedEmail,
-    // 	account_created_at: format_date_to_timestamp(),
-    // 	date_format: format_date_to_custom_string(),
-    // 	current_step: StepsEnum.PORDUCT_TYPE_STEP,
-    // 	username,
-    // 	auth_provider: 'email',
-    // 	product_type_info,
-    // };
+    const userData: UserSchema = {
+      uid: user.uid,
+      email: formatedEmail,
+      date_format: NOW_DATE,
+      auth_provider: "email",
+      username: user.displayName,
+      last_login: NOW_DATE_TIMESTAMP,
+      created_at: NOW_DATE_TIMESTAMP,
+      is_email_verified: false,
+      is_subscribed: false,
+    };
 
-    await addDoc(collection(db, "users"), { email });
+    await addDoc(collection(db, "users"), userData);
+    await create_log(user_action);
     return user;
   } catch (error: unknown) {
-    console.log(`register with email/password get en error: ${error}`);
+    user_action.action_description =
+      "user try to create an account with email/password but got an error";
+    user_action.action_data = JSON.stringify(error);
 
     if (error instanceof FirebaseError) {
-      if (error.code === "auth/email-already-in-use") {
-        throw Error("auth/email-already-in-use");
+      if (error.code === FirebaseErrorMessages.EMAIL_ALREADY_IN_USE) {
+        throw Error(FirebaseErrorMessages.EMAIL_ALREADY_IN_USE);
+      }
+
+      if (error.code === FirebaseErrorMessages.WEAK_PASSWORD) {
+        throw Error(FirebaseErrorMessages.WEAK_PASSWORD);
       }
     }
   }
@@ -187,5 +206,13 @@ export const get_products = async (): Promise<unknown> => {
   } catch (error) {
     console.log("error: ", error);
     throw new Error(`get products got an error: ${error}`);
+  }
+};
+
+export const create_log = async (userAction: UserAction): Promise<void> => {
+  try {
+    await addDoc(collection(db, "logs"), userAction);
+  } catch (error: unknown) {
+    console.log("create new log get an error: ", error);
   }
 };
