@@ -1,25 +1,21 @@
 import GoogleSignUpButton from "@/components/AuthMethodsScreen/GoogleSignUpButton";
 import Header from "@/components/RegisterScreen/Header";
+import ActionButton from "@/components/shared/ActionButton";
 import Devider from "@/components/shared/Devider";
 import Input from "@/components/shared/form/Input";
 import { LanguageKey } from "@/constants/keys";
-import { Language } from "@/enums/language";
+import { Screens } from "@/constants/screens";
+import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
 import { RegisterSteps } from "@/enums/register";
 import { registerWithEmailAndPassword } from "@/external-services/firebase";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { is_email_valid } from "@/utils";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { FC, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  TextInput,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 
 const RegisterScreen: FC = () => {
   // States
@@ -31,8 +27,10 @@ const RegisterScreen: FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Hooks
+  const router = useRouter();
   const { is_arabic } = useSelectedLanguage();
 
   const handle_next = () => {
@@ -60,8 +58,26 @@ const RegisterScreen: FC = () => {
       setErrorMessage(i18n.t(LanguageKey.PASSWORDS_DO_NOT_MATCH));
       return;
     }
-    setErrorMessage(null);
-    await registerWithEmailAndPassword({ email, password });
+    try {
+      setLoading(true);
+      await registerWithEmailAndPassword({ email, password });
+      setLoading(false);
+      setErrorMessage(null);
+      router.push(Screens.LOGIN_SCREEN);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === FirebaseErrorMessages.EMAIL_ALREADY_IN_USE) {
+          setErrorMessage(i18n.t(LanguageKey.EMAIL_ALREADY_IN_USE));
+        }
+        if (error.message === FirebaseErrorMessages.WEAK_PASSWORD) {
+          setErrorMessage(i18n.t(LanguageKey.WEAK_PASSWORD));
+        }
+      } else {
+        setErrorMessage(i18n.t(LanguageKey.TRY_LATER));
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const canProceed =
@@ -72,13 +88,17 @@ const RegisterScreen: FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Header step={step} handleBack={handle_back} />
-
+        <Header />
         {/* Main Content */}
         <View style={styles.formContainer}>
           {step === RegisterSteps.EMAIL ? (
             <>
-              <Text style={styles.title}>
+              <Text
+                style={[
+                  styles.title,
+                  { textAlign: is_arabic() ? "right" : "left" },
+                ]}
+              >
                 {i18n.t(LanguageKey.CREATE_YOUR_ACCOUNT)}
               </Text>
               {/* Email Input */}
@@ -91,24 +111,21 @@ const RegisterScreen: FC = () => {
                 isArabic={is_arabic()}
                 keyboardType="email-address"
               />
-              {/* Next Button */}
-              <TouchableOpacity
-                style={[
-                  styles.nextButton,
-                  !canProceed && styles.disabledButton,
-                ]}
+              <ActionButton
+                label={LanguageKey.NEXT}
                 onPress={handle_next}
                 disabled={!canProceed}
-              >
-                <Text
-                  style={[
-                    styles.nextButtonText,
-                    !canProceed && styles.disabledButtonText,
-                  ]}
-                >
-                  Next
-                </Text>
-              </TouchableOpacity>
+                containerStyles={{
+                  padding: 0,
+                }}
+                buttonStyles={{
+                  borderRadius: 4,
+                  paddingVertical: 16,
+                  paddingHorizontal: 16,
+                  marginBottom: 24,
+                }}
+                isArabic={is_arabic()}
+              />
 
               <Devider />
               <GoogleSignUpButton />
@@ -154,58 +171,47 @@ const RegisterScreen: FC = () => {
                 isArabic={is_arabic()}
                 setVisibility={setShowConfirmPassword}
               />
-              {/* <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>Confirm Password</Text>
-                <View
-                  style={[
-                    styles.passwordContainer,
-                    confirmPassword.length > 0 &&
-                      !passwordsMatch &&
-                      styles.errorBorder,
-                  ]}
-                >
-                  <TextInput
-                    style={styles.passwordInput}
-                    value={confirmPassword}
-                    onChangeText={setConfirmPassword}
-                    placeholder="Confirm your password"
-                    placeholderTextColor="#848E9C"
-                    secureTextEntry={!showConfirmPassword}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                  />
-                  <TouchableOpacity
-                    onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                    style={styles.eyeButton}
-                  >
-                    <Text style={styles.eyeButtonText}>
-                      {showConfirmPassword ? "🙈" : "👁️"}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                {confirmPassword.length > 0 && !passwordsMatch && (
-                  <Text style={styles.errorText}>Passwords do not match</Text>
-                )}
-              </View> */}
-
-              {/* Sign Up Button */}
-              <TouchableOpacity
-                style={[
-                  styles.nextButton,
-                  !canProceed && styles.disabledButton,
-                ]}
-                disabled={!canProceed}
+              <ActionButton
+                label={LanguageKey.CREATE_ACCOUNT}
                 onPress={register_account}
-              >
-                <Text
-                  style={[
-                    styles.nextButtonText,
-                    !canProceed && styles.disabledButtonText,
-                  ]}
-                >
-                  Create Account
-                </Text>
-              </TouchableOpacity>
+                disabled={!canProceed}
+                containerStyles={{
+                  padding: 0,
+                }}
+                buttonStyles={{
+                  borderRadius: 4,
+                  paddingVertical: 16,
+                  paddingHorizontal: 16,
+                  marginBottom: 24,
+                }}
+                isArabic={is_arabic()}
+                loading={loading}
+                spinnerIconColor={Colors.BLACK}
+              />
+              <ActionButton
+                label={LanguageKey.BACK}
+                onPress={handle_back}
+                containerStyles={{
+                  padding: 0,
+                }}
+                buttonStyles={{
+                  backgroundColor: Colors.GLOVO_YELLOW,
+                  borderRadius: 4,
+                  paddingVertical: 16,
+                  paddingHorizontal: 16,
+                  marginBottom: 24,
+                }}
+                buttonTextStyles={{
+                  color: Colors.BLACK,
+                }}
+                icon={FontAwesome6}
+                iconProps={{
+                  name: "arrow-left-long",
+                  size: 24,
+                }}
+                isArabic={is_arabic()}
+                iconStyles={{ color: Colors.BLACK }}
+              />
 
               {/* Terms */}
               <Text style={styles.termsText}>

@@ -142,6 +142,9 @@ export const LanguageKey = {
   PRODUCT_LIST: "PRODUCT_LIST",
   HOME: "HOME",
   EMAIL_NOT_VALID: "EMAIL_NOT_VALID",
+  EMAIL_ALREADY_IN_USE: "EMAIL_ALREADY_IN_USE",
+  TRY_LATER: "TRY_LATER",
+  WEAK_PASSWORD: "WEAK_PASSWORD",
 } as const;
 
 export const AsyncStorageKey = {

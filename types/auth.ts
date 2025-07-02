@@ -2,7 +2,7 @@ export interface UserSchema {
   uid: string;
   firstname?: string;
   lastname?: string;
-  username: string;
+  username?: string | null;
   // profile health
   country?: string;
   last_login: number;

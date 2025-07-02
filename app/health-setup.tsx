@@ -10,6 +10,7 @@ import { Screens } from "@/constants/screens";
 import { Step } from "@/enums/step";
 import { LanguageKey } from "@/constants/keys";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 
 const HealthSetup: FC = () => {
   // States
@@ -23,6 +24,7 @@ const HealthSetup: FC = () => {
 
   // Hooks
   const router = useRouter();
+  const { is_arabic } = useSelectedLanguage();
 
   const handleNext = useCallback(() => {
     if (currentStep === Step.DISEASES) {
@@ -93,6 +95,7 @@ const HealthSetup: FC = () => {
           size: 24,
         }}
         onPress={handleNext}
+        isArabic={is_arabic()}
       />
     </View>
   );
