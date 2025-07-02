@@ -42,7 +42,6 @@ const Input: FC<InputProps> = ({
 }) => {
   const onToggleVisibility = () => {
     if (setVisibility) setVisibility(secureTextEntry);
-    console.log(`secureTextEntry: ${secureTextEntry}`);
   };
 
   return (
