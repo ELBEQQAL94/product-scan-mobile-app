@@ -12,13 +12,16 @@ import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import ScanResult from "@/components/ScanResultScreen";
 import { ai_product_scan_prompt } from "@/prompt";
 import ScanningLoader from "@/components/shared/ScanningLoader";
+import { useCustomRouter } from "@/hooks/useCustomRouter";
 
 const ScanResultScreen: FC = () => {
   // Hooks
   const router = useRouter();
   const local = useLocalSearchParams();
   const colorScheme = useColorScheme();
-  const { currentLanguage } = useSelectedLanguage();
+  const { currentLanguage, is_arabic } = useSelectedLanguage();
+  const { redirect_to } = useCustomRouter();
+
   const bar_code = local.bar_code as string;
 
   // states
@@ -368,7 +371,13 @@ const ScanResultScreen: FC = () => {
   if (product.status === 0)
     return <ProductNotFound textColor={colors.text} retryScan={retryScan} />;
 
-  return <ScanResult data={product} />;
+  return (
+    <ScanResult
+      data={product}
+      isArabic={is_arabic()}
+      redirectTo={redirect_to}
+    />
+  );
 };
 
 export default ScanResultScreen;
