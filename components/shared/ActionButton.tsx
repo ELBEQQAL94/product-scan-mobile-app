@@ -11,6 +11,7 @@ import {
   ViewStyle,
   ActivityIndicator,
 } from "react-native";
+import CustomActiveIndicator from "./CustomActivityIndicator";
 
 interface IconProps {
   style?: TextStyle | ViewStyle;
@@ -86,9 +87,7 @@ const ActionButton: FC<ActionButtonProps> = ({
           {i18n.t(label)}
         </Text>
         {Icon && <Icon {...defaultIconProps} color={Colors.BLUE_GRAY} />}
-        {loading && (
-          <ActivityIndicator color={spinnerIconColor ?? Colors.WHITE} />
-        )}
+        <CustomActiveIndicator loading={loading} />
       </TouchableOpacity>
     </View>
   );

@@ -5,4 +5,5 @@ export const Screens = {
   AUTH_METHODS_SCREEN: "auth-methods",
   REGISTER_SCREEN: "register",
   LOGIN_SCREEN: "login",
+  SCAN_SCREEN: "scan",
 };
