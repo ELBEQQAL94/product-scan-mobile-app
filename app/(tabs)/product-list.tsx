@@ -1,16 +1,17 @@
+import AuthButtons from "@/components/shared/AuthButtons";
+import { useCustomRouter } from "@/hooks/useCustomRouter";
+import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { FC } from "react";
 import { View, Text } from "react-native";
 
 const ProductList: FC = () => {
+  // Hooks
+  const { is_arabic } = useSelectedLanguage();
+  const { redirect_to } = useCustomRouter();
+
   return (
-    <View
-      style={{
-        flex: 1,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <View>
+      <AuthButtons isArabic={is_arabic()} redirectTo={redirect_to} />
       <Text>Product List</Text>
     </View>
   );
