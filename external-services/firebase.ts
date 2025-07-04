@@ -16,7 +16,11 @@ import {
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { GoogleSignin, User } from "@react-native-google-signin/google-signin";
-import { GoogleAuthUserResponse, UserSchema } from "@/types/auth";
+import {
+  GoogleAuthUserResponse,
+  UserCredentials,
+  UserSchema,
+} from "@/types/auth";
 import {
   format_date_to_custom_string,
   format_date_to_timestamp,
@@ -47,6 +51,15 @@ GoogleSignin.configure({
 
 // register/create user account with google
 export const signInWithGoogle = async () => {
+  const NOW_DATE = format_date_to_custom_string();
+  const NOW_DATE_TIMESTAMP = format_date_to_timestamp();
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.REGISTER_ACCOUNT_WITH_GOOGLE,
+    action_description: "user create new account with google.",
+    action_data: null,
+    date_format: NOW_DATE,
+  };
+
   try {
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
@@ -77,52 +90,70 @@ export const signInWithGoogle = async () => {
         username: user.displayName,
         auth_provider: "google",
         email: user?.email?.trim().toLowerCase() || "",
-        last_login: format_date_to_timestamp(),
+        last_login: NOW_DATE_TIMESTAMP,
         is_email_verified: true,
         is_subscribed: false,
-        created_at: format_date_to_timestamp(),
-        date_format: format_date_to_custom_string(),
+        created_at: NOW_DATE_TIMESTAMP,
+        date_format: NOW_DATE,
       };
 
       if (docs.docs.length === 0) {
         await addDoc(collection(db, "users"), userData);
       }
+      user_action.action_data = JSON.stringify(userData);
     }
 
+    await create_log(user_action);
     return user;
-  } catch (error: any) {
-    console.log("signInWithGoogle error: ", error);
-    throw error;
+  } catch (error: unknown) {
+    user_action.action_description = "register with google get en error";
+    user_action.action_data = JSON.stringify(error);
+    await create_log(user_action);
   }
 };
 
 // logged in with email and password
 // TODO add login values
 // LoginValues
-export const logInWithEmailAndPassword = async (userInfo: any) => {
+export const logInWithEmailAndPassword = async (userInfo: UserCredentials) => {
+  const NOW_DATE = format_date_to_custom_string();
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.LOGIN_ACCOUNT,
+    action_description: "user login with email/password.",
+    action_data: JSON.stringify(userInfo),
+    date_format: NOW_DATE,
+  };
+
   try {
     const { email, password } = userInfo;
     await signInWithEmailAndPassword(auth, email.trim(), password);
+    await create_log(user_action);
   } catch (error: unknown) {
+    user_action.action_description = "user login get an error";
+    user_action.action_data = JSON.stringify(error);
+    await create_log(user_action);
+
     if (error instanceof FirebaseError) {
-      if (error.code === "auth/invalid-login-credentials") {
-        throw Error("auth/invalid-login-credentials");
+      if (error.code === FirebaseErrorMessages.INVALID_LOGIN_CREDENTIALS) {
+        throw Error(FirebaseErrorMessages.INVALID_LOGIN_CREDENTIALS);
       }
-      if (error.code === "auth/user-not-found") {
-        throw Error("auth/user-not-found");
+      if (error.code === FirebaseErrorMessages.USER_NOT_FOUND) {
+        throw Error(FirebaseErrorMessages.USER_NOT_FOUND);
       }
-      if (error.code === "auth/wrong-password") {
-        throw Error("auth/wrong-password");
+      if (error.code === FirebaseErrorMessages.WRONG_PASSWORD) {
+        throw Error(FirebaseErrorMessages.WRONG_PASSWORD);
       }
-      if (error.code === "auth/invalid-credential") {
-        throw Error("auth/invalid-credential");
+      if (error.code === FirebaseErrorMessages.INVALID_CREDENTAILS) {
+        throw Error(FirebaseErrorMessages.INVALID_CREDENTAILS);
       }
     }
   }
 };
 
 // register with email and password
-export const registerWithEmailAndPassword = async (userInfo: any) => {
+export const registerWithEmailAndPassword = async (
+  userInfo: UserCredentials
+) => {
   const NOW_DATE = format_date_to_custom_string();
   const NOW_DATE_TIMESTAMP = format_date_to_timestamp();
   const user_action: UserAction = {
@@ -171,6 +202,8 @@ export const registerWithEmailAndPassword = async (userInfo: any) => {
       if (error.code === FirebaseErrorMessages.WEAK_PASSWORD) {
         throw Error(FirebaseErrorMessages.WEAK_PASSWORD);
       }
+    } else {
+      await create_log(user_action);
     }
   }
 };
