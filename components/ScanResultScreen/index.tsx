@@ -7,12 +7,15 @@ import PremiumUpgrade from "./PremiumUpgrade";
 import ProductImage from "../shared/ProductImage";
 import ProductName from "./ProductName";
 import { ProductScanResult } from "@/constants/responses";
+import AuthButtons from "../shared/AuthButtons";
 
 interface ScanResultProps {
+  isArabic: boolean;
+  redirectTo: (screen: string) => void;
   data: ProductScanResult;
 }
 
-const ScanResult: FC<ScanResultProps> = ({ data }) => {
+const ScanResult: FC<ScanResultProps> = ({ data, isArabic, redirectTo }) => {
   // Mock not subscriber user
   const isSubcriber = true;
 
@@ -23,6 +26,8 @@ const ScanResult: FC<ScanResultProps> = ({ data }) => {
   const add_to_compare = () => console.log("add to compare");
   return (
     <View style={styles.container}>
+      <AuthButtons isArabic={isArabic} redirectTo={redirectTo} />
+
       <ScrollView>
         <ProductImage imageUri={data.image_url} />
         <ProductName name={data.product_name} />

@@ -1,51 +1,43 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BarcodeScanningResult } from "expo-camera";
-import { Href, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
-import MainScreen from "@/components/ScanScreen/Scan";
 import OnBoarding from "@/components/HomeScreen/OnBoarding";
 import { get_item } from "@/utils";
-import { View, Text } from "react-native";
-import HealthSetup from "../health-setup";
-import ScanResultScreen from "@/components/ScanResultScreen";
-import * as Location from "expo-location";
+import Scan from "@/components/ScanScreen/Scan";
+import { AsyncStorageKey, LanguageKey } from "@/constants/keys";
+import ActionButton from "@/components/shared/ActionButton";
+import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
+import { useCustomRouter } from "@/hooks/useCustomRouter";
 
 const ScanScreen = () => {
   // Hooks
   const router = useRouter();
+  const { is_arabic } = useSelectedLanguage();
+  const { redirect_to } = useCustomRouter();
 
   // States
   const [scanned, setScanned] = useState<boolean>(false);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] =
     useState<boolean>(false);
-  const [location, setLocation] = useState<Location.LocationObject | null>(
-    null
-  );
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  async function getCurrentLocation() {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-  }
 
   const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
     setScanned(true);
     const bar_code = result.data;
 
     if (bar_code) {
-      router.push(`${Screens.SCAN_RESULT_SCREEN}?bar_code=${bar_code}` as Href);
+      redirect_to_scan_result(bar_code);
     }
   };
 
+  const redirect_to_scan_result = (bar_code: string) =>
+    router.push(`${Screens.SCAN_RESULT_SCREEN}?bar_code=${bar_code}`);
+
   const checkOnboardingStatus = async () => {
     try {
-      const hasCompletedOnboarding = await get_item("hasCompletedOnboarding");
+      const hasCompletedOnboarding = await get_item(
+        AsyncStorageKey.HAS_COMPLETED_ONBOARDING
+      );
       if (hasCompletedOnboarding) {
         const convertToBool = Boolean(hasCompletedOnboarding);
         setHasCompletedOnboarding(convertToBool);
@@ -55,16 +47,20 @@ const ScanScreen = () => {
     }
   };
 
-  useEffect(() => {
-    checkOnboardingStatus();
-  }, []);
-
-  // if (hasCompletedOnboarding) {
-  //   return <OnBoarding />;
-  // }
+  if (hasCompletedOnboarding) {
+    return <OnBoarding />;
+  }
 
   return (
-    <MainScreen scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />
+    <>
+      <Scan
+        scanned={scanned}
+        handleBarcodeScanned={handleBarcodeScanned}
+        redirectToScanResult={redirect_to_scan_result}
+        isArabic={is_arabic()}
+        redirectTo={redirect_to}
+      />
+    </>
   );
 };
 

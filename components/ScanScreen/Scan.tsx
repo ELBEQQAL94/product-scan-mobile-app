@@ -9,6 +9,7 @@ import {
   Animated,
   KeyboardAvoidingView,
   Platform,
+  Button,
 } from "react-native";
 import { useState, useRef, useEffect, useCallback } from "react";
 import CameraViewContainer from "./CameraViewContainer";
@@ -16,16 +17,22 @@ import ManualEntryView from "./ManualEntryView";
 import { Colors } from "@/themes/colors";
 import BottomControls from "./BottomControls";
 import { LanguageKey } from "@/constants/keys";
-import ScanningLoader from "../shared/ScanningLoader";
+import ActionButton from "../shared/ActionButton";
+import { Screens } from "@/constants/screens";
+import AuthButtons from "../shared/AuthButtons";
 
 interface ScanProps {
   scanned: boolean;
+  isArabic: boolean;
+  redirectTo: (screen: string) => void;
   handleBarcodeScanned: (result: BarcodeScanningResult) => Promise<void>;
   redirectToScanResult: (bar_code: string) => void;
 }
 
 const Scan: React.FC<ScanProps> = ({
   scanned,
+  isArabic,
+  redirectTo,
   handleBarcodeScanned,
   redirectToScanResult,
 }) => {
@@ -35,7 +42,7 @@ const Scan: React.FC<ScanProps> = ({
   const [manualBarcode, setManualBarcode] = useState<string>("");
 
   // Animation
-  const slideAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef<Animated.Value>(new Animated.Value(0)).current;
   const inputRef = useRef<TextInput>(null);
 
   useEffect(() => {
@@ -103,6 +110,7 @@ const Scan: React.FC<ScanProps> = ({
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
+      <AuthButtons isArabic={isArabic} redirectTo={redirectTo} />
       <CameraViewContainer
         handleBarcodeScanned={handleBarcodeScanned}
         isManualMode={isManualMode}
