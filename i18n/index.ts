@@ -158,6 +158,7 @@ export const i18n = new I18n({
     TRY_LATER: "Please try again later",
     WEAK_PASSWORD: "Password should be at least 6 characters",
     ACCOUNT_CREATED: "Your account has been successfully created. Welcome!",
+    SIGNING_IN: "Signing in...",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -315,6 +316,7 @@ export const i18n = new I18n({
     TRY_LATER: "يرجى المحاولة مرة أخرى لاحقاً",
     WEAK_PASSWORD: "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
     ACCOUNT_CREATED: "تم إنشاء حسابك بنجاح. مرحباً بك!",
+    SIGNING_IN: "جاري تسجيل الدخول...",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -473,6 +475,7 @@ export const i18n = new I18n({
     TRY_LATER: "Veuillez réessayer plus tard",
     WEAK_PASSWORD: "Le mot de passe doit contenir au moins 6 caractères",
     ACCOUNT_CREATED: "Votre compte a été créé avec succès. Bienvenue !",
+    SIGNING_IN: "Connexion en cours...",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -633,6 +636,7 @@ export const i18n = new I18n({
     TRY_LATER: "Por favor, inténtelo de nuevo más tarde",
     WEAK_PASSWORD: "La contraseña debe tener al menos 6 caracteres",
     ACCOUNT_CREATED: "Tu cuenta ha sido creada exitosamente. ¡Bienvenido!",
+    SIGNING_IN: "Iniciando sesión...",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -795,6 +799,7 @@ export const i18n = new I18n({
     TRY_LATER: "Bitte versuchen Sie es später erneut",
     WEAK_PASSWORD: "Das Passwort sollte mindestens 6 Zeichen haben",
     ACCOUNT_CREATED: "Ihr Konto wurde erfolgreich erstellt. Willkommen!",
+    SIGNING_IN: "Anmeldung läuft...",
   },
 });
 

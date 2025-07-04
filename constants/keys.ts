@@ -146,6 +146,7 @@ export const LanguageKey = {
   TRY_LATER: "TRY_LATER",
   WEAK_PASSWORD: "WEAK_PASSWORD",
   ACCOUNT_CREATED: "ACCOUNT_CREATED",
+  SIGNING_IN: "SIGNING_IN",
 } as const;
 
 export const AsyncStorageKey = {
