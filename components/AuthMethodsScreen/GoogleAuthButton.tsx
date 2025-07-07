@@ -1,10 +1,7 @@
 import { LanguageKey } from "@/constants/keys";
-import { Screens } from "@/constants/screens";
-import { signInWithGoogle } from "@/external-services/firebase";
-import { useCustomRouter } from "@/hooks/useCustomRouter";
 import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { TouchableOpacity, Text, StyleSheet, Image, Alert } from "react-native";
 import CustomActiveIndicator from "../shared/CustomActivityIndicator";
 
