@@ -9,6 +9,7 @@ import { AuthSteps } from "@/enums/auth";
 import {
   register_with_email_and_password,
   auth_with_google,
+  log_in_with_email_and_password,
 } from "@/external-services/firebase";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
@@ -17,7 +18,7 @@ import { Colors } from "@/themes/colors";
 import { is_email_valid } from "@/utils";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { FC, useState } from "react";
+import { FC, lazy, useState } from "react";
 import {
   View,
   Text,
@@ -27,14 +28,15 @@ import {
   Alert,
 } from "react-native";
 import Header from "@/components/RegisterScreen/Header";
+import AuthFooter from "@/components/shared/AuthFooter";
 
 const LoginScreen: FC = () => {
   // States
-  const [step, setStep] = useState<AuthSteps>(AuthSteps.EMAIL);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [googleLoading, setGoogleLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   // Hooks
@@ -43,33 +45,19 @@ const LoginScreen: FC = () => {
   const { redirect_to } = useCustomRouter();
 
   const show_toast = () => {
-    ToastAndroid.show(i18n.t(LanguageKey.ACCOUNT_CREATED), ToastAndroid.SHORT);
+    ToastAndroid.show(i18n.t(LanguageKey.LOGIN_SUCCESS), ToastAndroid.SHORT);
   };
 
-  const handle_next = () => {
-    const email_trimmed = email.trim();
-    if (step === AuthSteps.EMAIL && is_email_valid(email_trimmed)) {
-      setErrorMessage(null);
-      setStep(AuthSteps.PASSWORD);
-    } else {
-      setErrorMessage(i18n.t(LanguageKey.EMAIL_NOT_VALID));
-    }
-  };
-
-  const handle_back = () => {
-    if (step === AuthSteps.PASSWORD) {
-      setStep(AuthSteps.EMAIL);
-    }
-  };
+  const redirectToRegister = () => redirect_to(Screens.REGISTER_SCREEN);
 
   const log_in_account = async () => {
     try {
       setLoading(true);
-      await register_with_email_and_password({ email, password });
+      await log_in_with_email_and_password({ email, password });
       setLoading(false);
       setErrorMessage(null);
       show_toast();
-      router.push(Screens.LOGIN_SCREEN);
+      router.push(Screens.SCAN_SCREEN);
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message === FirebaseErrorMessages.EMAIL_ALREADY_IN_USE) {
@@ -88,155 +76,82 @@ const LoginScreen: FC = () => {
 
   const handle_sign_in_with_google = async () => {
     try {
-      setLoading(true);
+      setGoogleLoading(true);
       await auth_with_google();
       show_toast();
       redirect_to(Screens.SCAN_SCREEN);
     } catch (error: unknown) {
       Alert.alert("Error", i18n.t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
     } finally {
-      setLoading(false);
+      setGoogleLoading(false);
     }
   };
 
-  const canProceed =
-    step === AuthSteps.EMAIL ? email.trim().length > 0 : password.length > 0;
+  const canProceed = email.trim().length > 0 && password.length > 0;
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Header />
         <View style={styles.form_container}>
-          {step === AuthSteps.EMAIL ? (
-            <>
-              <Text
-                style={[
-                  styles.title,
-                  { textAlign: is_arabic() ? "right" : "left" },
-                ]}
-              >
-                {i18n.t(LanguageKey.LOG_IN)}
-              </Text>
-              {/* Email Input */}
-              <Input
-                errorMessage={errorMessage}
-                label={i18n.t(LanguageKey.ENTER_YOUR_EMAIL_TO_CONTINUE)}
-                value={email}
-                onChangeText={setEmail}
-                placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
-                isArabic={is_arabic()}
-                keyboardType="email-address"
-              />
-              <ActionButton
-                label={LanguageKey.NEXT}
-                onPress={handle_next}
-                disabled={!canProceed}
-                containerStyles={{
-                  padding: 0,
-                }}
-                buttonStyles={{
-                  borderRadius: 4,
-                  paddingVertical: 16,
-                  paddingHorizontal: 16,
-                  marginBottom: 24,
-                }}
-                isArabic={is_arabic()}
-              />
-
-              <Devider />
-              <GoogleAuthButton
-                handleAuth={handle_sign_in_with_google}
-                loading={loading}
-              />
-
-              {/* Terms */}
-              <Text style={styles.termsText}>
-                By continuing, you agree to our{" "}
-                <Text style={styles.linkText}>Terms of Service</Text> and{" "}
-                <Text style={styles.linkText}>Privacy Policy</Text>
-              </Text>
-            </>
-          ) : (
-            <>
-              <Text style={styles.title}>Create password</Text>
-              <Text style={styles.description}>
-                Creating account for {email}
-              </Text>
-
-              {/* Password Input */}
-              <Input
-                errorMessage={errorMessage}
-                label={i18n.t(LanguageKey.PASSWORD)}
-                value={password}
-                onChangeText={setPassword}
-                placeholder={i18n.t(LanguageKey.ENTER_PASSWORD)}
-                secureTextEntry={!showPassword}
-                showPassword={showPassword}
-                isIconVisible={true}
-                isArabic={is_arabic()}
-                setVisibility={setShowPassword}
-              />
-
-              {/* Confirm Password Input */}
-
-              <ActionButton
-                label={LanguageKey.SIGNING_IN}
-                onPress={log_in_account}
-                disabled={!canProceed}
-                containerStyles={{
-                  padding: 0,
-                }}
-                buttonStyles={{
-                  borderRadius: 4,
-                  paddingVertical: 16,
-                  paddingHorizontal: 16,
-                  marginBottom: 24,
-                }}
-                isArabic={is_arabic()}
-                loading={loading}
-                spinnerIconColor={Colors.BLACK}
-              />
-              <ActionButton
-                label={LanguageKey.BACK}
-                onPress={handle_back}
-                containerStyles={{
-                  padding: 0,
-                }}
-                buttonStyles={{
-                  backgroundColor: Colors.GLOVO_YELLOW,
-                  borderRadius: 4,
-                  paddingVertical: 16,
-                  paddingHorizontal: 16,
-                  marginBottom: 24,
-                }}
-                buttonTextStyles={{
-                  color: Colors.BLACK,
-                }}
-                icon={FontAwesome6}
-                iconProps={{
-                  name: "arrow-left-long",
-                  size: 24,
-                }}
-                isArabic={is_arabic()}
-                iconStyles={{ color: Colors.BLACK }}
-              />
-
-              {/* Terms */}
-              <Text style={styles.termsText}>
-                By creating an account, you agree to our{" "}
-                <Text style={styles.linkText}>Terms of Service</Text> and{" "}
-                <Text style={styles.linkText}>Privacy Policy</Text>
-              </Text>
-            </>
-          )}
-        </View>
-
-        {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            Already have an account? <Text style={styles.linkText}>Log In</Text>
+          <Text
+            style={[
+              styles.title,
+              { textAlign: is_arabic() ? "right" : "left" },
+            ]}
+          >
+            {i18n.t(LanguageKey.LOG_IN)}
           </Text>
+          <Input
+            errorMessage={errorMessage}
+            label={i18n.t(LanguageKey.EMAIL)}
+            value={email}
+            onChangeText={setEmail}
+            placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
+            isArabic={is_arabic()}
+            keyboardType="email-address"
+          />
+          <Input
+            errorMessage={errorMessage}
+            label={i18n.t(LanguageKey.PASSWORD)}
+            value={password}
+            onChangeText={setPassword}
+            placeholder={i18n.t(LanguageKey.ENTER_PASSWORD)}
+            secureTextEntry={!showPassword}
+            showPassword={showPassword}
+            isIconVisible={true}
+            isArabic={is_arabic()}
+            setVisibility={setShowPassword}
+          />
+          <ActionButton
+            label={LanguageKey.LOG_IN}
+            onPress={log_in_account}
+            disabled={!canProceed}
+            containerStyles={{
+              padding: 0,
+            }}
+            buttonStyles={{
+              borderRadius: 4,
+              paddingVertical: 16,
+              paddingHorizontal: 16,
+              marginBottom: 24,
+            }}
+            isArabic={is_arabic()}
+            loading={loading}
+          />
+          <Devider />
+          <GoogleAuthButton
+            handleAuth={handle_sign_in_with_google}
+            loading={googleLoading}
+          />
         </View>
+
+        <AuthFooter
+          label={i18n.t(LanguageKey.DONT_HAVE_AN_ACCOUNT)}
+          link={i18n.t(LanguageKey.CREATE_ACCOUNT)}
+          redirectTo={redirectToRegister}
+          isArabic={is_arabic()}
+        />
       </View>
     </SafeAreaView>
   );
@@ -274,14 +189,6 @@ const styles = StyleSheet.create({
   linkText: {
     color: "#F0B90B",
     textDecorationLine: "underline",
-  },
-  footer: {
-    paddingBottom: 40,
-    alignItems: "center",
-  },
-  footerText: {
-    fontSize: 14,
-    color: "#848E9C",
   },
 });
 

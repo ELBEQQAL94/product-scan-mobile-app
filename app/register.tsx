@@ -27,6 +27,8 @@ import {
   ToastAndroid,
   Alert,
 } from "react-native";
+import AuthFooter from "@/components/shared/AuthFooter";
+import Terms from "@/components/RegisterScreen/Terms";
 
 const RegisterScreen: FC = () => {
   // States
@@ -39,6 +41,7 @@ const RegisterScreen: FC = () => {
     useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [googleLoading, setGoogleLoading] = useState<boolean>(false);
 
   // Hooks
   const router = useRouter();
@@ -99,16 +102,18 @@ const RegisterScreen: FC = () => {
 
   const handle_sign_in_with_google = async () => {
     try {
-      setLoading(true);
+      setGoogleLoading(true);
       await auth_with_google();
       show_toast();
       redirect_to(Screens.SCAN_SCREEN);
     } catch (error: unknown) {
       Alert.alert("Error", i18n.t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
     } finally {
-      setLoading(false);
+      setGoogleLoading(false);
     }
   };
+
+  const redirect_to_login = () => redirect_to(Screens.LOGIN_SCREEN);
 
   const canProceed =
     step === AuthSteps.EMAIL
@@ -160,21 +165,28 @@ const RegisterScreen: FC = () => {
               <Devider />
               <GoogleAuthButton
                 handleAuth={handle_sign_in_with_google}
-                loading={loading}
+                loading={googleLoading}
               />
 
-              {/* Terms */}
-              <Text style={styles.termsText}>
-                By continuing, you agree to our{" "}
-                <Text style={styles.linkText}>Terms of Service</Text> and{" "}
-                <Text style={styles.linkText}>Privacy Policy</Text>
-              </Text>
+              <Terms />
             </>
           ) : (
             <>
-              <Text style={styles.title}>Create password</Text>
-              <Text style={styles.description}>
-                Creating account for {email}
+              <Text
+                style={[
+                  styles.title,
+                  { textAlign: is_arabic() ? "right" : "left" },
+                ]}
+              >
+                {i18n.t(LanguageKey.CREATE_PASSWORD)}
+              </Text>
+              <Text
+                style={[
+                  styles.description,
+                  { textAlign: is_arabic() ? "right" : "left" },
+                ]}
+              >
+                {i18n.t(LanguageKey.CREATING_ACCOUNT_FOR)} {email}
               </Text>
 
               {/* Password Input */}
@@ -219,7 +231,6 @@ const RegisterScreen: FC = () => {
                 }}
                 isArabic={is_arabic()}
                 loading={loading}
-                spinnerIconColor={Colors.BLACK}
               />
               <ActionButton
                 label={LanguageKey.BACK}
@@ -245,23 +256,17 @@ const RegisterScreen: FC = () => {
                 isArabic={is_arabic()}
                 iconStyles={{ color: Colors.BLACK }}
               />
-
-              {/* Terms */}
-              <Text style={styles.termsText}>
-                By creating an account, you agree to our{" "}
-                <Text style={styles.linkText}>Terms of Service</Text> and{" "}
-                <Text style={styles.linkText}>Privacy Policy</Text>
-              </Text>
+              <Terms />
             </>
           )}
         </View>
 
-        {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            Already have an account? <Text style={styles.linkText}>Log In</Text>
-          </Text>
-        </View>
+        <AuthFooter
+          label={i18n.t(LanguageKey.ALREADY_HAVE_AN_ACCOUNT)}
+          link={i18n.t(LanguageKey.LOG_IN)}
+          redirectTo={redirect_to_login}
+          isArabic={is_arabic()}
+        />
       </View>
     </SafeAreaView>
   );
@@ -298,14 +303,6 @@ const styles = StyleSheet.create({
   linkText: {
     color: "#F0B90B",
     textDecorationLine: "underline",
-  },
-  footer: {
-    paddingBottom: 40,
-    alignItems: "center",
-  },
-  footerText: {
-    fontSize: 14,
-    color: "#848E9C",
   },
 });
 

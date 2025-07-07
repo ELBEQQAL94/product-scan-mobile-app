@@ -31,7 +31,6 @@ interface ActionButtonProps {
   disabled?: boolean;
   isArabic: boolean;
   loading?: boolean;
-  spinnerIconColor?: string;
   onPress: () => void;
 }
 
@@ -47,7 +46,6 @@ const ActionButton: FC<ActionButtonProps> = ({
   iconProps,
   isArabic,
   loading,
-  spinnerIconColor,
   disabled = false,
   onPress,
 }) => {
