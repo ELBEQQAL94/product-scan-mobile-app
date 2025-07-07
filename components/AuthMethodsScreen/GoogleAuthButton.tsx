@@ -8,34 +8,19 @@ import { FC, useState } from "react";
 import { TouchableOpacity, Text, StyleSheet, Image, Alert } from "react-native";
 import CustomActiveIndicator from "../shared/CustomActivityIndicator";
 
-interface GoogleSignUpButtonProps {
-  showToast: () => void;
+interface GoogleAuthButtonProps {
+  loading: boolean;
+  handleAuth: () => void;
 }
 
-const GoogleSignUpButton: FC<GoogleSignUpButtonProps> = ({ showToast }) => {
-  // States
-  const [loading, setLoading] = useState<boolean>(false);
-
-  // Hooks
-  const { redirect_to } = useCustomRouter();
-
-  const handleSignIn = async () => {
-    try {
-      setLoading(true);
-      await signInWithGoogle();
-      showToast();
-      redirect_to(Screens.SCAN_SCREEN);
-    } catch (error: unknown) {
-      Alert.alert("Error", i18n.t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
-    } finally {
-      setLoading(false);
-    }
-  };
-
+const GoogleAuthButton: FC<GoogleAuthButtonProps> = ({
+  loading,
+  handleAuth,
+}) => {
   return (
     <TouchableOpacity
       style={[styles.google_button, loading && styles.disabled]}
-      onPress={handleSignIn}
+      onPress={handleAuth}
       disabled={loading}
     >
       <Image
@@ -81,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GoogleSignUpButton;
+export default GoogleAuthButton;

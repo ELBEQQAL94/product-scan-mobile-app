@@ -1,5 +1,22 @@
+import GoogleAuthButton from "@/components/AuthMethodsScreen/GoogleAuthButton";
+import Header from "@/components/RegisterScreen/Header";
+import ActionButton from "@/components/shared/ActionButton";
+import Devider from "@/components/shared/Devider";
+import Input from "@/components/shared/form/Input";
 import { LanguageKey } from "@/constants/keys";
+import { Screens } from "@/constants/screens";
+import { AuthSteps } from "@/enums/auth";
+import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
+import {
+  auth_with_google,
+  log_in_with_email_and_password,
+} from "@/external-services/firebase";
+import { useCustomRouter } from "@/hooks/useCustomRouter";
+import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { i18n } from "@/i18n";
+import { Colors } from "@/themes/colors";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { FC, useState } from "react";
 import {
   View,
@@ -8,108 +25,148 @@ import {
   StyleSheet,
   SafeAreaView,
   TextInput,
+  ToastAndroid,
+  Alert,
 } from "react-native";
 
 const LoginScreen: FC = () => {
-  const [step, setStep] = useState<"email" | "password">("email");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  // States
+  const [step, setStep] = useState<AuthSteps>(AuthSteps.EMAIL);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleNext = () => {
-    if (step === "email" && email.trim()) {
-      setStep("password");
+  // Hooks
+  // Hooks
+  const router = useRouter();
+  const { is_arabic } = useSelectedLanguage();
+  const { redirect_to } = useCustomRouter();
+
+  const show_toast = () => {
+    ToastAndroid.show(i18n.t(LanguageKey.LOGIN_SUCCESS), ToastAndroid.SHORT);
+  };
+
+  const handle_next = () => {
+    if (step === AuthSteps.EMAIL && email.trim()) {
+      setStep(AuthSteps.PASSWORD);
     }
   };
 
-  const handleBack = () => {
-    if (step === "password") {
-      setStep("email");
+  const handle_back = () => {
+    if (AuthSteps.PASSWORD) {
+      setStep(AuthSteps.EMAIL);
+    }
+  };
+
+  const handle_log_in_with_google = async () => {
+    try {
+      setLoading(true);
+      await auth_with_google();
+      show_toast();
+      redirect_to(Screens.SCAN_SCREEN);
+    } catch (error: unknown) {
+      Alert.alert("Error", i18n.t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const login_account = async () => {
+    try {
+      setLoading(true);
+      await log_in_with_email_and_password({ email, password });
+      setLoading(false);
+      setErrorMessage(null);
+      show_toast();
+      router.push(Screens.LOGIN_SCREEN);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === FirebaseErrorMessages.INVALID_LOGIN_CREDENTIALS) {
+          setErrorMessage(i18n.t(LanguageKey.INVALID_LOGIN_CREDENTIALS));
+        }
+        if (error.message === FirebaseErrorMessages.USER_NOT_FOUND) {
+          setErrorMessage(i18n.t(LanguageKey.USER_NOT_FOUND));
+        }
+        if (error.message === FirebaseErrorMessages.WRONG_PASSWORD) {
+          setErrorMessage(i18n.t(LanguageKey.WRONG_PASSWORD));
+        }
+        if (error.message === FirebaseErrorMessages.INVALID_CREDENTAILS) {
+          setErrorMessage(i18n.t(LanguageKey.INVALID_CREDENTAILS));
+        }
+      } else {
+        setErrorMessage(i18n.t(LanguageKey.TRY_LATER));
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   const canProceed =
-    step === "email" ? email.trim().length > 0 : password.length > 0;
+    step === AuthSteps.EMAIL ? email.trim().length > 0 : password.length > 0;
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        {/* Header */}
-        <View style={styles.header}>
-          <Text style={styles.logo}>Binance</Text>
-          <Text style={styles.subtitle}>{i18n.t(LanguageKey.LOG_IN)}</Text>
-          {step === "password" && (
-            <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-              <Text style={styles.backButtonText}>
-                ← {i18n.t(LanguageKey.BACK)}
-              </Text>
-            </TouchableOpacity>
-          )}
-        </View>
+      <View>
+        <Header />
 
         {/* Main Content */}
         <View style={styles.formContainer}>
-          {step === "email" ? (
+          {step === AuthSteps.EMAIL ? (
             <>
-              <Text style={styles.title}>
+              <Text
+                style={[
+                  styles.title,
+                  { textAlign: is_arabic() ? "right" : "left" },
+                ]}
+              >
                 {i18n.t(LanguageKey.WELCOME_BACK)}
               </Text>
-              <Text style={styles.description}>
+              <Text
+                style={[
+                  styles.description,
+                  { textAlign: is_arabic() ? "right" : "left" },
+                ]}
+              >
                 {i18n.t(LanguageKey.ENTER_YOUR_EMAIL_TO_CONTINUE)}
               </Text>
 
               {/* Google Sign In Button */}
-              <TouchableOpacity style={styles.googleButton}>
-                <View style={styles.googleIcon}>
-                  <Text style={styles.googleIconText}>G</Text>
-                </View>
-                <Text style={styles.googleButtonText}>
-                  Continue with Google
-                </Text>
-              </TouchableOpacity>
+              <GoogleAuthButton
+                handleAuth={handle_log_in_with_google}
+                loading={loading}
+              />
 
-              {/* Divider */}
-              <View style={styles.divider}>
-                <View style={styles.dividerLine} />
-                <Text style={styles.dividerText}>or</Text>
-                <View style={styles.dividerLine} />
-              </View>
+              <Devider />
 
               {/* Email Input */}
-              <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>
-                  {i18n.t(LanguageKey.EMAIL)}
-                </Text>
-                <TextInput
-                  style={styles.input}
-                  value={email}
-                  onChangeText={setEmail}
-                  placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
-                  placeholderTextColor="#848E9C"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-              </View>
+              <Input
+                errorMessage={errorMessage}
+                label={i18n.t(LanguageKey.EMAIL)}
+                value={email}
+                onChangeText={setEmail}
+                placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
+                isArabic={is_arabic()}
+                keyboardType="email-address"
+              />
 
               {/* Next Button */}
-              <TouchableOpacity
-                style={[
-                  styles.nextButton,
-                  !canProceed && styles.disabledButton,
-                ]}
-                onPress={handleNext}
+              <ActionButton
+                label={LanguageKey.NEXT}
+                onPress={handle_next}
                 disabled={!canProceed}
-              >
-                <Text
-                  style={[
-                    styles.nextButtonText,
-                    !canProceed && styles.disabledButtonText,
-                  ]}
-                >
-                  {i18n.t(LanguageKey.NEXT)}
-                </Text>
-              </TouchableOpacity>
+                containerStyles={{
+                  padding: 0,
+                }}
+                buttonStyles={{
+                  borderRadius: 4,
+                  paddingVertical: 16,
+                  paddingHorizontal: 16,
+                  marginBottom: 24,
+                }}
+                isArabic={is_arabic()}
+              />
             </>
           ) : (
             <>
@@ -121,49 +178,60 @@ const LoginScreen: FC = () => {
               </Text>
 
               {/* Password Input */}
-              <View style={styles.inputContainer}>
-                <Text style={styles.inputLabel}>
-                  {i18n.t(LanguageKey.PASSWORD)}
-                </Text>
-                <View style={styles.passwordContainer}>
-                  <TextInput
-                    style={styles.passwordInput}
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholder="Enter your password"
-                    placeholderTextColor="#848E9C"
-                    secureTextEntry={!showPassword}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                  />
-                  <TouchableOpacity
-                    onPress={() => setShowPassword(!showPassword)}
-                    style={styles.eyeButton}
-                  >
-                    <Text style={styles.eyeButtonText}>
-                      {showPassword ? "🙈" : "👁️"}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
+              <Input
+                errorMessage={errorMessage}
+                label={i18n.t(LanguageKey.PASSWORD)}
+                value={password}
+                onChangeText={setPassword}
+                placeholder={i18n.t(LanguageKey.ENTER_PASSWORD)}
+                secureTextEntry={!showPassword}
+                showPassword={showPassword}
+                isIconVisible={true}
+                isArabic={is_arabic()}
+                setVisibility={setShowPassword}
+              />
 
-              {/* Log In Button */}
-              <TouchableOpacity
-                style={[
-                  styles.nextButton,
-                  !canProceed && styles.disabledButton,
-                ]}
+              <ActionButton
+                label={LanguageKey.CREATE_ACCOUNT}
+                onPress={login_account}
                 disabled={!canProceed}
-              >
-                <Text
-                  style={[
-                    styles.nextButtonText,
-                    !canProceed && styles.disabledButtonText,
-                  ]}
-                >
-                  {i18n.t(LanguageKey.LOG_IN)}
-                </Text>
-              </TouchableOpacity>
+                containerStyles={{
+                  padding: 0,
+                }}
+                buttonStyles={{
+                  borderRadius: 4,
+                  paddingVertical: 16,
+                  paddingHorizontal: 16,
+                  marginBottom: 24,
+                }}
+                isArabic={is_arabic()}
+                loading={loading}
+                spinnerIconColor={Colors.BLACK}
+              />
+              <ActionButton
+                label={LanguageKey.BACK}
+                onPress={handle_back}
+                containerStyles={{
+                  padding: 0,
+                }}
+                buttonStyles={{
+                  backgroundColor: Colors.GLOVO_YELLOW,
+                  borderRadius: 4,
+                  paddingVertical: 16,
+                  paddingHorizontal: 16,
+                  marginBottom: 24,
+                }}
+                buttonTextStyles={{
+                  color: Colors.BLACK,
+                }}
+                icon={FontAwesome6}
+                iconProps={{
+                  name: "arrow-left-long",
+                  size: 24,
+                }}
+                isArabic={is_arabic()}
+                iconStyles={{ color: Colors.BLACK }}
+              />
 
               {/* Forgot Password */}
               <TouchableOpacity style={styles.forgotPasswordContainer}>

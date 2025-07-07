@@ -1,4 +1,4 @@
-import GoogleSignUpButton from "@/components/AuthMethodsScreen/GoogleSignUpButton";
+import GoogleAuthButton from "@/components/AuthMethodsScreen/GoogleAuthButton";
 import Header from "@/components/RegisterScreen/Header";
 import ActionButton from "@/components/shared/ActionButton";
 import Devider from "@/components/shared/Devider";
@@ -6,8 +6,12 @@ import Input from "@/components/shared/form/Input";
 import { LanguageKey } from "@/constants/keys";
 import { Screens } from "@/constants/screens";
 import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
-import { RegisterSteps } from "@/enums/register";
-import { registerWithEmailAndPassword } from "@/external-services/firebase";
+import { AuthSteps } from "@/enums/auth";
+import {
+  register_with_email_and_password,
+  auth_with_google,
+} from "@/external-services/firebase";
+import { useCustomRouter } from "@/hooks/useCustomRouter";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
@@ -21,11 +25,12 @@ import {
   StyleSheet,
   SafeAreaView,
   ToastAndroid,
+  Alert,
 } from "react-native";
 
 const RegisterScreen: FC = () => {
   // States
-  const [step, setStep] = useState<RegisterSteps>(RegisterSteps.EMAIL);
+  const [step, setStep] = useState<AuthSteps>(AuthSteps.EMAIL);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -38,6 +43,7 @@ const RegisterScreen: FC = () => {
   // Hooks
   const router = useRouter();
   const { is_arabic } = useSelectedLanguage();
+  const { redirect_to } = useCustomRouter();
 
   const show_toast = () => {
     ToastAndroid.show(i18n.t(LanguageKey.ACCOUNT_CREATED), ToastAndroid.SHORT);
@@ -45,23 +51,23 @@ const RegisterScreen: FC = () => {
 
   const handle_next = () => {
     const email_trimmed = email.trim();
-    if (step === RegisterSteps.EMAIL && is_email_valid(email_trimmed)) {
+    if (step === AuthSteps.EMAIL && is_email_valid(email_trimmed)) {
       setErrorMessage(null);
-      setStep(RegisterSteps.PASSWORD);
+      setStep(AuthSteps.PASSWORD);
     } else {
       setErrorMessage(i18n.t(LanguageKey.EMAIL_NOT_VALID));
     }
   };
 
   const handle_back = () => {
-    if (step === RegisterSteps.PASSWORD) {
-      setStep(RegisterSteps.EMAIL);
+    if (step === AuthSteps.PASSWORD) {
+      setStep(AuthSteps.EMAIL);
     }
   };
 
   const register_account = async () => {
     if (
-      step === RegisterSteps.PASSWORD &&
+      step === AuthSteps.PASSWORD &&
       confirmPassword.length > 0 &&
       password !== confirmPassword
     ) {
@@ -70,7 +76,7 @@ const RegisterScreen: FC = () => {
     }
     try {
       setLoading(true);
-      await registerWithEmailAndPassword({ email, password });
+      await register_with_email_and_password({ email, password });
       setLoading(false);
       setErrorMessage(null);
       show_toast();
@@ -91,8 +97,21 @@ const RegisterScreen: FC = () => {
     }
   };
 
+  const handle_sign_in_with_google = async () => {
+    try {
+      setLoading(true);
+      await auth_with_google();
+      show_toast();
+      redirect_to(Screens.SCAN_SCREEN);
+    } catch (error: unknown) {
+      Alert.alert("Error", i18n.t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const canProceed =
-    step === RegisterSteps.EMAIL
+    step === AuthSteps.EMAIL
       ? email.trim().length > 0
       : password.length > 0 && confirmPassword.length > 0;
 
@@ -102,7 +121,7 @@ const RegisterScreen: FC = () => {
         <Header />
         {/* Main Content */}
         <View style={styles.formContainer}>
-          {step === RegisterSteps.EMAIL ? (
+          {step === AuthSteps.EMAIL ? (
             <>
               <Text
                 style={[
@@ -139,7 +158,10 @@ const RegisterScreen: FC = () => {
               />
 
               <Devider />
-              <GoogleSignUpButton />
+              <GoogleAuthButton
+                handleAuth={handle_sign_in_with_google}
+                loading={loading}
+              />
 
               {/* Terms */}
               <Text style={styles.termsText}>
