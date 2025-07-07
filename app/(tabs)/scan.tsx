@@ -5,14 +5,17 @@ import { Screens } from "@/constants/screens";
 import OnBoarding from "@/components/HomeScreen/OnBoarding";
 import { get_item } from "@/utils";
 import Scan from "@/components/ScanScreen/Scan";
-import { AsyncStorageKey, LanguageKey } from "@/constants/keys";
-import ActionButton from "@/components/shared/ActionButton";
+import { AsyncStorageKey } from "@/constants/keys";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/external-services/firebase";
 
 const ScanScreen = () => {
   // Hooks
   const router = useRouter();
+  const [user] = useAuthState(auth);
+
   const { is_arabic } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
 
@@ -49,6 +52,10 @@ const ScanScreen = () => {
 
   if (hasCompletedOnboarding) {
     return <OnBoarding />;
+  }
+
+  if (user) {
+    console.log("auth user: ", user.displayName);
   }
 
   return (

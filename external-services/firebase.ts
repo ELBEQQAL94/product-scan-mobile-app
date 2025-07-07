@@ -41,6 +41,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const NOW_DATE = format_date_to_custom_string();
+const NOW_DATE_TIMESTAMP = format_date_to_timestamp();
+
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
@@ -50,9 +53,7 @@ GoogleSignin.configure({
 });
 
 // register/create user account with google
-export const signInWithGoogle = async () => {
-  const NOW_DATE = format_date_to_custom_string();
-  const NOW_DATE_TIMESTAMP = format_date_to_timestamp();
+export const auth_with_google = async () => {
   const user_action: UserAction = {
     action_type: ActionTypeEnum.REGISTER_ACCOUNT_WITH_GOOGLE,
     action_description: "user create new account with google.",
@@ -81,28 +82,30 @@ export const signInWithGoogle = async () => {
     const res = await signInWithCredential(auth, googleCredential);
     const user = res.user as unknown as GoogleAuthUserResponse;
 
-    const q = query(collection(db, "users"), where("uid", "==", user.uid));
-    const docs = await getDocs(q);
+    const is_user_exists = await check_user_exists(user);
 
-    if (user.email) {
-      const userData: UserSchema = {
-        uid: user.uid,
-        username: user.displayName,
-        auth_provider: "google",
-        email: user?.email?.trim().toLowerCase() || "",
-        last_login: NOW_DATE_TIMESTAMP,
-        is_email_verified: true,
-        is_subscribed: false,
-        created_at: NOW_DATE_TIMESTAMP,
-        date_format: NOW_DATE,
-      };
+    if (!is_user_exists) {
+      if (user.email) {
+        const userData: UserSchema = {
+          uid: user.uid,
+          username: user.displayName,
+          auth_provider: "google",
+          email: user?.email?.trim().toLowerCase() || "",
+          last_login: NOW_DATE_TIMESTAMP,
+          is_email_verified: true,
+          is_subscribed: false,
+          created_at: NOW_DATE_TIMESTAMP,
+          date_format: NOW_DATE,
+        };
 
-      if (docs.docs.length === 0) {
         await addDoc(collection(db, "users"), userData);
+        user_action.action_data = JSON.stringify(userData);
       }
-      user_action.action_data = JSON.stringify(userData);
+    } else {
+      user_action.action_type = ActionTypeEnum.LOGIN_ACCOUNT_WITH_GOOGLE;
+      user_action.action_data = JSON.stringify(user);
+      user_action.action_description = "user logged in with google";
     }
-
     await create_log(user_action);
     return user;
   } catch (error: unknown) {
@@ -112,10 +115,32 @@ export const signInWithGoogle = async () => {
   }
 };
 
+const check_user_exists = async (user: GoogleAuthUserResponse) => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.CHECK_USER_EXISTS,
+    action_description: "check if user exists before add it to database",
+    action_data: JSON.stringify(user),
+    date_format: NOW_DATE,
+  };
+
+  try {
+    const q = query(collection(db, "users"), where("uid", "==", user.uid));
+    const data = await getDocs(q);
+    const current_user = data.docs[0].data();
+    return current_user;
+  } catch (error: unknown) {
+    user_action.action_description = "user check if exists get en error";
+    user_action.action_data = JSON.stringify(error);
+    await create_log(user_action);
+  }
+};
+
 // logged in with email and password
 // TODO add login values
 // LoginValues
-export const logInWithEmailAndPassword = async (userInfo: UserCredentials) => {
+export const log_in_with_email_and_password = async (
+  userInfo: UserCredentials
+) => {
   const NOW_DATE = format_date_to_custom_string();
   const user_action: UserAction = {
     action_type: ActionTypeEnum.LOGIN_ACCOUNT,
@@ -151,7 +176,7 @@ export const logInWithEmailAndPassword = async (userInfo: UserCredentials) => {
 };
 
 // register with email and password
-export const registerWithEmailAndPassword = async (
+export const register_with_email_and_password = async (
   userInfo: UserCredentials
 ) => {
   const NOW_DATE = format_date_to_custom_string();

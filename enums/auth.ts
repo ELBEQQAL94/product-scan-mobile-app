@@ -1,4 +1,4 @@
-export enum RegisterSteps {
+export enum AuthSteps {
   EMAIL = "EMAIL",
   PASSWORD = "PASSWORD",
 }
