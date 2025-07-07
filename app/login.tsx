@@ -180,16 +180,6 @@ const styles = StyleSheet.create({
     color: Colors.DARK_GRAY,
     marginBottom: 40,
   },
-  termsText: {
-    fontSize: 12,
-    color: "#848E9C",
-    textAlign: "center",
-    lineHeight: 18,
-  },
-  linkText: {
-    color: "#F0B90B",
-    textDecorationLine: "underline",
-  },
 });
 
 export default LoginScreen;
