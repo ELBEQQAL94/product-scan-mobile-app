@@ -20,7 +20,19 @@ const HalalScreen: FC = () => {
     }
   };
 
-  return <Scan scanned={scanned} handleBarcodeScanned={handleBarcodeScanned} />;
+  return (
+    <Scan
+      scanned={scanned}
+      handleBarcodeScanned={handleBarcodeScanned}
+      isArabic={false}
+      redirectTo={function (screen: string): void {
+        throw new Error("Function not implemented.");
+      }}
+      redirectToScanResult={function (bar_code: string): void {
+        throw new Error("Function not implemented.");
+      }}
+    />
+  );
 };
 
 export default HalalScreen;

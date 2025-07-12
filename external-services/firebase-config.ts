@@ -1,22 +1,5 @@
-import { FirebaseError, initializeApp } from "firebase/app";
-import {
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithCredential,
-  createUserWithEmailAndPassword,
-  initializeAuth,
-} from "firebase/auth";
-//@ts-ignore
-import { getReactNativePersistence } from "firebase/auth/dist/index.cjs";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  where,
-  query,
-} from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import {
   GoogleAuthUserResponse,
@@ -29,29 +12,9 @@ import {
 } from "@/utils";
 import { ActionTypeEnum, UserAction } from "@/enums/logs";
 import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const firebaseConfig = {
-  apiKey: process.env.EXPO_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 const NOW_DATE = format_date_to_custom_string();
 const NOW_DATE_TIMESTAMP = format_date_to_timestamp();
-
-// export const auth = getAuth(app);
-export const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage),
-});
-export const storage = getStorage(app);
 
 // Configure Google Sign-In
 GoogleSignin.configure({
@@ -82,10 +45,10 @@ export const auth_with_google = async () => {
     }
 
     // Create a Google credential with the token
-    const googleCredential = GoogleAuthProvider.credential(idToken);
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     // Sign-in the user with the credential
-    const res = await signInWithCredential(auth, googleCredential);
+    const res = await auth().signInWithCredential(googleCredential);
     const user = res.user as unknown as GoogleAuthUserResponse;
 
     const is_user_exists = await check_user_exists(user);
@@ -104,7 +67,7 @@ export const auth_with_google = async () => {
           date_format: NOW_DATE,
         };
 
-        await addDoc(collection(db, "users"), userData);
+        await firestore().collection("users").add(userData);
         user_action.action_data = JSON.stringify(userData);
       }
     } else {
@@ -130,10 +93,16 @@ const check_user_exists = async (user: GoogleAuthUserResponse) => {
   };
 
   try {
-    const q = query(collection(db, "users"), where("uid", "==", user.uid));
-    const data = await getDocs(q);
-    const current_user = data.docs[0].data();
-    return current_user;
+    const querySnapshot = await firestore()
+      .collection("users")
+      .where("uid", "==", user.uid)
+      .get();
+
+    if (!querySnapshot.empty) {
+      const current_user = querySnapshot.docs[0].data();
+      return current_user;
+    }
+    return null;
   } catch (error: unknown) {
     user_action.action_description = "user check if exists get en error";
     user_action.action_data = JSON.stringify(error);
@@ -142,8 +111,6 @@ const check_user_exists = async (user: GoogleAuthUserResponse) => {
 };
 
 // logged in with email and password
-// TODO add login values
-// LoginValues
 export const log_in_with_email_and_password = async (
   userInfo: UserCredentials
 ) => {
@@ -157,26 +124,24 @@ export const log_in_with_email_and_password = async (
 
   try {
     const { email, password } = userInfo;
-    await signInWithEmailAndPassword(auth, email.trim(), password);
+    await auth().signInWithEmailAndPassword(email.trim(), password);
     await create_log(user_action);
-  } catch (error: unknown) {
+  } catch (error: any) {
     user_action.action_description = "user login get an error";
     user_action.action_data = JSON.stringify(error);
     await create_log(user_action);
 
-    if (error instanceof FirebaseError) {
-      if (error.code === FirebaseErrorMessages.INVALID_LOGIN_CREDENTIALS) {
-        throw Error(FirebaseErrorMessages.INVALID_LOGIN_CREDENTIALS);
-      }
-      if (error.code === FirebaseErrorMessages.USER_NOT_FOUND) {
-        throw Error(FirebaseErrorMessages.USER_NOT_FOUND);
-      }
-      if (error.code === FirebaseErrorMessages.WRONG_PASSWORD) {
-        throw Error(FirebaseErrorMessages.WRONG_PASSWORD);
-      }
-      if (error.code === FirebaseErrorMessages.INVALID_CREDENTAILS) {
-        throw Error(FirebaseErrorMessages.INVALID_CREDENTAILS);
-      }
+    if (error.code === FirebaseErrorMessages.INVALID_LOGIN_CREDENTIALS) {
+      throw Error(FirebaseErrorMessages.INVALID_LOGIN_CREDENTIALS);
+    }
+    if (error.code === FirebaseErrorMessages.USER_NOT_FOUND) {
+      throw Error(FirebaseErrorMessages.USER_NOT_FOUND);
+    }
+    if (error.code === FirebaseErrorMessages.WRONG_PASSWORD) {
+      throw Error(FirebaseErrorMessages.WRONG_PASSWORD);
+    }
+    if (error.code === FirebaseErrorMessages.INVALID_CREDENTAILS) {
+      throw Error(FirebaseErrorMessages.INVALID_CREDENTAILS);
     }
   }
 };
@@ -198,8 +163,7 @@ export const register_with_email_and_password = async (
     const { email, password } = userInfo;
     const formatedEmail = email.trim().toLocaleLowerCase();
 
-    const res = await createUserWithEmailAndPassword(
-      auth,
+    const res = await auth().createUserWithEmailAndPassword(
       formatedEmail,
       password
     );
@@ -217,56 +181,56 @@ export const register_with_email_and_password = async (
       is_subscribed: false,
     };
 
-    await addDoc(collection(db, "users"), userData);
+    await firestore().collection("users").add(userData);
     await create_log(user_action);
     return user;
-  } catch (error: unknown) {
+  } catch (error: any) {
     user_action.action_description =
       "user try to create an account with email/password but got an error";
     user_action.action_data = JSON.stringify(error);
 
-    if (error instanceof FirebaseError) {
-      if (error.code === FirebaseErrorMessages.EMAIL_ALREADY_IN_USE) {
-        throw Error(FirebaseErrorMessages.EMAIL_ALREADY_IN_USE);
-      }
-
-      if (error.code === FirebaseErrorMessages.WEAK_PASSWORD) {
-        throw Error(FirebaseErrorMessages.WEAK_PASSWORD);
-      }
-    } else {
-      await create_log(user_action);
+    if (error.code === FirebaseErrorMessages.EMAIL_ALREADY_IN_USE) {
+      throw Error(FirebaseErrorMessages.EMAIL_ALREADY_IN_USE);
     }
+
+    if (error.code === FirebaseErrorMessages.WEAK_PASSWORD) {
+      throw Error(FirebaseErrorMessages.WEAK_PASSWORD);
+    }
+
+    await create_log(user_action);
   }
 };
 
 // Kill current session
-// export const logout = async () => {
-// 	const userAction: UserAction = {
-// 		action_type: ActionTypeEnum.LOGGED_IN,
-// 		action_description: 'User looged out.',
-// 		action_data: null,
-// 		created_at: format_date_to_timestamp(),
-// 		date_format: format_date_to_custom_string(),
-// 	};
+export const logout = async () => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.LOG_OUT,
+    action_description: "User logged out.",
+    action_data: null,
+    date_format: format_date_to_custom_string(),
+  };
 
-// 	try {
-// 		await signOut(auth);
-// 		userAction.action_description = 'User looged out.';
-// 		await createLog(userAction);
-// 	} catch (error) {
-// 		userAction.action_description = 'User looged out get an error.';
-// 		userAction.action_data = JSON.stringify(error);
-// 		await createLog(userAction);
-// 	}
-// };
+  try {
+    await auth().signOut();
+    user_action.action_description = "User logged out.";
+    await create_log(user_action);
+  } catch (error) {
+    user_action.action_description = "User logged out get an error.";
+    user_action.action_data = JSON.stringify(error);
+    await create_log(user_action);
+  }
+};
 
 export const get_products = async (): Promise<unknown> => {
   try {
-    const q = query(collection(db, "products"));
-    const data = await getDocs(q);
-    const user = data.docs[0].data();
-    console.log("data: ", user);
-    return user;
+    const querySnapshot = await firestore().collection("products").get();
+
+    if (!querySnapshot.empty) {
+      const user = querySnapshot.docs[0].data();
+      console.log("data: ", user);
+      return user;
+    }
+    return null;
   } catch (error) {
     console.log("error: ", error);
     throw new Error(`get products got an error: ${error}`);
@@ -275,8 +239,11 @@ export const get_products = async (): Promise<unknown> => {
 
 export const create_log = async (userAction: UserAction): Promise<void> => {
   try {
-    await addDoc(collection(db, "logs"), userAction);
+    await firestore().collection("logs").add(userAction);
   } catch (error: unknown) {
     console.log("create new log get an error: ", error);
   }
 };
+
+// Export auth and storage instances for use in other parts of the app
+export { auth, firestore };
