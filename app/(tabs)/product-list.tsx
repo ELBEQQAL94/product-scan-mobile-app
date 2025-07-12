@@ -3,6 +3,7 @@ import { useCustomRouter } from "@/hooks/useCustomRouter";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { FC } from "react";
 import { View, Text } from "react-native";
+import { get_products } from "@/external-services/firebase";
 
 const ProductList: FC = () => {
   // Hooks

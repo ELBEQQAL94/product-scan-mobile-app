@@ -4,7 +4,9 @@ export default {
       [
         "@react-native-google-signin/google-signin",
         {
-          iosUrlScheme: process.env.EXPO_PUBLIC_IOSURLSCHEME,
+          iosUrlScheme:
+            process.env.EXPO_PUBLIC_IOSURLSCHEME ||
+            "com.googleusercontent.apps.238005376912-nnvq5ki8h0qqagmjfg6g1qsbfq71hb33",
           // Use the ANDROID client ID (client_type: 1)
           androidClientId: process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID,
           // Use the WEB client ID (client_type: 3)
@@ -35,7 +37,11 @@ export default {
     },
     android: {
       package: "com.myscan.appmyscan",
-      googleServicesFile: process.env.GOOGLE_SERVICES_JSON, // Use environment variable
+      versionCode: 3,
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
+    },
+    ios: {
+      googleServicesFile: process.env.GOOGLE_SERVICES_PLIST,
     },
     newArchEnabled: true,
   },

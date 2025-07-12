@@ -5,20 +5,16 @@ import Input from "@/components/shared/form/Input";
 import { LanguageKey } from "@/constants/keys";
 import { Screens } from "@/constants/screens";
 import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
-import { AuthSteps } from "@/enums/auth";
 import {
-  register_with_email_and_password,
   auth_with_google,
   log_in_with_email_and_password,
-} from "@/external-services/firebase";
+} from "@/external-services/firebase-config";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
-import { is_email_valid } from "@/utils";
-import { FontAwesome6 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { FC, lazy, useState } from "react";
+import { FC, useState } from "react";
 import {
   View,
   Text,
