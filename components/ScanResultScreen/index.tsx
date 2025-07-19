@@ -1,13 +1,15 @@
 import { FC } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, TouchableOpacity } from "react-native";
 import HealthScore from "./HealthScore";
 import PersonalizedMessage from "./PersonalizedMessage";
-import { scanResultResponseWithProfileHealthSetupDataMock } from "@/mock/scanResultResponseData";
 import PremiumUpgrade from "./PremiumUpgrade";
 import ProductImage from "../shared/ProductImage";
 import ProductName from "./ProductName";
 import { ProductScanResult } from "@/constants/responses";
 import AuthButtons from "../shared/AuthButtons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Colors } from "@/themes/colors";
+import { Screens } from "@/constants/screens";
 
 interface ScanResultProps {
   isArabic: boolean;
@@ -27,7 +29,6 @@ const ScanResult: FC<ScanResultProps> = ({ data, isArabic, redirectTo }) => {
   return (
     <View style={styles.container}>
       <AuthButtons isArabic={isArabic} redirectTo={redirectTo} />
-
       <ScrollView>
         <ProductImage imageUri={data.image_url} />
         <ProductName name={data.product_name} />
@@ -49,12 +50,34 @@ const ScanResult: FC<ScanResultProps> = ({ data, isArabic, redirectTo }) => {
           />
         </View> */}
       </ScrollView>
+      <TouchableOpacity
+        onPress={() => redirectTo(Screens.SCAN_SCREEN)}
+        style={styles.fab}
+      >
+        <MaterialCommunityIcons
+          name="barcode-scan"
+          size={28}
+          color={Colors.WHITE}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
+  fab: {
+    position: "absolute",
+    width: 56,
+    height: 56,
+    alignItems: "center",
+    justifyContent: "center",
+    right: 20,
+    bottom: 20,
+    backgroundColor: Colors.GLOVO_GREEN,
+    borderRadius: 28,
+    zIndex: 1000,
+  },
 });
 
 export default ScanResult;
