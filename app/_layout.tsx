@@ -75,6 +75,12 @@ export default function Layout() {
             gestureEnabled: false,
           }}
         />
+        <Stack.Screen
+          name={Screens.SCAN_RESULT_SCREEN}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );
