@@ -15,7 +15,6 @@ const ScanScreen = () => {
 
   // Hooks
   const router = useRouter();
-  // const [user] = useAuthState(auth);
 
   const { is_arabic } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
