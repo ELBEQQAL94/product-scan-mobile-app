@@ -8,13 +8,13 @@ import Scan from "@/components/ScanScreen/Scan";
 import { AsyncStorageKey } from "@/constants/keys";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "@/external-services/firebase";
+// import { useAuthState } from "react-firebase-hooks/auth";
+// import { auth } from "@/external-services/firebase-config";
 
 const ScanScreen = () => {
   // Hooks
   const router = useRouter();
-  const [user] = useAuthState(auth);
+  // const [user] = useAuthState(auth);
 
   const { is_arabic } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
@@ -54,9 +54,9 @@ const ScanScreen = () => {
     return <OnBoarding />;
   }
 
-  if (user) {
-    console.log("auth user: ", user.displayName);
-  }
+  // if (user) {
+  //   console.log("auth user: ", user.displayName);
+  // }
 
   return (
     <>

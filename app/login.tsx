@@ -25,6 +25,7 @@ import {
 } from "react-native";
 import Header from "@/components/RegisterScreen/Header";
 import AuthFooter from "@/components/shared/AuthFooter";
+import crashlytics from "@react-native-firebase/crashlytics";
 
 const LoginScreen: FC = () => {
   // States
@@ -49,20 +50,46 @@ const LoginScreen: FC = () => {
   const log_in_account = async () => {
     try {
       setLoading(true);
+
+      // Log login attempt
+      crashlytics().log("User attempting email/password login");
+      crashlytics().setAttribute("login_method", "email_password");
+      crashlytics().setAttribute("user_email", email);
+
       await log_in_with_email_and_password({ email, password });
+
+      // Log successful login
+      crashlytics().log("Email/password login successful");
+      crashlytics().setAttribute("login_success", "true");
+
       setLoading(false);
       setErrorMessage(null);
       show_toast();
       router.push(Screens.SCAN_SCREEN);
     } catch (error: unknown) {
+      // Log login error with context
+      crashlytics().log("Email/password login failed");
+      crashlytics().setAttribute("login_success", "false");
+
       if (error instanceof Error) {
+        // Record the specific error
+        crashlytics().recordError(error);
+        crashlytics().setAttribute("error_type", error.message);
+
         if (error.message === FirebaseErrorMessages.EMAIL_ALREADY_IN_USE) {
           setErrorMessage(i18n.t(LanguageKey.EMAIL_ALREADY_IN_USE));
-        }
-        if (error.message === FirebaseErrorMessages.WEAK_PASSWORD) {
+        } else if (error.message === FirebaseErrorMessages.WEAK_PASSWORD) {
           setErrorMessage(i18n.t(LanguageKey.WEAK_PASSWORD));
+        } else {
+          // Log unexpected Firebase errors
+          crashlytics().log(`Unexpected Firebase error: ${error.message}`);
+          setErrorMessage(i18n.t(LanguageKey.TRY_LATER));
         }
       } else {
+        // Log non-Error objects
+        crashlytics().recordError(
+          new Error(`Unknown login error: ${String(error)}`)
+        );
         setErrorMessage(i18n.t(LanguageKey.TRY_LATER));
       }
     } finally {
@@ -73,10 +100,33 @@ const LoginScreen: FC = () => {
   const handle_sign_in_with_google = async () => {
     try {
       setGoogleLoading(true);
+
+      // Log Google sign-in attempt
+      crashlytics().log("User attempting Google sign-in");
+      crashlytics().setAttribute("login_method", "google");
+
       await auth_with_google();
+
+      // Log successful Google sign-in
+      crashlytics().log("Google sign-in successful");
+      crashlytics().setAttribute("google_login_success", "true");
+
       show_toast();
       redirect_to(Screens.SCAN_SCREEN);
     } catch (error: unknown) {
+      // Log Google sign-in error
+      crashlytics().log("Google sign-in failed");
+      crashlytics().setAttribute("google_login_success", "false");
+
+      if (error instanceof Error) {
+        crashlytics().recordError(error);
+        crashlytics().setAttribute("google_error_type", error.message);
+      } else {
+        crashlytics().recordError(
+          new Error(`Google sign-in error: ${String(error)}`)
+        );
+      }
+
       Alert.alert("Error", i18n.t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
     } finally {
       setGoogleLoading(false);

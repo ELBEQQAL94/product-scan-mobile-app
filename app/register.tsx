@@ -10,7 +10,7 @@ import { AuthSteps } from "@/enums/auth";
 import {
   register_with_email_and_password,
   auth_with_google,
-} from "@/external-services/firebase";
+} from "@/external-services/firebase-config";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { i18n } from "@/i18n";
