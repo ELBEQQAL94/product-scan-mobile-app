@@ -93,23 +93,21 @@ export const auth_with_google = async () => {
 
     // Get idToken from userInfo
     const idToken = signInResult.data?.idToken || null;
-    console.log(`idToken: ${idToken}`);
 
     // Get access token
     const tokens = await GoogleSignin.getTokens();
     user_action.action_data = `${tokens}`;
     user_action.action_description = "tokens";
     await create_log(user_action);
-    // console.log("All tokens:", tokens);
 
     // TODO: test this
     // https://github.com/react-native-google-signin/google-signin/issues/836
     user_action.action_data = `${idToken}`;
     user_action.action_description = "idToken";
     await create_log(user_action);
-    // if (!idToken) {
-    //   // throw new Error("No ID token received");
-    // }
+    if (!idToken) {
+      throw new Error("No ID token received");
+    }
 
     // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
