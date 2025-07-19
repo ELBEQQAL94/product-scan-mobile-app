@@ -29,6 +29,17 @@ export default {
           recordAudioAndroid: true,
         },
       ],
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      "@react-native-firebase/crashlytics",
+      [
+        "expo-build-properties",
+        {
+          ios: {
+            useFrameworks: "static",
+          },
+        },
+      ],
     ],
     extra: {
       eas: {
@@ -38,7 +49,8 @@ export default {
     android: {
       package: "com.myscan.appmyscan",
       versionCode: 3,
-      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
+      googleServicesFile:
+        process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
     },
     ios: {
       googleServicesFile: process.env.GOOGLE_SERVICES_PLIST,
