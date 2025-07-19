@@ -8,10 +8,11 @@ import Scan from "@/components/ScanScreen/Scan";
 import { AsyncStorageKey } from "@/constants/keys";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
-// import { useAuthState } from "react-firebase-hooks/auth";
-// import { auth } from "@/external-services/firebase-config";
+import auth from "@react-native-firebase/auth";
 
 const ScanScreen = () => {
+  const currentUser = auth().currentUser;
+
   // Hooks
   const router = useRouter();
   // const [user] = useAuthState(auth);
@@ -54,9 +55,9 @@ const ScanScreen = () => {
     return <OnBoarding />;
   }
 
-  // if (user) {
-  //   console.log("auth user: ", user.displayName);
-  // }
+  if (currentUser) {
+    console.log("auth user =========: ", currentUser.displayName);
+  }
 
   return (
     <>
