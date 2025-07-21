@@ -164,6 +164,7 @@ export const i18n = new I18n({
     WRONG_PASSWORD: "Wrong password",
     USER_NOT_FOUND: "User not found",
     INVALID_LOGIN_CREDENTIALS: "Invalid login credentials",
+    SCANNED_PRODUCTS: "Scanned Products",
   },
   ar: {
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
@@ -327,6 +328,7 @@ export const i18n = new I18n({
     WRONG_PASSWORD: "كلمة مرور خاطئة",
     USER_NOT_FOUND: "المستخدم غير موجود",
     INVALID_LOGIN_CREDENTIALS: "بيانات تسجيل دخول غير صحيحة",
+    SCANNED_PRODUCTS: "المنتجات الممسوحة ضوئياً",
   },
   fr: {
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
@@ -491,6 +493,7 @@ export const i18n = new I18n({
     WRONG_PASSWORD: "Mot de passe incorrect",
     USER_NOT_FOUND: "Utilisateur introuvable",
     INVALID_LOGIN_CREDENTIALS: "Identifiants de connexion invalides",
+    SCANNED_PRODUCTS: "Produits Scannés",
   },
   es: {
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
@@ -657,6 +660,7 @@ export const i18n = new I18n({
     WRONG_PASSWORD: "Contraseña incorrecta",
     USER_NOT_FOUND: "Usuario no encontrado",
     INVALID_LOGIN_CREDENTIALS: "Credenciales de acceso inválidas",
+    SCANNED_PRODUCTS: "Productos Escaneados",
   },
   de: {
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
@@ -825,6 +829,7 @@ export const i18n = new I18n({
     WRONG_PASSWORD: "Falsches Passwort",
     USER_NOT_FOUND: "Benutzer nicht gefunden",
     INVALID_LOGIN_CREDENTIALS: "Ungültige Anmeldedaten",
+    SCANNED_PRODUCTS: "Productos Escaneados",
   },
 });
 
