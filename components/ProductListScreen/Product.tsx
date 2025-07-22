@@ -19,9 +19,20 @@ const Product: FC<ProductProps> = ({ product }) => {
       <Image src={product.image_url} style={styles.image} />
       <View style={styles.text_container}>
         <Text style={styles.product_name}>{product.product_name}</Text>
-        <Text style={[styles.score, { color: get_score_color(product.score) }]}>
-          {product.score}
-        </Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={[styles.score, { color: get_score_color(product.score) }]}
+          >
+            {product.score}
+          </Text>
+          <Text style={styles.score}>/100</Text>
+        </View>
       </View>
     </View>
   );
@@ -33,6 +44,9 @@ const styles = StyleSheet.create({
     height: 120,
     alignItems: "center",
     marginBottom: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: Colors.LIGHT_GRAY,
   },
   image: {
     width: "30%",
@@ -52,6 +66,7 @@ const styles = StyleSheet.create({
   score: {
     color: Colors.DARK_GRAY,
     fontWeight: "bold",
+    marginRight: 5,
     ...Typography.bodyLarge,
   },
 });

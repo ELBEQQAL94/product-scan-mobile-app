@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BarcodeScanningResult } from "expo-camera";
 import { useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
 import OnBoarding from "@/components/HomeScreen/OnBoarding";
-import { get_item } from "@/utils";
+import { clear_items, get_all_cached_products, get_item } from "@/utils";
 import Scan from "@/components/ScanScreen/Scan";
 import { AsyncStorageKey } from "@/constants/keys";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
@@ -49,6 +49,15 @@ const ScanScreen = () => {
       console.log("checkOnboardingStatus get an error: ", error);
     }
   };
+
+  const clearAllCache = async () => clear_items();
+  const get_all_products = async () => get_all_cached_products();
+
+  useEffect(() => {
+    console.log("clear ceche ====");
+    get_all_products();
+    // clearAllCache();
+  }, []);
 
   if (hasCompletedOnboarding) {
     return <OnBoarding />;
