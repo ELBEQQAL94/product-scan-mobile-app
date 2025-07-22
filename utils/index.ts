@@ -99,7 +99,6 @@ export const get_all_cached_products = async (): Promise<
         }
       }
     });
-    console.log(`products: ${JSON.stringify(products)}`);
     return products;
   } catch (error) {
     console.error("Error getting all cached products:", error);
