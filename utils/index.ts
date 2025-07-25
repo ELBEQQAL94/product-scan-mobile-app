@@ -49,16 +49,60 @@ export const clear_items = async () => {
   }
 };
 
+// export const save_product_by_bar_code = async (
+//   bar_code: string,
+//   product: ProductScanResult
+// ) => {
+//   try {
+//     await AsyncStorage.setItem(bar_code, JSON.stringify(product));
+//   } catch (error) {
+//     console.error(
+//       `get an error set item: ${bar_code} in local storage: ${error}`
+//     );
+//   }
+// };
+
+const PRODUCT_PREFIX = "product_";
+
 export const save_product_by_bar_code = async (
   bar_code: string,
   product: ProductScanResult
 ) => {
   try {
-    await AsyncStorage.setItem(bar_code, JSON.stringify(product));
-  } catch (error) {
-    console.error(
-      `get an error set item: ${bar_code} in local storage: ${error}`
+    console.log(`saved product ${PRODUCT_PREFIX}${bar_code}`);
+    await AsyncStorage.setItem(
+      `${PRODUCT_PREFIX}${bar_code}`,
+      JSON.stringify(product)
     );
+  } catch (error) {
+    console.error(`Error saving product ${bar_code}:`, error);
+  }
+};
+
+export const get_all_cached_products = async (): Promise<
+  ProductScanResult[]
+> => {
+  try {
+    const allKeys = await AsyncStorage.getAllKeys();
+    const productKeys = allKeys.filter((key) => key.startsWith(PRODUCT_PREFIX));
+
+    const keyValuePairs = await AsyncStorage.multiGet(productKeys);
+
+    const products: ProductScanResult[] = [];
+    keyValuePairs.forEach(([key, value]) => {
+      if (value) {
+        try {
+          const product = JSON.parse(value) as ProductScanResult;
+          products.push(product);
+        } catch (parseError) {
+          console.error(`Error parsing product for key ${key}:`, parseError);
+        }
+      }
+    });
+    return products;
+  } catch (error) {
+    console.error("Error getting all cached products:", error);
+    return [];
   }
 };
 

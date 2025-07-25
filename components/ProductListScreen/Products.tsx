@@ -1,6 +1,6 @@
 import { ProductScanResult } from "@/constants/responses";
 import { FC } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import Product from "./Product";
 
 interface ProductProps {
@@ -8,7 +8,6 @@ interface ProductProps {
 }
 
 const Products: FC<ProductProps> = ({ products }) => {
-  console.log(products);
   return (
     <ScrollView style={styles.container}>
       {products.map((product: ProductScanResult, index: number) => (

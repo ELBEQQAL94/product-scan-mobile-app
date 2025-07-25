@@ -7,10 +7,16 @@ import { FC } from "react";
 
 interface AuthButtonsProps {
   isArabic: boolean;
+  isAuth?: boolean;
   redirectTo: (screen: string) => void;
 }
 
-const AuthButtons: FC<AuthButtonsProps> = ({ isArabic, redirectTo }) => {
+const AuthButtons: FC<AuthButtonsProps> = ({
+  isArabic,
+  isAuth = false,
+  redirectTo,
+}) => {
+  if (isAuth) return null;
   return (
     <View style={styles.container}>
       <ActionButton

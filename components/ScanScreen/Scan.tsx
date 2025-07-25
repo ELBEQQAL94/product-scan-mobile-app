@@ -9,21 +9,19 @@ import {
   Animated,
   KeyboardAvoidingView,
   Platform,
-  Button,
 } from "react-native";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import CameraViewContainer from "./CameraViewContainer";
 import ManualEntryView from "./ManualEntryView";
 import { Colors } from "@/themes/colors";
 import BottomControls from "./BottomControls";
 import { LanguageKey } from "@/constants/keys";
-import ActionButton from "../shared/ActionButton";
-import { Screens } from "@/constants/screens";
 import AuthButtons from "../shared/AuthButtons";
 
 interface ScanProps {
   scanned: boolean;
   isArabic: boolean;
+  isAuth?: boolean;
   redirectTo: (screen: string) => void;
   handleBarcodeScanned: (result: BarcodeScanningResult) => Promise<void>;
   redirectToScanResult: (bar_code: string) => void;
@@ -32,6 +30,7 @@ interface ScanProps {
 const Scan: React.FC<ScanProps> = ({
   scanned,
   isArabic,
+  isAuth,
   redirectTo,
   handleBarcodeScanned,
   redirectToScanResult,
@@ -110,7 +109,11 @@ const Scan: React.FC<ScanProps> = ({
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <AuthButtons isArabic={isArabic} redirectTo={redirectTo} />
+      <AuthButtons
+        isArabic={isArabic}
+        redirectTo={redirectTo}
+        isAuth={isAuth}
+      />
       <CameraViewContainer
         handleBarcodeScanned={handleBarcodeScanned}
         isManualMode={isManualMode}
