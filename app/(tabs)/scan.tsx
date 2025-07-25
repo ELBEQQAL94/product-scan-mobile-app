@@ -9,12 +9,13 @@ import { AsyncStorageKey } from "@/constants/keys";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
 import auth from "@react-native-firebase/auth";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "@/hooks/useAuth";
 
 const ScanScreen = () => {
-  const currentUser = auth().currentUser;
-
   // Hooks
   const router = useRouter();
+  const { user } = useAuth();
 
   const { is_arabic } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
@@ -23,6 +24,8 @@ const ScanScreen = () => {
   const [scanned, setScanned] = useState<boolean>(false);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] =
     useState<boolean>(false);
+
+  const isAuth = user?.displayName !== null;
 
   const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
     setScanned(true);
@@ -50,33 +53,21 @@ const ScanScreen = () => {
     }
   };
 
-  const clearAllCache = async () => clear_items();
-  const get_all_products = async () => get_all_cached_products();
-
-  useEffect(() => {
-    console.log("clear ceche ====");
-    get_all_products();
-    // clearAllCache();
-  }, []);
-
   if (hasCompletedOnboarding) {
     return <OnBoarding />;
   }
 
-  if (currentUser) {
-    console.log("auth user =========: ", currentUser.displayName);
-  }
-
   return (
-    <>
+    <ProtectedRoute>
       <Scan
         scanned={scanned}
+        isAuth={isAuth}
         handleBarcodeScanned={handleBarcodeScanned}
         redirectToScanResult={redirect_to_scan_result}
         isArabic={is_arabic()}
         redirectTo={redirect_to}
       />
-    </>
+    </ProtectedRoute>
   );
 };
 

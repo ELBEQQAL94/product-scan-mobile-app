@@ -1,8 +1,10 @@
 import Products from "@/components/ProductListScreen/Products";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthButtons from "@/components/shared/AuthButtons";
 import ScanningLoader from "@/components/shared/ScanningLoader";
 import { LanguageKey } from "@/constants/keys";
 import { ProductScanResult } from "@/constants/responses";
+import { useAuth } from "@/hooks/useAuth";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { i18n } from "@/i18n";
@@ -16,8 +18,13 @@ const ProductList: FC = () => {
   // Hooks
   const { is_arabic } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
+  const { user } = useAuth();
+
+  // States
   const [products, setProducts] = useState<ProductScanResult[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const isAuth = user?.displayName !== null;
 
   const fetch_all_cached_products = async () => {
     try {
@@ -48,21 +55,29 @@ const ProductList: FC = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <AuthButtons isArabic={is_arabic()} redirectTo={redirect_to} />
-      <Text style={styles.text}>{i18n.t(LanguageKey.SCANNED_PRODUCTS)}</Text>
-      <Products products={products} />
-    </View>
+    <ProtectedRoute>
+      <View style={styles.container}>
+        <AuthButtons
+          isArabic={is_arabic()}
+          redirectTo={redirect_to}
+          isAuth={isAuth}
+        />
+        <Text style={styles.text}>{i18n.t(LanguageKey.SCANNED_PRODUCTS)}</Text>
+        <Products products={products} />
+      </View>
+    </ProtectedRoute>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 15,
     flex: 1,
   },
   text: {
     textAlign: "center",
     fontWeight: "bold",
+    marginBottom: 10,
     ...Typography.bodyLarge,
   },
   loading_container: {
