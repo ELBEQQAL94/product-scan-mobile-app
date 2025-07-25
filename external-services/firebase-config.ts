@@ -12,9 +12,11 @@ import {
 import {
   format_date_to_custom_string,
   format_date_to_timestamp,
+  get_all_cached_products,
 } from "@/utils";
 import { ActionTypeEnum, UserAction } from "@/enums/logs";
 import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
+import { Product } from "@/types/products";
 
 const db = firestore();
 
@@ -71,12 +73,6 @@ export const auth_with_google = async () => {
   await create_log(user_action);
 
   try {
-    // Configure Google Sign-In INSIDE the function
-    // GoogleSignin.configure({
-    //   webClientId:
-    //     "238005376912-g5mqaghnih33nov4fcjjuce2a7kcd7pd.apps.googleusercontent.com",
-    // });
-    // Check if your device supports Google Play
     const hasPlayServices = await GoogleSignin.hasPlayServices({
       showPlayServicesUpdateDialog: true,
     });
@@ -100,8 +96,6 @@ export const auth_with_google = async () => {
     user_action.action_description = "tokens";
     await create_log(user_action);
 
-    // TODO: test this
-    // https://github.com/react-native-google-signin/google-signin/issues/836
     user_action.action_data = `${idToken}`;
     user_action.action_description = "idToken";
     await create_log(user_action);
@@ -118,10 +112,10 @@ export const auth_with_google = async () => {
     // Sign-in the user with the credential
     const res = await auth().signInWithCredential(googleCredential);
     const user = res.user as unknown as GoogleAuthUserResponse;
-    console.log("current user: ", user.displayName);
     const is_user_exists = await check_user_exists(user);
 
     if (!is_user_exists) {
+      console.log("user not exists");
       if (user.email) {
         const userData: UserSchema = {
           uid: user.uid,
@@ -134,8 +128,10 @@ export const auth_with_google = async () => {
           created_at: NOW_DATE_TIMESTAMP,
           date_format: NOW_DATE,
         };
+        const userId = user.uid;
 
         await firestore().collection("users").add(userData);
+        await save_products_in_db(userId);
         user_action.action_data = JSON.stringify(userData);
       }
     } else {
@@ -175,10 +171,13 @@ const check_user_exists = async (user: GoogleAuthUserResponse) => {
       return current_user;
     }
     return null;
-  } catch (error: unknown) {
+  } catch (error: any) {
     user_action.action_description = "user check if exists get en error";
-    user_action.action_data = JSON.stringify(error);
-    // await create_log(JSON.stringify(user_action));
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
   }
 };
 
@@ -197,11 +196,14 @@ export const log_in_with_email_and_password = async (
   try {
     const { email, password } = userInfo;
     await auth().signInWithEmailAndPassword(email.trim(), password);
-    // await create_log(JSON.stringify(user_action));
+    await create_log(user_action);
   } catch (error: any) {
     user_action.action_description = "user login get an error";
-    user_action.action_data = JSON.stringify(error);
-    // await create_log(JSON.stringify(user_action));
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
 
     if (error.code === FirebaseErrorMessages.INVALID_LOGIN_CREDENTIALS) {
       throw Error(FirebaseErrorMessages.INVALID_LOGIN_CREDENTIALS);
@@ -253,13 +255,19 @@ export const register_with_email_and_password = async (
       is_subscribed: false,
     };
 
+    const userId = user.uid;
+
     await firestore().collection("users").add(userData);
-    // await create_log(JSON.stringify(user_action));
+    await save_products_in_db(userId);
+    await create_log(user_action);
     return user;
   } catch (error: any) {
     user_action.action_description =
       "user try to create an account with email/password but got an error";
-    user_action.action_data = JSON.stringify(error);
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+    });
 
     if (error.code === FirebaseErrorMessages.EMAIL_ALREADY_IN_USE) {
       throw Error(FirebaseErrorMessages.EMAIL_ALREADY_IN_USE);
@@ -269,7 +277,7 @@ export const register_with_email_and_password = async (
       throw Error(FirebaseErrorMessages.WEAK_PASSWORD);
     }
 
-    // await create_log(JSON.stringify(user_action));
+    await create_log(user_action);
   }
 };
 
@@ -285,11 +293,14 @@ export const logout = async () => {
   try {
     await auth().signOut();
     user_action.action_description = "User logged out.";
-    // await create_log(JSON.stringify(user_action));
-  } catch (error) {
+    await create_log(user_action);
+  } catch (error: any) {
     user_action.action_description = "User logged out get an error.";
-    user_action.action_data = JSON.stringify(error);
-    // await create_log(JSON.stringify(user_action));
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
   }
 };
 
@@ -306,6 +317,42 @@ export const get_products = async (): Promise<unknown> => {
   } catch (error) {
     console.log("error: ", error);
     throw new Error(`get products got an error: ${error}`);
+  }
+};
+
+export const save_products_in_db = async (user_id: string) => {
+  console.log("save_products_in_db");
+  console.log(`user_id: ${user_id}`);
+
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.SAVE_PRODUCTS_IN_DB,
+    action_description: "Async products of user when create account.",
+    action_data: null,
+    date_format: format_date_to_custom_string(),
+  };
+
+  try {
+    const all_products = await get_all_cached_products();
+    console.log(`all_products: ${all_products}`);
+
+    user_action.action_data = JSON.stringify(all_products);
+    for (let i = 0; i < all_products.length; i += 1) {
+      const product = all_products[i];
+      const updateProduct: Product = {
+        product_scan_result: product,
+        user_id,
+      };
+      await firestore().collection("products").add(updateProduct);
+    }
+    await create_log(user_action);
+  } catch (error: any) {
+    user_action.action_description =
+      "Error in Async products of user when create account.";
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
   }
 };
 
