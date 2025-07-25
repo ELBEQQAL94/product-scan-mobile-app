@@ -5,6 +5,7 @@ export enum ActionTypeEnum {
   LOGIN_ACCOUNT_WITH_GOOGLE = "LOGIN_ACCOUNT_WITH_GOOGLE",
   CHECK_USER_EXISTS = "CHECK_USER_EXISTS",
   LOG_OUT = "LOG_OUT",
+  SAVE_PRODUCTS_IN_DB = "SAVE_PRODUCTS_IN_DB",
 }
 
 export interface UserAction {
