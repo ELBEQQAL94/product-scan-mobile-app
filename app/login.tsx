@@ -22,6 +22,9 @@ import {
   SafeAreaView,
   ToastAndroid,
   Alert,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import Header from "@/components/RegisterScreen/Header";
 import AuthFooter from "@/components/shared/AuthFooter";
@@ -137,73 +140,84 @@ const LoginScreen: FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Header />
-        <View style={styles.form_container}>
-          <Text
-            style={[
-              styles.title,
-              { textAlign: is_arabic() ? "right" : "left" },
-            ]}
-          >
-            {i18n.t(LanguageKey.LOG_IN)}
-          </Text>
-          <Input
-            errorMessage={errorMessage}
-            label={i18n.t(LanguageKey.EMAIL)}
-            value={email}
-            onChangeText={setEmail}
-            placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
-            isArabic={is_arabic()}
-            keyboardType="email-address"
-          />
-          <Input
-            errorMessage={errorMessage}
-            label={i18n.t(LanguageKey.PASSWORD)}
-            value={password}
-            onChangeText={setPassword}
-            placeholder={i18n.t(LanguageKey.ENTER_PASSWORD)}
-            secureTextEntry={!showPassword}
-            showPassword={showPassword}
-            isIconVisible={true}
-            isArabic={is_arabic()}
-            setVisibility={setShowPassword}
-          />
-          <ActionButton
-            label={LanguageKey.LOG_IN}
-            onPress={log_in_account}
-            disabled={!canProceed}
-            containerStyles={{
-              padding: 0,
-            }}
-            buttonStyles={{
-              borderRadius: 4,
-              paddingVertical: 16,
-              paddingHorizontal: 16,
-              marginBottom: 24,
-            }}
-            isArabic={is_arabic()}
-            loading={loading}
-          />
-          <Devider />
-          <GoogleAuthButton
-            handleAuth={handle_sign_in_with_google}
-            loading={googleLoading}
-          />
-        </View>
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      >
+        <ScrollView>
+          <View style={styles.content}>
+            <Header />
+            <View style={styles.form_container}>
+              <Text
+                style={[
+                  styles.title,
+                  { textAlign: is_arabic() ? "right" : "left" },
+                ]}
+              >
+                {i18n.t(LanguageKey.LOG_IN)}
+              </Text>
+              <Input
+                errorMessage={errorMessage}
+                label={i18n.t(LanguageKey.EMAIL)}
+                value={email}
+                onChangeText={setEmail}
+                placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
+                isArabic={is_arabic()}
+                keyboardType="email-address"
+              />
+              <Input
+                errorMessage={errorMessage}
+                label={i18n.t(LanguageKey.PASSWORD)}
+                value={password}
+                onChangeText={setPassword}
+                placeholder={i18n.t(LanguageKey.ENTER_PASSWORD)}
+                secureTextEntry={!showPassword}
+                showPassword={showPassword}
+                isIconVisible={true}
+                isArabic={is_arabic()}
+                setVisibility={setShowPassword}
+              />
+              <ActionButton
+                label={LanguageKey.LOG_IN}
+                onPress={log_in_account}
+                disabled={!canProceed}
+                containerStyles={{
+                  padding: 0,
+                }}
+                buttonStyles={{
+                  borderRadius: 4,
+                  paddingVertical: 16,
+                  paddingHorizontal: 16,
+                  marginBottom: 24,
+                }}
+                isArabic={is_arabic()}
+                loading={loading}
+              />
+              <Devider />
+              <GoogleAuthButton
+                handleAuth={handle_sign_in_with_google}
+                loading={googleLoading}
+              />
+            </View>
 
-        <AuthFooter
-          label={i18n.t(LanguageKey.DONT_HAVE_AN_ACCOUNT)}
-          link={i18n.t(LanguageKey.CREATE_ACCOUNT)}
-          redirectTo={redirectToRegister}
-          isArabic={is_arabic()}
-        />
-      </View>
+            <AuthFooter
+              label={i18n.t(LanguageKey.DONT_HAVE_AN_ACCOUNT)}
+              link={i18n.t(LanguageKey.CREATE_ACCOUNT)}
+              redirectTo={redirectToRegister}
+              isArabic={is_arabic()}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   container: {
     flex: 1,
   },

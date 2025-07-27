@@ -26,6 +26,9 @@ import {
   SafeAreaView,
   ToastAndroid,
   Alert,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import AuthFooter from "@/components/shared/AuthFooter";
 import Terms from "@/components/RegisterScreen/Terms";
@@ -122,152 +125,174 @@ const RegisterScreen: FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Header />
-        {/* Main Content */}
-        <View style={styles.formContainer}>
-          {step === AuthSteps.EMAIL ? (
-            <>
-              <Text
-                style={[
-                  styles.title,
-                  { textAlign: is_arabic() ? "right" : "left" },
-                ]}
-              >
-                {i18n.t(LanguageKey.CREATE_YOUR_ACCOUNT)}
-              </Text>
-              {/* Email Input */}
-              <Input
-                errorMessage={errorMessage}
-                label={i18n.t(LanguageKey.EMAIL)}
-                value={email}
-                onChangeText={setEmail}
-                placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
-                isArabic={is_arabic()}
-                keyboardType="email-address"
-              />
-              <ActionButton
-                label={LanguageKey.NEXT}
-                onPress={handle_next}
-                disabled={!canProceed}
-                containerStyles={{
-                  padding: 0,
-                }}
-                buttonStyles={{
-                  borderRadius: 4,
-                  paddingVertical: 16,
-                  paddingHorizontal: 16,
-                  marginBottom: 24,
-                }}
-                isArabic={is_arabic()}
-              />
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      >
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.content}>
+            <Header />
 
-              <Devider />
-              <GoogleAuthButton
-                handleAuth={handle_sign_in_with_google}
-                loading={googleLoading}
-              />
+            {/* Main Content */}
+            <View style={styles.formContainer}>
+              {step === AuthSteps.EMAIL ? (
+                <>
+                  <Text
+                    style={[
+                      styles.title,
+                      { textAlign: is_arabic() ? "right" : "left" },
+                    ]}
+                  >
+                    {i18n.t(LanguageKey.CREATE_YOUR_ACCOUNT)}
+                  </Text>
 
-              <Terms />
-            </>
-          ) : (
-            <>
-              <Text
-                style={[
-                  styles.title,
-                  { textAlign: is_arabic() ? "right" : "left" },
-                ]}
-              >
-                {i18n.t(LanguageKey.CREATE_PASSWORD)}
-              </Text>
-              <Text
-                style={[
-                  styles.description,
-                  { textAlign: is_arabic() ? "right" : "left" },
-                ]}
-              >
-                {i18n.t(LanguageKey.CREATING_ACCOUNT_FOR)} {email}
-              </Text>
+                  {/* Email Input */}
+                  <Input
+                    errorMessage={errorMessage}
+                    label={i18n.t(LanguageKey.EMAIL)}
+                    value={email}
+                    onChangeText={setEmail}
+                    placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
+                    isArabic={is_arabic()}
+                    keyboardType="email-address"
+                  />
 
-              {/* Password Input */}
-              <Input
-                errorMessage={errorMessage}
-                label={i18n.t(LanguageKey.PASSWORD)}
-                value={password}
-                onChangeText={setPassword}
-                placeholder={i18n.t(LanguageKey.ENTER_PASSWORD)}
-                secureTextEntry={!showPassword}
-                showPassword={showPassword}
-                isIconVisible={true}
-                isArabic={is_arabic()}
-                setVisibility={setShowPassword}
-              />
+                  <ActionButton
+                    label={LanguageKey.NEXT}
+                    onPress={handle_next}
+                    disabled={!canProceed}
+                    containerStyles={{
+                      padding: 0,
+                    }}
+                    buttonStyles={{
+                      borderRadius: 4,
+                      paddingVertical: 16,
+                      paddingHorizontal: 16,
+                      marginBottom: 24,
+                    }}
+                    isArabic={is_arabic()}
+                  />
 
-              {/* Confirm Password Input */}
-              <Input
-                errorMessage={errorMessage}
-                label={i18n.t(LanguageKey.CONFIRM_PASSWORD)}
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                placeholder={i18n.t(LanguageKey.CONFIRM_PASSWORD)}
-                secureTextEntry={!showConfirmPassword}
-                showPassword={showConfirmPassword}
-                isIconVisible={true}
-                isArabic={is_arabic()}
-                setVisibility={setShowConfirmPassword}
-              />
-              <ActionButton
-                label={LanguageKey.CREATE_ACCOUNT}
-                onPress={register_account}
-                disabled={!canProceed}
-                containerStyles={{
-                  padding: 0,
-                }}
-                buttonStyles={{
-                  borderRadius: 4,
-                  paddingVertical: 16,
-                  paddingHorizontal: 16,
-                  marginBottom: 24,
-                }}
-                isArabic={is_arabic()}
-                loading={loading}
-              />
-              <ActionButton
-                label={LanguageKey.BACK}
-                onPress={handle_back}
-                containerStyles={{
-                  padding: 0,
-                }}
-                buttonStyles={{
-                  backgroundColor: Colors.GLOVO_YELLOW,
-                  borderRadius: 4,
-                  paddingVertical: 16,
-                  paddingHorizontal: 16,
-                  marginBottom: 24,
-                }}
-                buttonTextStyles={{
-                  color: Colors.BLACK,
-                }}
-                icon={FontAwesome6}
-                iconProps={{
-                  name: "arrow-left-long",
-                  size: 24,
-                }}
-                isArabic={is_arabic()}
-                iconStyles={{ color: Colors.BLACK }}
-              />
-              <Terms />
-            </>
-          )}
+                  <Devider />
+                  <GoogleAuthButton
+                    handleAuth={handle_sign_in_with_google}
+                    loading={googleLoading}
+                  />
+
+                  <Terms />
+                </>
+              ) : (
+                <>
+                  <Text
+                    style={[
+                      styles.title,
+                      { textAlign: is_arabic() ? "right" : "left" },
+                    ]}
+                  >
+                    {i18n.t(LanguageKey.CREATE_PASSWORD)}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.description,
+                      { textAlign: is_arabic() ? "right" : "left" },
+                    ]}
+                  >
+                    {i18n.t(LanguageKey.CREATING_ACCOUNT_FOR)} {email}
+                  </Text>
+
+                  {/* Password Input */}
+                  <Input
+                    errorMessage={errorMessage}
+                    label={i18n.t(LanguageKey.PASSWORD)}
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder={i18n.t(LanguageKey.ENTER_PASSWORD)}
+                    secureTextEntry={!showPassword}
+                    showPassword={showPassword}
+                    isIconVisible={true}
+                    isArabic={is_arabic()}
+                    setVisibility={setShowPassword}
+                  />
+
+                  {/* Confirm Password Input */}
+                  <Input
+                    errorMessage={errorMessage}
+                    label={i18n.t(LanguageKey.CONFIRM_PASSWORD)}
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                    placeholder={i18n.t(LanguageKey.CONFIRM_PASSWORD)}
+                    secureTextEntry={!showConfirmPassword}
+                    showPassword={showConfirmPassword}
+                    isIconVisible={true}
+                    isArabic={is_arabic()}
+                    setVisibility={setShowConfirmPassword}
+                  />
+
+                  <ActionButton
+                    label={LanguageKey.CREATE_ACCOUNT}
+                    onPress={register_account}
+                    disabled={!canProceed}
+                    containerStyles={{
+                      padding: 0,
+                    }}
+                    buttonStyles={{
+                      borderRadius: 4,
+                      paddingVertical: 16,
+                      paddingHorizontal: 16,
+                      marginBottom: 24,
+                    }}
+                    isArabic={is_arabic()}
+                    loading={loading}
+                  />
+
+                  <ActionButton
+                    label={LanguageKey.BACK}
+                    onPress={handle_back}
+                    containerStyles={{
+                      padding: 0,
+                    }}
+                    buttonStyles={{
+                      backgroundColor: Colors.GLOVO_YELLOW,
+                      borderRadius: 4,
+                      paddingVertical: 16,
+                      paddingHorizontal: 16,
+                      marginBottom: 24,
+                    }}
+                    buttonTextStyles={{
+                      color: Colors.BLACK,
+                    }}
+                    icon={FontAwesome6}
+                    iconProps={{
+                      name: "arrow-left-long",
+                      size: 24,
+                    }}
+                    isArabic={is_arabic()}
+                    iconStyles={{ color: Colors.BLACK }}
+                  />
+
+                  <Terms />
+                </>
+              )}
+            </View>
+          </View>
+        </ScrollView>
+
+        {/* Footer positioned at bottom */}
+        <View style={styles.footerContainer}>
+          <AuthFooter
+            label={i18n.t(LanguageKey.ALREADY_HAVE_AN_ACCOUNT)}
+            link={i18n.t(LanguageKey.LOG_IN)}
+            redirectTo={redirect_to_login}
+            isArabic={is_arabic()}
+          />
         </View>
-
-        <AuthFooter
-          label={i18n.t(LanguageKey.ALREADY_HAVE_AN_ACCOUNT)}
-          link={i18n.t(LanguageKey.LOG_IN)}
-          redirectTo={redirect_to_login}
-          isArabic={is_arabic()}
-        />
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -276,12 +301,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
   content: {
     flex: 1,
     paddingHorizontal: 24,
   },
   formContainer: {
     flex: 1,
+    paddingBottom: 20,
+  },
+  footerContainer: {
+    paddingHorizontal: 24,
+    paddingBottom: 10,
   },
   title: {
     fontSize: 24,
