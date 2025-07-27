@@ -16,7 +16,7 @@ import {
 } from "@/utils";
 import { ActionTypeEnum, UserAction } from "@/enums/logs";
 import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
-import { Product } from "@/types/products";
+import { ProductTypeFromDB } from "@/types/products";
 
 const db = firestore();
 
@@ -304,26 +304,56 @@ export const logout = async () => {
   }
 };
 
-export const get_products = async (): Promise<unknown> => {
+export const get_products = async (
+  user_id: string
+): Promise<ProductTypeFromDB[]> => {
+  console.log(`🔍 Searching for products with user_id: ${user_id}`);
+
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.GET_PRODUCTS,
+    action_description: `User with id: ${user_id} try to get all scanned products.`,
+    action_data: null,
+    date_format: format_date_to_custom_string(),
+  };
+
   try {
-    const querySnapshot = await firestore().collection("products").get();
+    const querySnapshot = await firestore()
+      .collection("products")
+      .where("user_id", "==", user_id)
+      .get();
 
     if (!querySnapshot.empty) {
-      const user = querySnapshot.docs[0].data();
-      console.log("data: ", user);
-      return user;
+      const products: ProductTypeFromDB[] = querySnapshot.docs.map((doc) => {
+        const data = doc.data();
+
+        return {
+          ...data,
+        } as unknown as ProductTypeFromDB;
+      });
+
+      user_action.action_data = JSON.stringify(products);
+      await create_log(user_action);
+      return products;
     }
-    return null;
-  } catch (error) {
-    console.log("error: ", error);
-    throw new Error(`get products got an error: ${error}`);
+
+    // Return empty array when no products found
+    user_action.action_description = `No products found for user: ${user_id}`;
+    await create_log(user_action);
+    return [];
+  } catch (error: any) {
+    console.error(`🚨 Error in get_products:`, error);
+    user_action.action_description =
+      "User try to get all products get an error";
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+    return [];
   }
 };
 
 export const save_products_in_db = async (user_id: string) => {
-  console.log("save_products_in_db");
-  console.log(`user_id: ${user_id}`);
-
   const user_action: UserAction = {
     action_type: ActionTypeEnum.SAVE_PRODUCTS_IN_DB,
     action_description: "Async products of user when create account.",
@@ -338,7 +368,7 @@ export const save_products_in_db = async (user_id: string) => {
     user_action.action_data = JSON.stringify(all_products);
     for (let i = 0; i < all_products.length; i += 1) {
       const product = all_products[i];
-      const updateProduct: Product = {
+      const updateProduct: ProductTypeFromDB = {
         product_scan_result: product,
         user_id,
       };

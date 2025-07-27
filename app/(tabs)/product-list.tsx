@@ -1,16 +1,14 @@
 import Products from "@/components/ProductListScreen/Products";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthButtons from "@/components/shared/AuthButtons";
-import ScanningLoader from "@/components/shared/ScanningLoader";
 import { LanguageKey } from "@/constants/keys";
-import { ProductScanResult } from "@/constants/responses";
+import { get_products } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { i18n } from "@/i18n";
-import { cacheProductData } from "@/mock/cacheProductData";
 import { Typography } from "@/themes/typography";
-import { get_all_cached_products } from "@/utils";
+import { ProductTypeFromDB } from "@/types/products";
 import { FC, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
@@ -21,16 +19,19 @@ const ProductList: FC = () => {
   const { user } = useAuth();
 
   // States
-  const [products, setProducts] = useState<ProductScanResult[]>([]);
+  const [products, setProducts] = useState<ProductTypeFromDB[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const isAuth = user?.displayName !== null;
 
-  const fetch_all_cached_products = async () => {
+  const fetch_all_products = async () => {
     try {
       setLoading(true);
-      const result = await get_all_cached_products();
-      setProducts(result);
+      const user_id = user?.uid;
+      if (user_id) {
+        const result = (await get_products(user_id)) ?? [];
+        setProducts(result);
+      }
     } catch (error: unknown) {
       // TODO call log instead
       console.log(
@@ -43,7 +44,7 @@ const ProductList: FC = () => {
   };
 
   useEffect(() => {
-    fetch_all_cached_products();
+    fetch_all_products();
   }, []);
 
   if (loading) {

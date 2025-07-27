@@ -1,11 +1,11 @@
-import { ProductScanResult } from "@/constants/responses";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
+import { ProductTypeFromDB } from "@/types/products";
 import { FC } from "react";
 import { Image, Text, View, StyleSheet } from "react-native";
 
 interface ProductProps {
-  product: ProductScanResult;
+  product: ProductTypeFromDB;
 }
 
 const Product: FC<ProductProps> = ({ product }) => {
@@ -16,9 +16,11 @@ const Product: FC<ProductProps> = ({ product }) => {
   };
   return (
     <View style={styles.container}>
-      <Image src={product.image_url} style={styles.image} />
+      <Image src={product.product_scan_result.image_url} style={styles.image} />
       <View style={styles.text_container}>
-        <Text style={styles.product_name}>{product.product_name}</Text>
+        <Text style={styles.product_name}>
+          {product.product_scan_result.product_name}
+        </Text>
         <View
           style={{
             display: "flex",
@@ -27,9 +29,12 @@ const Product: FC<ProductProps> = ({ product }) => {
           }}
         >
           <Text
-            style={[styles.score, { color: get_score_color(product.score) }]}
+            style={[
+              styles.score,
+              { color: get_score_color(product.product_scan_result.score) },
+            ]}
           >
-            {product.score}
+            {product.product_scan_result.score}
           </Text>
           <Text style={styles.score}>/100</Text>
         </View>
