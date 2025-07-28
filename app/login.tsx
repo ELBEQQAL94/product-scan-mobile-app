@@ -68,7 +68,7 @@ const LoginScreen: FC = () => {
       setLoading(false);
       setErrorMessage(null);
       show_toast();
-      router.push(Screens.SCAN_SCREEN);
+      router.push(Screens.HOME_SCREEN);
     } catch (error: unknown) {
       // Log login error with context
       crashlytics().log("Email/password login failed");
@@ -115,7 +115,7 @@ const LoginScreen: FC = () => {
       crashlytics().setAttribute("google_login_success", "true");
 
       show_toast();
-      redirect_to(Screens.SCAN_SCREEN);
+      redirect_to(Screens.HOME_SCREEN);
     } catch (error: unknown) {
       // Log Google sign-in error
       crashlytics().log("Google sign-in failed");

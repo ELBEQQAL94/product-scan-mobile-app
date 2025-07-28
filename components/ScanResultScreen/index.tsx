@@ -6,7 +6,6 @@ import PremiumUpgrade from "./PremiumUpgrade";
 import ProductImage from "../shared/ProductImage";
 import ProductName from "./ProductName";
 import { ProductScanResult } from "@/constants/responses";
-import AuthButtons from "../shared/AuthButtons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from "@/themes/colors";
 import { Screens } from "@/constants/screens";
@@ -19,25 +18,15 @@ interface ScanResultProps {
 
 const ScanResult: FC<ScanResultProps> = ({ data, isArabic, redirectTo }) => {
   // Mock not subscriber user
-  const isSubcriber = true;
 
-  const suggest_better_products = () => {
-    console.log("better options clicked");
-  };
-
-  const add_to_compare = () => console.log("add to compare");
   return (
     <View style={styles.container}>
-      <AuthButtons isArabic={isArabic} redirectTo={redirectTo} />
       <ScrollView>
         <ProductImage imageUri={data.image_url} />
         <ProductName name={data.product_name} />
         <HealthScore score={data.score} />
         <PremiumUpgrade onUpgradePress={() => console.log("PremiumUpgrade")} />
-        <PersonalizedMessage
-          isSubcriber={isSubcriber}
-          recommendations={data.recommendations}
-        />
+        <PersonalizedMessage recommendations={data.recommendations} />
         {/* <View style={{ margin: 25 }}>
           <ActionButton
             label={LanguageKey.SEE_BETTER_OPTIONS}
@@ -51,7 +40,7 @@ const ScanResult: FC<ScanResultProps> = ({ data, isArabic, redirectTo }) => {
         </View> */}
       </ScrollView>
       <TouchableOpacity
-        onPress={() => redirectTo(Screens.SCAN_SCREEN)}
+        onPress={() => redirectTo(Screens.HOME_SCREEN)}
         style={styles.fab}
       >
         <MaterialCommunityIcons

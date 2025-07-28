@@ -33,4 +33,6 @@ export const Colors = {
 
   // Orange
   ORANGE: "#FF9800",
+
+  TRANSPARENT: "transparent",
 };

@@ -4,6 +4,7 @@ import {
   OpenFoodData,
   ProductScanResult,
 } from "@/constants/responses";
+import { ProductTypeFromDB } from "@/types/products";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const checkOnboardingStatus = async () => {
@@ -110,7 +111,7 @@ export const get_product_by_bar_code = async (
   bar_code: string
 ): Promise<ProductScanResult | undefined> => {
   try {
-    const product = await AsyncStorage.getItem(bar_code);
+    const product = await AsyncStorage.getItem(`${PRODUCT_PREFIX}${bar_code}`);
     return product != null ? JSON.parse(product) : undefined;
   } catch (error) {
     console.error(
@@ -151,4 +152,24 @@ export const format_date_to_custom_string = (): string => {
 export const is_email_valid = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
+};
+
+export const map_to_product_db = (
+  user_id: string,
+  bar_code: string,
+  product: ProductScanResult
+): ProductTypeFromDB => {
+  const product_db: ProductTypeFromDB = {
+    user_id: user_id,
+    bar_code,
+    product_scan_result: {
+      status: product.status,
+      score: product.score,
+      image_url: product.image_url,
+      recommendations: product.recommendations,
+      product_name: product.product_name,
+    },
+  };
+
+  return product_db;
 };

@@ -108,7 +108,7 @@ const RegisterScreen: FC = () => {
       setGoogleLoading(true);
       await auth_with_google();
       show_toast();
-      redirect_to(Screens.SCAN_SCREEN);
+      redirect_to(Screens.HOME_SCREEN);
     } catch (error: unknown) {
       Alert.alert("Error", i18n.t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
     } finally {
@@ -116,7 +116,7 @@ const RegisterScreen: FC = () => {
     }
   };
 
-  const redirect_to_login = () => redirect_to(Screens.LOGIN_SCREEN);
+  const redirect_to_login = () => redirect_to(Screens.HOME_SCREEN);
 
   const canProceed =
     step === AuthSteps.EMAIL

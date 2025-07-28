@@ -16,7 +16,6 @@ import ManualEntryView from "./ManualEntryView";
 import { Colors } from "@/themes/colors";
 import BottomControls from "./BottomControls";
 import { LanguageKey } from "@/constants/keys";
-import AuthButtons from "../shared/AuthButtons";
 
 interface ScanProps {
   scanned: boolean;
@@ -109,11 +108,6 @@ const Scan: React.FC<ScanProps> = ({
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <AuthButtons
-        isArabic={isArabic}
-        redirectTo={redirectTo}
-        isAuth={isAuth}
-      />
       <CameraViewContainer
         handleBarcodeScanned={handleBarcodeScanned}
         isManualMode={isManualMode}
