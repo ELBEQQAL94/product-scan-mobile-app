@@ -3,7 +3,9 @@ export interface UserSchema {
   firstname?: string;
   lastname?: string;
   username?: string | null;
-  // profile health
+  is_profile_health_created?: boolean;
+  selected_diseases?: string[];
+  selected_allergies?: string[];
   country?: string;
   last_login: number;
   email: string;

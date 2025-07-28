@@ -4,23 +4,32 @@ import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import ActionButton from "../shared/ActionButton";
 import { LanguageKey } from "@/constants/keys";
+import { Screens } from "@/constants/screens";
 
 interface PremiumUpgradeProps {
-  onUpgradePress: () => void;
+  isArabic: boolean;
+  isProfileHealthCreated?: boolean;
+  redirectTo: (screen: string) => void;
 }
 
-const PremiumUpgrade: React.FC<PremiumUpgradeProps> = ({ onUpgradePress }) => {
+const PremiumUpgrade: React.FC<PremiumUpgradeProps> = ({
+  isArabic,
+  isProfileHealthCreated,
+  redirectTo,
+}) => {
+  if (isProfileHealthCreated) return null;
   return (
     <View style={styles.container}>
       <ActionButton
         label={LanguageKey.GET_PERSONAL_ANALYSIS}
-        onPress={onUpgradePress}
+        onPress={() => redirectTo(Screens.HEALTH_SETUP_SCREEN)}
         iconProps={{
           name: "arrow-forward",
           size: 20,
           color: Colors.WHITE,
         }}
         containerStyles={styles.buttonContainer}
+        isArabic={isArabic}
       />
     </View>
   );

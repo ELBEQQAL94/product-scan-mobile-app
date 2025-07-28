@@ -9,14 +9,21 @@ import { ProductScanResult } from "@/constants/responses";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors } from "@/themes/colors";
 import { Screens } from "@/constants/screens";
+import { UserSchema } from "@/types/auth";
 
 interface ScanResultProps {
   isArabic: boolean;
   redirectTo: (screen: string) => void;
   data: ProductScanResult;
+  user: UserSchema | null | undefined;
 }
 
-const ScanResult: FC<ScanResultProps> = ({ data, isArabic, redirectTo }) => {
+const ScanResult: FC<ScanResultProps> = ({
+  data,
+  isArabic,
+  redirectTo,
+  user,
+}) => {
   // Mock not subscriber user
 
   return (
@@ -25,7 +32,11 @@ const ScanResult: FC<ScanResultProps> = ({ data, isArabic, redirectTo }) => {
         <ProductImage imageUri={data.image_url} />
         <ProductName name={data.product_name} />
         <HealthScore score={data.score} />
-        <PremiumUpgrade onUpgradePress={() => console.log("PremiumUpgrade")} />
+        <PremiumUpgrade
+          isProfileHealthCreated={user?.is_profile_health_created}
+          isArabic={isArabic}
+          redirectTo={redirectTo}
+        />
         <PersonalizedMessage recommendations={data.recommendations} />
         {/* <View style={{ margin: 25 }}>
           <ActionButton

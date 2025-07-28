@@ -17,8 +17,12 @@ import ScanResult from "@/components/ScanResultScreen";
 import { ai_product_scan_prompt } from "@/prompt";
 import ScanningLoader from "@/components/shared/ScanningLoader";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
-import { save_product_in_db } from "@/external-services/firebase-config";
+import {
+  check_user_exists,
+  save_product_in_db,
+} from "@/external-services/firebase-config";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { UserSchema } from "@/types/auth";
 
 const ScanResultScreen: FC = () => {
   // Hooks
@@ -33,6 +37,7 @@ const ScanResultScreen: FC = () => {
 
   // states
   const [product, setProduct] = useState<ProductScanResult>();
+  const [user, setUser] = useState<UserSchema | null | undefined>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,6 +49,14 @@ const ScanResultScreen: FC = () => {
     card: colorScheme === "dark" ? "#1E1E1E" : "white",
   };
 
+  const fetch_current_user = async () => {
+    try {
+      const user_data = await check_user_exists(user_id);
+      setUser(user_data);
+    } catch (error: any) {
+      console.log(`error when fetch user data: ${error.message}`);
+    }
+  };
   // fetch product logic
   const fetch_product_details = async () => {
     setLoading(true);
@@ -90,19 +103,11 @@ const ScanResultScreen: FC = () => {
     }
   };
 
-  const getScoreColor = (scoreValue: string | null | undefined) => {
-    if (!scoreValue) return "red";
-
-    const numScore = parseInt(scoreValue);
-    if (numScore < 50) return "red";
-    if (numScore >= 50 && numScore <= 70) return "#FFD700";
-    return "green";
-  };
-
   const retryScan = () => router.push(Screens.HOME_SCREEN as Href);
 
   useEffect(() => {
     fetch_product_details();
+    fetch_current_user();
   }, [bar_code]);
 
   if (loading) {
@@ -119,6 +124,7 @@ const ScanResultScreen: FC = () => {
     <ProtectedRoute>
       <ScanResult
         data={product}
+        user={user}
         isArabic={is_arabic()}
         redirectTo={redirect_to}
       />

@@ -112,7 +112,7 @@ export const auth_with_google = async () => {
     // Sign-in the user with the credential
     const res = await auth().signInWithCredential(googleCredential);
     const user = res.user as unknown as GoogleAuthUserResponse;
-    const is_user_exists = await check_user_exists(user);
+    const is_user_exists = await check_user_exists(user.uid);
 
     if (!is_user_exists) {
       console.log("user not exists");
@@ -150,22 +150,22 @@ export const auth_with_google = async () => {
   }
 };
 
-const check_user_exists = async (user: GoogleAuthUserResponse) => {
+export const check_user_exists = async (user_id: string) => {
   const user_action: UserAction = {
     action_type: ActionTypeEnum.CHECK_USER_EXISTS,
     action_description: "check if user exists before add it to database",
-    action_data: JSON.stringify(user),
+    action_data: JSON.stringify(user_id),
     date_format: NOW_DATE,
   };
 
   try {
     const querySnapshot = await firestore()
       .collection("users")
-      .where("uid", "==", user.uid)
+      .where("uid", "==", user_id)
       .get();
 
     if (!querySnapshot.empty) {
-      const current_user = querySnapshot.docs[0].data();
+      const current_user = querySnapshot.docs[0].data() as UserSchema;
       return current_user;
     }
     return null;
@@ -381,6 +381,68 @@ export const create_log = async (userAction: UserAction): Promise<void> => {
       "create new log get an error from config firebase test: ",
       error
     );
+  }
+};
+
+export const update_user_health_data = async (
+  userId: string,
+  selectedDiseases: Set<string>,
+  selectedAllergies: Set<string>
+): Promise<void> => {
+  const NOW_DATE = format_date_to_custom_string();
+  const NOW_DATE_TIMESTAMP = format_date_to_timestamp();
+
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.UPDATE_USER_HEALTH_DATA,
+    action_description: `User ${userId} updated health profile with diseases and allergies.`,
+    action_data: JSON.stringify({
+      diseases: Array.from(selectedDiseases),
+      allergies: Array.from(selectedAllergies),
+      userId,
+    }),
+    date_format: NOW_DATE,
+  };
+
+  try {
+    // Find the user document by uid
+    const querySnapshot = await firestore()
+      .collection("users")
+      .where("uid", "==", userId)
+      .get();
+
+    if (querySnapshot.empty) {
+      throw new Error(`User with uid ${userId} not found`);
+    }
+
+    // Get the document reference
+    const userDoc = querySnapshot.docs[0];
+    const userDocRef = userDoc.ref;
+
+    // Prepare health data update
+    const healthData: Partial<UserSchema> = {
+      selected_diseases: Array.from(selectedDiseases),
+      selected_allergies: Array.from(selectedAllergies),
+      is_profile_health_created: true,
+      updated_at: NOW_DATE_TIMESTAMP,
+    };
+
+    // Update the user document
+    await userDocRef.update(healthData);
+
+    user_action.action_description = "User health data updated successfully";
+    await create_log(user_action);
+
+    console.log(`✅ Health data updated for user: ${userId}`);
+  } catch (error: any) {
+    user_action.action_description = "Error updating user health data";
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+      userId,
+      diseases: Array.from(selectedDiseases),
+      allergies: Array.from(selectedAllergies),
+    });
+    await create_log(user_action);
   }
 };
 

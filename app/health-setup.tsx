@@ -11,8 +11,12 @@ import { Step } from "@/enums/step";
 import { LanguageKey } from "@/constants/keys";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
+import { update_user_health_data } from "@/external-services/firebase-config";
+import { useAuth } from "@/hooks/useAuth";
 
 const HealthSetup: FC = () => {
+  // Hooks
+  const { user } = useAuth();
   // States
   const [currentStep, setCurrentStep] = useState<Step>(Step.DISEASES);
   const [selectedDiseases, setSelectedDiseases] = useState<Set<string>>(
@@ -22,17 +26,33 @@ const HealthSetup: FC = () => {
     new Set()
   );
 
+  console.log(selectedDiseases);
+  console.log(selectedAllergies);
   // Hooks
   const router = useRouter();
   const { is_arabic } = useSelectedLanguage();
 
-  const handleNext = useCallback(() => {
+  const handleNext = useCallback(async () => {
     if (currentStep === Step.DISEASES) {
       setCurrentStep(Step.ALERGIES);
       return;
+    } else {
+      const userId = user?.uid;
+      if (userId)
+        await update_user_health_data(
+          userId,
+          selectedDiseases,
+          selectedAllergies
+        );
+      router.push(Screens.HOME_SCREEN as Href);
     }
-    router.push(Screens.HOME_SCREEN as Href);
-  }, [currentStep, router]);
+  }, [currentStep, router, selectedAllergies, selectedDiseases, user?.uid]);
+
+  const handleBack = useCallback(() => {
+    if (currentStep === Step.ALERGIES) {
+      setCurrentStep(Step.DISEASES);
+    }
+  }, [currentStep]);
 
   const toggleSelection = useCallback(
     (id: string) => {
@@ -72,6 +92,9 @@ const HealthSetup: FC = () => {
     }));
   }, [currentStep, selectedDiseases, selectedAllergies]);
 
+  const isDiseasesStep = currentStep === Step.DISEASES;
+  const isAllergiesStep = currentStep === Step.ALERGIES;
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -87,16 +110,38 @@ const HealthSetup: FC = () => {
           />
         ))}
       </ScrollView>
-      <ActionButton
-        label={LanguageKey.CONTINUE}
-        icon={FontAwesome6}
-        iconProps={{
-          name: "arrow-right-long",
-          size: 24,
-        }}
-        onPress={handleNext}
-        isArabic={is_arabic()}
-      />
+
+      <View style={styles.buttonContainer}>
+        {/* Show back button only on allergies step */}
+        {isAllergiesStep && (
+          <ActionButton
+            label={LanguageKey.BACK} // You'll need to add this to your language keys
+            icon={FontAwesome6}
+            iconProps={{
+              name: "arrow-left-long",
+              size: 24,
+            }}
+            onPress={handleBack}
+            isArabic={is_arabic()}
+            containerStyles={styles.backButton}
+          />
+        )}
+
+        {/* Next button appears on both steps */}
+        <ActionButton
+          label={LanguageKey.CONTINUE}
+          icon={FontAwesome6}
+          iconProps={{
+            name: "arrow-right-long",
+            size: 24,
+          }}
+          onPress={handleNext}
+          isArabic={is_arabic()}
+          containerStyles={
+            isAllergiesStep ? styles.nextButtonWithBack : styles.nextButton
+          }
+        />
+      </View>
     </View>
   );
 };
@@ -105,13 +150,29 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     flex: 1,
-    backgroundColor: Colors.GLOVO_YELLOW,
   },
   scrollview_container: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
     gap: 2,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 20,
+  },
+  backButton: {
+    flex: 1,
+    padding: 15, // Reduced padding since buttons share space
+  },
+  nextButton: {
+    width: "100%",
+    padding: 30, // Full padding when alone
+  },
+  nextButtonWithBack: {
+    flex: 1,
+    padding: 15, // Reduced padding when sharing space
   },
 });
 
