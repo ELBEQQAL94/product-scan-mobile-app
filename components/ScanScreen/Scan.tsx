@@ -54,7 +54,7 @@ const Scan: React.FC<ScanProps> = ({
       // Focus input when switching to manual mode
       setTimeout(() => inputRef.current?.focus(), 350);
     }
-  }, [isManualMode]);
+  }, [isManualMode, slideAnim]);
 
   const handleManualSubmit = async () => {
     if (manualBarcode.length < 8) {
