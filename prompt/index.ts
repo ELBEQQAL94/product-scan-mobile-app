@@ -1,5 +1,6 @@
 import { OpenFoodData, OpenFoodResponseAPI } from "@/constants/responses";
 import { Language } from "@/enums/language";
+import { UserSchema } from "@/types/auth";
 import { UserHealthSetupProfile } from "@/types/health-setup";
 
 // Language-specific instructions
@@ -179,14 +180,14 @@ const generatePersonalizedInstructions = (
 
 export const ai_product_scan_prompt = (
   data: OpenFoodResponseAPI,
-  userHealthSetupProfile: UserHealthSetupProfile | null = null,
+  user: UserSchema | null = null,
   language: Language = Language.AR
 ) => {
   const langConfig = languageInstructions[language];
 
   // Extract user health data (with defaults)
-  const diseases = userHealthSetupProfile?.diseases || [];
-  const allergies = userHealthSetupProfile?.allergies || [];
+  const diseases = user?.selected_diseases || [];
+  const allergies = user?.selected_allergies || [];
 
   // Generate personalized instructions only if user has health conditions
   const personalizedInstructions =
@@ -198,6 +199,7 @@ export const ai_product_scan_prompt = (
   return `LANGUAGE INSTRUCTION: ${langConfig.instruction}
 
 ${personalizedInstructions}
+${console.log(`personalizedInstructions: ${personalizedInstructions}`)}
 
 ${
   personalizedInstructions

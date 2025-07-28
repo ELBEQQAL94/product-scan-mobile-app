@@ -7,7 +7,6 @@ import {
 import { ScanResultResponse } from "@/types/scan-result";
 
 export const ai_scan = async (
-  data: OpenFoodResponseAPI,
   content: string
 ): Promise<ScanResultResponse | undefined> => {
   const client = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY });

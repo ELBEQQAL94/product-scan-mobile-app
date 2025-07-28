@@ -39,6 +39,7 @@ const ScanResultScreen: FC = () => {
   const [product, setProduct] = useState<ProductScanResult>();
   const [user, setUser] = useState<UserSchema | null | undefined>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [userLoading, setUserLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // handle dark mode
@@ -50,13 +51,19 @@ const ScanResultScreen: FC = () => {
   };
 
   const fetch_current_user = async () => {
+    setUserLoading(true);
     try {
       const user_data = await check_user_exists(user_id);
       setUser(user_data);
+      setUserLoading(false);
     } catch (error: any) {
+      setUserLoading(false);
       console.log(`error when fetch user data: ${error.message}`);
+    } finally {
+      setUserLoading(false);
     }
   };
+
   // fetch product logic
   const fetch_product_details = async () => {
     setLoading(true);
@@ -66,28 +73,31 @@ const ScanResultScreen: FC = () => {
         console.log("new product: ");
         const response = await product_details(bar_code);
         if (response?.status === 1) {
-          const content = ai_product_scan_prompt(
-            response,
-            null,
-            currentLanguage
-          );
-          const ai_scan_result = await ai_scan(response, content);
+          if (!userLoading) {
+            const content = ai_product_scan_prompt(
+              response,
+              user,
+              currentLanguage
+            );
+            const ai_scan_result = await ai_scan(content);
 
-          if (ai_scan_result) {
-            console.log("you call a chat");
-            console.log(`ai_scan_result: ${ai_scan_result}`);
-            product = {
-              status: response.status,
-              score: response.product.nutriscore_score || ai_scan_result.score,
-              image_url: response.product.image_url,
-              recommendations: ai_scan_result.recommendations,
-              product_name:
-                response.product.product_name ||
-                response.product.product_name_en,
-            };
-            const product_db = map_to_product_db(user_id, bar_code, product);
-            await save_product_in_db(product_db);
-            await save_product_by_bar_code(bar_code, product);
+            if (ai_scan_result) {
+              console.log("you call a chat");
+              console.log(`ai_scan_result: ${ai_scan_result}`);
+              product = {
+                status: response.status,
+                score:
+                  response.product.nutriscore_score || ai_scan_result.score,
+                image_url: response.product.image_url,
+                recommendations: ai_scan_result.recommendations,
+                product_name:
+                  response.product.product_name ||
+                  response.product.product_name_en,
+              };
+              const product_db = map_to_product_db(user_id, bar_code, product);
+              await save_product_in_db(product_db);
+              await save_product_by_bar_code(bar_code, product);
+            }
           }
         }
       }
@@ -96,8 +106,9 @@ const ScanResultScreen: FC = () => {
         setProduct(product);
       }
     } catch (error: any) {
-      console.log("fetch product details get an error: ", error);
-      setError(i18n.t("CONNECTION_ERROR"));
+      console.log("fetch product details get an error: ", error.message);
+      // setError(i18n.t("CONNECTION_ERROR"));
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -108,7 +119,7 @@ const ScanResultScreen: FC = () => {
   useEffect(() => {
     fetch_product_details();
     fetch_current_user();
-  }, [bar_code]);
+  }, [bar_code, user_id]);
 
   if (loading) {
     return <ScanningLoader isVisible={loading} />;
