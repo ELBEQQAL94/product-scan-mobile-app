@@ -1,24 +1,14 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
 import { i18n } from "@/i18n";
-import {
-  BarcodeScanningResult,
-  CameraView,
-  useCameraPermissions,
-} from "expo-camera";
 import {
   View,
   StyleSheet,
   Text,
-  Alert,
-  TouchableOpacity,
   TextInput,
   Animated,
-  KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { useState, useRef, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import CameraViewContainer from "./CameraViewContainer";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import { LanguageKey } from "@/constants/keys";
@@ -43,6 +33,22 @@ const ManualEntryView: FC<ManualEntryViewProps> = ({
   setManualBarcode,
   handleManualSubmit,
 }) => {
+  const handleTextChange = useCallback(
+    (text: string) => {
+      const lastChar = text[text.length - 1];
+
+      if (text.length > manualBarcode.length) {
+        // Adding character - check if it's numeric
+        if (lastChar && /[0-9]/.test(lastChar)) {
+          setManualBarcode(text);
+        }
+      } else {
+        // Removing character - always allow
+        setManualBarcode(text);
+      }
+    },
+    [manualBarcode.length, setManualBarcode]
+  );
   return (
     <Animated.View
       style={[
@@ -82,7 +88,7 @@ const ManualEntryView: FC<ManualEntryViewProps> = ({
             ref={inputRef}
             style={styles.barcode_input}
             value={manualBarcode}
-            onChangeText={(text) => setManualBarcode(text.replace(/\D/g, ""))}
+            onChangeText={handleTextChange}
             placeholder={i18n.t(LanguageKey.BARCODE_PLACEHOLDER)}
             placeholderTextColor={Colors.MEDIUM_GRAY}
             keyboardType="numeric"
@@ -95,24 +101,6 @@ const ManualEntryView: FC<ManualEntryViewProps> = ({
             {manualBarcode.length}/13 {i18n.t(LanguageKey.DIGITS)}
           </Text>
         </View>
-
-        {/* <TouchableOpacity
-          style={[
-            styles.submit_button,
-            manualBarcode.length < 8 && styles.submit_button_disabled,
-          ]}
-          onPress={handleManualSubmit}
-          disabled={manualBarcode.length < 8}
-        >
-          <Text
-            style={[
-              styles.submit_button_text,
-              manualBarcode.length < 8 && styles.submit_button_text_disabled,
-            ]}
-          >
-            {i18n.t(LanguageKey.SCAN_PRODUCT)}
-          </Text>
-        </TouchableOpacity> */}
       </View>
     </Animated.View>
   );
