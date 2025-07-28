@@ -7,6 +7,7 @@ export enum ActionTypeEnum {
   LOG_OUT = "LOG_OUT",
   SAVE_PRODUCTS_IN_DB = "SAVE_PRODUCTS_IN_DB",
   GET_PRODUCTS = "GET_PRODUCTS",
+  SAVE_PRODUCT_IN_DB = "SAVE_PRODUCT_IN_DB",
 }
 
 export interface UserAction {

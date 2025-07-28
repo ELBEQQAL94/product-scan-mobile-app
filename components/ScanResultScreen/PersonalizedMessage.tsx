@@ -12,12 +12,10 @@ import OverallAssessment from "./OverallAssessment";
 
 interface PersonalizedMessageProps {
   recommendations: Recommendations[];
-  isSubcriber: boolean;
 }
 
 const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
   recommendations = [],
-  isSubcriber,
 }) => {
   const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
 
@@ -150,10 +148,6 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
   };
 
   const assessment = getOverallAssessment();
-
-  if (!isSubcriber) {
-    return;
-  }
 
   return (
     <View style={styles.container}>

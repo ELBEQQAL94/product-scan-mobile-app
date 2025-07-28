@@ -8,10 +8,14 @@ import Scan from "@/components/ScanScreen/Scan";
 import { AsyncStorageKey } from "@/constants/keys";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "@/hooks/useAuth";
 
-const HomeScreen = () => {
+const ScanScreen = () => {
   // Hooks
   const router = useRouter();
+  const { user } = useAuth();
+
   const { is_arabic } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
 
@@ -19,6 +23,8 @@ const HomeScreen = () => {
   const [scanned, setScanned] = useState<boolean>(false);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] =
     useState<boolean>(false);
+
+  const isAuth = user?.displayName !== null;
 
   const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
     setScanned(true);
@@ -30,7 +36,9 @@ const HomeScreen = () => {
   };
 
   const redirect_to_scan_result = (bar_code: string) =>
-    router.push(`${Screens.SCAN_RESULT_SCREEN}?bar_code=${bar_code}`);
+    router.push(
+      `${Screens.SCAN_RESULT_SCREEN}?bar_code=${bar_code}&user_id=${user?.uid}`
+    );
 
   const checkOnboardingStatus = async () => {
     try {
@@ -51,14 +59,17 @@ const HomeScreen = () => {
   }
 
   return (
-    <Scan
-      scanned={scanned}
-      handleBarcodeScanned={handleBarcodeScanned}
-      redirectToScanResult={redirect_to_scan_result}
-      isArabic={is_arabic()}
-      redirectTo={redirect_to}
-    />
+    <ProtectedRoute>
+      <Scan
+        scanned={scanned}
+        isAuth={isAuth}
+        handleBarcodeScanned={handleBarcodeScanned}
+        redirectToScanResult={redirect_to_scan_result}
+        isArabic={is_arabic()}
+        redirectTo={redirect_to}
+      />
+    </ProtectedRoute>
   );
 };
 
-export default HomeScreen;
+export default ScanScreen;

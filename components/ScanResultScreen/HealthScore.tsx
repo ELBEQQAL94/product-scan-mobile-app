@@ -4,14 +4,13 @@ import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 import { FC, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Animated } from "react-native";
+import { View, Text, Animated } from "react-native";
 
 interface HealthScoreProps {
   score: number;
 }
 
 const HealthScore: FC<HealthScoreProps> = ({ score }) => {
-  console.log("score: ", score);
   const colorValues = useRef([
     new Animated.Value(0),
     new Animated.Value(0),
@@ -21,12 +20,23 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
     new Animated.Value(0),
   ]).current;
 
+  // Determine how many circles to fill based on score
+  const get_circles_to_fill = (): number => {
+    if (score < 50) return 2; // Red: fill 2 circles
+    if (score === 50) return 4; // Yellow: fill 4 circles
+    return 6; // Green: fill all 6 circles
+  };
+
   // Create sequential fill animation
   const create_sequential_fill_animation = () => {
     const animations = [];
+    const circlesToFill = get_circles_to_fill();
+
+    // Reset all circles to 0 first
+    colorValues.forEach((value) => value.setValue(0));
 
     // Create staggered animations that fill up one by one
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < circlesToFill; i++) {
       const animation = Animated.timing(colorValues[i], {
         toValue: 1,
         duration: 300,
@@ -55,7 +65,7 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
   const get_interpolated_color = (colorValue: Animated.Value) => {
     return colorValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [Colors.WHITE, process_color_by_score()], // From black to green
+      outputRange: [Colors.TRANSPARENT, process_color_by_score()],
     });
   };
 
@@ -73,7 +83,7 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
         }
       });
     };
-  }, []);
+  }, [score]); // Added score as dependency to re-animate when score changes
 
   return (
     <View>
@@ -99,6 +109,8 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
                 height: 10,
                 borderRadius: 5,
                 backgroundColor: get_interpolated_color(colorValues[index]),
+                borderWidth: 1,
+                borderColor: Colors.BLACK,
                 marginRight: index < 5 ? 2 : 0,
               }}
             />

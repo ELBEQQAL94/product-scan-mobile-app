@@ -19,8 +19,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   useEffect(() => {
     if (!loading && !user) {
       router.replace(fallbackScreen);
-    } else {
-      console.log(`user: ${JSON.stringify(user)}`);
     }
   }, [user, loading, router, fallbackScreen]);
 

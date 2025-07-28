@@ -128,10 +128,8 @@ export const auth_with_google = async () => {
           created_at: NOW_DATE_TIMESTAMP,
           date_format: NOW_DATE,
         };
-        const userId = user.uid;
 
         await firestore().collection("users").add(userData);
-        await save_products_in_db(userId);
         user_action.action_data = JSON.stringify(userData);
       }
     } else {
@@ -255,10 +253,7 @@ export const register_with_email_and_password = async (
       is_subscribed: false,
     };
 
-    const userId = user.uid;
-
     await firestore().collection("users").add(userData);
-    await save_products_in_db(userId);
     await create_log(user_action);
     return user;
   } catch (error: any) {
@@ -353,31 +348,23 @@ export const get_products = async (
   }
 };
 
-export const save_products_in_db = async (user_id: string) => {
+export const save_product_in_db = async (
+  product_from_db: ProductTypeFromDB
+) => {
+  console.log(`product_from_db: ${JSON.stringify(product_from_db)}`);
   const user_action: UserAction = {
-    action_type: ActionTypeEnum.SAVE_PRODUCTS_IN_DB,
-    action_description: "Async products of user when create account.",
+    action_type: ActionTypeEnum.SAVE_PRODUCT_IN_DB,
+    action_description: "create product in db",
     action_data: null,
     date_format: format_date_to_custom_string(),
   };
 
   try {
-    const all_products = await get_all_cached_products();
-    console.log(`all_products: ${all_products}`);
-
-    user_action.action_data = JSON.stringify(all_products);
-    for (let i = 0; i < all_products.length; i += 1) {
-      const product = all_products[i];
-      const updateProduct: ProductTypeFromDB = {
-        product_scan_result: product,
-        user_id,
-      };
-      await firestore().collection("products").add(updateProduct);
-    }
+    user_action.action_data = JSON.stringify(product_from_db);
+    await firestore().collection("products").add(product_from_db);
     await create_log(user_action);
   } catch (error: any) {
-    user_action.action_description =
-      "Error in Async products of user when create account.";
+    user_action.action_description = "Error when create new product";
     user_action.action_data = JSON.stringify({
       code: error.code,
       error_message: error.message,

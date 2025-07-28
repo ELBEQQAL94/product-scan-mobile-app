@@ -38,20 +38,6 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
-        options={{
-          title: i18n.t(LanguageKey.HOME),
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name={focused ? "home" : "home-outline"}
-              size={24}
-              color={Colors.GLOVO_GREEN}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="product-list"
         options={{
           headerShown: false,
@@ -65,17 +51,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="scan"
-        options={{
-          title: i18n.t(LanguageKey.HOME),
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <CustomScanTabButton focused={focused} />
-          ),
-          tabBarLabel: () => null,
-        }}
-      />
+
       <Tabs.Screen
         name="halal"
         options={{
@@ -98,7 +74,34 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="index"
+        options={{
+          title: i18n.t(LanguageKey.HOME),
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <CustomScanTabButton focused={focused} />
+          ),
+          tabBarLabel: () => null,
+        }}
+      />
+      <Tabs.Screen
         name="profile"
+        options={{
+          headerShown: false,
+          title: i18n.t(LanguageKey.PROFILE),
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <FontAwesome name="user" size={24} color={Colors.GLOVO_GREEN} />
+            ) : (
+              <FontAwesome5 name="user" size={24} color={Colors.GLOVO_GREEN} />
+            ),
+          tabBarLabelStyle: {
+            fontSize: is_arabic ? 10 : 12,
+          },
+        }}
+      />
+      <Tabs.Screen
+        name="setting"
         options={{
           headerShown: false,
           title: i18n.t(LanguageKey.PROFILE),

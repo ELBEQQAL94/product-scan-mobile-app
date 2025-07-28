@@ -1,6 +1,5 @@
 import Products from "@/components/ProductListScreen/Products";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import AuthButtons from "@/components/shared/AuthButtons";
 import { LanguageKey } from "@/constants/keys";
 import { get_products } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
@@ -14,15 +13,11 @@ import { View, Text, StyleSheet } from "react-native";
 
 const ProductList: FC = () => {
   // Hooks
-  const { is_arabic } = useSelectedLanguage();
-  const { redirect_to } = useCustomRouter();
   const { user } = useAuth();
 
   // States
   const [products, setProducts] = useState<ProductTypeFromDB[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-
-  const isAuth = user?.displayName !== null;
 
   const fetch_all_products = async () => {
     try {
@@ -45,7 +40,7 @@ const ProductList: FC = () => {
 
   useEffect(() => {
     fetch_all_products();
-  }, []);
+  }, [user]);
 
   if (loading) {
     return (
@@ -58,11 +53,6 @@ const ProductList: FC = () => {
   return (
     <ProtectedRoute>
       <View style={styles.container}>
-        <AuthButtons
-          isArabic={is_arabic()}
-          redirectTo={redirect_to}
-          isAuth={isAuth}
-        />
         <Text style={styles.text}>{i18n.t(LanguageKey.SCANNED_PRODUCTS)}</Text>
         <Products products={products} />
       </View>
