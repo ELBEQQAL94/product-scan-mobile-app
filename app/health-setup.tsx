@@ -13,10 +13,21 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { update_user_health_data } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 const HealthSetup: FC = () => {
   // Hooks
+  const router = useRouter();
   const { user } = useAuth();
+  const {
+    is_arabic,
+    modalVisible,
+    setModalVisible,
+    currentLanguage,
+    change_language,
+  } = useSelectedLanguage();
+
   // States
   const [currentStep, setCurrentStep] = useState<Step>(Step.DISEASES);
   const [selectedDiseases, setSelectedDiseases] = useState<Set<string>>(
@@ -25,12 +36,6 @@ const HealthSetup: FC = () => {
   const [selectedAllergies, setSelectedAllergies] = useState<Set<string>>(
     new Set()
   );
-
-  console.log(selectedDiseases);
-  console.log(selectedAllergies);
-  // Hooks
-  const router = useRouter();
-  const { is_arabic } = useSelectedLanguage();
 
   const handleNext = useCallback(async () => {
     if (currentStep === Step.DISEASES) {
@@ -92,57 +97,64 @@ const HealthSetup: FC = () => {
     }));
   }, [currentStep, selectedDiseases, selectedAllergies]);
 
-  const isDiseasesStep = currentStep === Step.DISEASES;
   const isAllergiesStep = currentStep === Step.ALERGIES;
 
   return (
-    <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={styles.scrollview_container}
-        bounces={true}
-        scrollEventThrottle={16}
-      >
-        {currentData.slice(0, 7).map((disease) => (
-          <HealthSetupCard
-            key={disease.id}
-            item={disease}
-            onPress={toggleSelection}
-          />
-        ))}
-      </ScrollView>
+    <ProtectedRoute>
+      <LanguageSwitcher
+        modalVisible={modalVisible}
+        currentLanguage={currentLanguage}
+        setModalVisible={setModalVisible}
+        changeLanguage={change_language}
+      />
+      <View style={styles.container}>
+        <ScrollView
+          contentContainerStyle={styles.scrollview_container}
+          bounces={true}
+          scrollEventThrottle={16}
+        >
+          {currentData.slice(0, 7).map((disease) => (
+            <HealthSetupCard
+              key={disease.id}
+              item={disease}
+              onPress={toggleSelection}
+            />
+          ))}
+        </ScrollView>
 
-      <View style={styles.buttonContainer}>
-        {/* Show back button only on allergies step */}
-        {isAllergiesStep && (
+        <View style={styles.buttonContainer}>
+          {/* Show back button only on allergies step */}
+          {isAllergiesStep && (
+            <ActionButton
+              label={LanguageKey.BACK} // You'll need to add this to your language keys
+              icon={FontAwesome6}
+              iconProps={{
+                name: "arrow-left-long",
+                size: 24,
+              }}
+              onPress={handleBack}
+              isArabic={is_arabic()}
+              containerStyles={styles.backButton}
+            />
+          )}
+
+          {/* Next button appears on both steps */}
           <ActionButton
-            label={LanguageKey.BACK} // You'll need to add this to your language keys
+            label={LanguageKey.CONTINUE}
             icon={FontAwesome6}
             iconProps={{
-              name: "arrow-left-long",
+              name: "arrow-right-long",
               size: 24,
             }}
-            onPress={handleBack}
+            onPress={handleNext}
             isArabic={is_arabic()}
-            containerStyles={styles.backButton}
+            containerStyles={
+              isAllergiesStep ? styles.nextButtonWithBack : styles.nextButton
+            }
           />
-        )}
-
-        {/* Next button appears on both steps */}
-        <ActionButton
-          label={LanguageKey.CONTINUE}
-          icon={FontAwesome6}
-          iconProps={{
-            name: "arrow-right-long",
-            size: 24,
-          }}
-          onPress={handleNext}
-          isArabic={is_arabic()}
-          containerStyles={
-            isAllergiesStep ? styles.nextButtonWithBack : styles.nextButton
-          }
-        />
+        </View>
       </View>
-    </View>
+    </ProtectedRoute>
   );
 };
 

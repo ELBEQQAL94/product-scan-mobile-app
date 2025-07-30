@@ -7,11 +7,13 @@ import { Screens } from "@/constants/screens";
 interface ProtectedRouteProps {
   children: ReactNode;
   fallbackScreen?: string;
+  isPublic?: boolean;
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   fallbackScreen = Screens.LOGIN_SCREEN,
+  isPublic = false,
 }) => {
   const { user, loading } = useAuth();
   const router = useRouter();

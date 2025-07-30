@@ -11,6 +11,7 @@ export const useSelectedLanguage = () => {
 
   const change_language = (languageCode: string) => {
     i18n.locale = languageCode;
+    setCurrentLanguage(languageCode as Language);
     setModalVisible(false);
   };
 
