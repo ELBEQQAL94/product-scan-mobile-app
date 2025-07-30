@@ -1,7 +1,5 @@
 export interface UserSchema {
   uid: string;
-  firstname?: string;
-  lastname?: string;
   username?: string | null;
   is_profile_health_created?: boolean;
   selected_diseases?: string[];
@@ -15,7 +13,6 @@ export interface UserSchema {
   is_subscribed: boolean;
   auth_provider: string;
   date_format: string;
-  // paymentState
 }
 
 export interface GoogleAuthUserResponse {

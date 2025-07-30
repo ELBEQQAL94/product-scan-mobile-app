@@ -1,7 +1,6 @@
 import {
   FontAwesome,
   FontAwesome5,
-  Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
