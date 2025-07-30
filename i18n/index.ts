@@ -3,6 +3,9 @@ import { I18n } from "i18n-js";
 
 export const i18n = new I18n({
   en: {
+    ACCOUNT_ACTIONS: "Account Management",
+    LOGOUT_CONFIRMATION: "Are you sure you want to logout?",
+    LOGOUT: "Logout",
     REQUEST_CAMERA_PERMISSION: "Requesting camera permission...",
     CAMERA_PERMISSION_REQUIRED: "Camera Permission Required",
     NEED_CAMERA_PERMISSION: "We need your permission to show the camera",
@@ -202,6 +205,9 @@ export const i18n = new I18n({
     MY_PROFILE: "My Porfile",
   },
   ar: {
+    ACCOUNT_ACTIONS: "إدارة الحساب",
+    LOGOUT_CONFIRMATION: "هل أنت متأكد من أنك تريد تسجيل الخروج؟",
+    LOGOUT: "تسجيل الخروج",
     REQUEST_CAMERA_PERMISSION: "طلب إذن الكاميرا...",
     CAMERA_PERMISSION_REQUIRED: "إذن الكاميرا مطلوب",
     NEED_CAMERA_PERMISSION: "نحتاج إلى إذنك لعرض الكاميرا",
@@ -401,6 +407,9 @@ export const i18n = new I18n({
     MY_PROFILE: "ملفي الشخصي",
   },
   fr: {
+    ACCOUNT_ACTIONS: "Gestion du compte",
+    LOGOUT_CONFIRMATION: "Êtes-vous sûr de vouloir vous déconnecter?",
+    LOGOUT: "Se déconnecter",
     REQUEST_CAMERA_PERMISSION: "Demande d'autorisation de la caméra...",
     CAMERA_PERMISSION_REQUIRED: "Autorisation de la caméra requise",
     NEED_CAMERA_PERMISSION:
@@ -601,6 +610,9 @@ export const i18n = new I18n({
     MY_PROFILE: "Mon profil",
   },
   es: {
+    ACCOUNT_ACTIONS: "Gestión de cuenta",
+    LOGOUT_CONFIRMATION: "¿Estás seguro de que quieres cerrar sesión?",
+    LOGOUT: "Cerrar sesión",
     REQUEST_CAMERA_PERMISSION: "Solicitando permiso de cámara...",
     CAMERA_PERMISSION_REQUIRED: "Permiso de cámara requerido",
     NEED_CAMERA_PERMISSION: "Necesitamos su permiso para mostrar la cámara",
@@ -803,6 +815,9 @@ export const i18n = new I18n({
     MY_PROFILE: "Mi perfil",
   },
   de: {
+    ACCOUNT_ACTIONS: "Kontoverwaltung",
+    LOGOUT_CONFIRMATION: "Sind Sie sicher, dass Sie sich abmelden möchten?",
+    LOGOUT: "Abmelden",
     REQUEST_CAMERA_PERMISSION: "Kameraerlaubnis wird angefordert...",
     CAMERA_PERMISSION_REQUIRED: "Kameraerlaubnis erforderlich",
     NEED_CAMERA_PERMISSION:

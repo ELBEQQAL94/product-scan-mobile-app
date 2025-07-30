@@ -14,7 +14,11 @@ import {
 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { UserSchema } from "@/types/auth";
-import { check_user_exists } from "@/external-services/firebase-config";
+import {
+  check_user_exists,
+  create_log,
+  logout,
+} from "@/external-services/firebase-config";
 import { Colors } from "@/themes/colors";
 import { Screens } from "@/constants/screens";
 import { useAuth } from "@/hooks/useAuth";
@@ -25,9 +29,10 @@ import { LanguageKey } from "@/constants/keys";
 import ProfileItem from "@/components/ProfileScreen/ProfileItem";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import ProfileScreenLoading from "@/components/ProfileScreen/ProfileScreenLoading";
-import { format_date } from "@/utils";
+import { format_date, format_date_to_custom_string } from "@/utils";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
-import { Language } from "@/enums/language";
+import auth from "@react-native-firebase/auth";
+import { UserAction, ActionTypeEnum } from "@/enums/logs";
 
 const Profile: FC = () => {
   // States
@@ -67,6 +72,29 @@ const Profile: FC = () => {
 
   const handle_edit = () => {
     router.push(Screens.HEALTH_SETUP_SCREEN);
+  };
+
+  const on_logout = async () => {
+    await logout();
+    router.push(Screens.LOGIN_SCREEN);
+  };
+
+  const handle_logout = () => {
+    Alert.alert(
+      i18n.t(LanguageKey.LOGOUT),
+      i18n.t(LanguageKey.LOGOUT_CONFIRMATION),
+      [
+        {
+          text: i18n.t(LanguageKey.CANCEL),
+          style: "cancel",
+        },
+        {
+          text: i18n.t(LanguageKey.LOGOUT),
+          style: "destructive",
+          onPress: on_logout,
+        },
+      ]
+    );
   };
 
   if (loading) {
@@ -275,6 +303,25 @@ const Profile: FC = () => {
             )}
           </View>
         </View>
+
+        {/* Logout Section */}
+        <View style={styles.section}>
+          <Text
+            style={[
+              styles.sectionTitle,
+              { textAlign: is_arabic() ? "right" : "left" },
+            ]}
+          >
+            {i18n.t(LanguageKey.ACCOUNT_ACTIONS)}
+          </Text>
+
+          <TouchableOpacity style={styles.logoutButton} onPress={handle_logout}>
+            <MaterialIcons name="logout" size={20} color="#fff" />
+            <Text style={styles.logoutButtonText}>
+              {i18n.t(LanguageKey.LOGOUT)}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </ProtectedRoute>
   );
@@ -401,6 +448,22 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 16,
     color: "#666",
+  },
+  logoutButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#dc3545",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 5,
+  },
+  logoutButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+    marginLeft: 8,
   },
 });
 
