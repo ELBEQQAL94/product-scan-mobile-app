@@ -12,7 +12,6 @@ import {
 import {
   format_date_to_custom_string,
   format_date_to_timestamp,
-  get_all_cached_products,
 } from "@/utils";
 import { ActionTypeEnum, UserAction } from "@/enums/logs";
 import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";

@@ -173,3 +173,7 @@ export const map_to_product_db = (
 
   return product_db;
 };
+
+export const format_date = (timestamp: number) => {
+  return new Date(timestamp).toLocaleDateString();
+};

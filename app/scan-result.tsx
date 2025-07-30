@@ -1,7 +1,6 @@
 import ProductNotFound from "@/components/ProductDetailsScreen/ProductNotFound";
 import { ProductScanResult } from "@/constants/responses";
 import { Screens } from "@/constants/screens";
-import { i18n } from "@/i18n";
 import { ai_scan, product_details } from "@/services";
 import { Href, useLocalSearchParams, useRouter } from "expo-router";
 import { FC, useEffect, useState } from "react";

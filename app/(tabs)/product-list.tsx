@@ -3,8 +3,6 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { LanguageKey } from "@/constants/keys";
 import { get_products } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
-import { useCustomRouter } from "@/hooks/useCustomRouter";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { i18n } from "@/i18n";
 import { Typography } from "@/themes/typography";
 import { ProductTypeFromDB } from "@/types/products";
