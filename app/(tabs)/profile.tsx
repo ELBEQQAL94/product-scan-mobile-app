@@ -26,6 +26,8 @@ import ProfileItem from "@/components/ProfileScreen/ProfileItem";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import ProfileScreenLoading from "@/components/ProfileScreen/ProfileScreenLoading";
 import { format_date } from "@/utils";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
+import { Language } from "@/enums/language";
 
 const Profile: FC = () => {
   // States
@@ -34,7 +36,13 @@ const Profile: FC = () => {
 
   // Hooks
   const router = useRouter();
-  const { is_arabic } = useSelectedLanguage();
+  const {
+    is_arabic,
+    modalVisible,
+    setModalVisible,
+    currentLanguage,
+    change_language,
+  } = useSelectedLanguage();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -67,6 +75,12 @@ const Profile: FC = () => {
 
   return (
     <ProtectedRoute>
+      <LanguageSwitcher
+        modalVisible={modalVisible}
+        currentLanguage={currentLanguage}
+        setModalVisible={setModalVisible}
+        changeLanguage={change_language}
+      />
       <ScreenTitle title={i18n.t(LanguageKey.MY_PROFILE)} />
       <ScrollView style={styles.container}>
         <View style={styles.section}>

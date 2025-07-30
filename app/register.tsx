@@ -32,6 +32,7 @@ import {
 } from "react-native";
 import AuthFooter from "@/components/shared/AuthFooter";
 import Terms from "@/components/RegisterScreen/Terms";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 const RegisterScreen: FC = () => {
   // States
@@ -48,7 +49,13 @@ const RegisterScreen: FC = () => {
 
   // Hooks
   const router = useRouter();
-  const { is_arabic } = useSelectedLanguage();
+  const {
+    is_arabic,
+    modalVisible,
+    setModalVisible,
+    currentLanguage,
+    change_language,
+  } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
 
   const show_toast = () => {
@@ -125,6 +132,12 @@ const RegisterScreen: FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <LanguageSwitcher
+        modalVisible={modalVisible}
+        currentLanguage={currentLanguage}
+        setModalVisible={setModalVisible}
+        changeLanguage={change_language}
+      />
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={Platform.OS === "ios" ? "padding" : "height"}

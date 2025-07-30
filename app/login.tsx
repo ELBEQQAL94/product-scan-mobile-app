@@ -29,6 +29,8 @@ import {
 import Header from "@/components/RegisterScreen/Header";
 import AuthFooter from "@/components/shared/AuthFooter";
 import crashlytics from "@react-native-firebase/crashlytics";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 const LoginScreen: FC = () => {
   // States
@@ -41,7 +43,13 @@ const LoginScreen: FC = () => {
 
   // Hooks
   const router = useRouter();
-  const { is_arabic } = useSelectedLanguage();
+  const {
+    is_arabic,
+    modalVisible,
+    setModalVisible,
+    currentLanguage,
+    change_language,
+  } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
 
   const show_toast = () => {
@@ -140,6 +148,12 @@ const LoginScreen: FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <LanguageSwitcher
+        modalVisible={modalVisible}
+        currentLanguage={currentLanguage}
+        setModalVisible={setModalVisible}
+        changeLanguage={change_language}
+      />
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={Platform.OS === "ios" ? "padding" : "height"}

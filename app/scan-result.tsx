@@ -22,13 +22,20 @@ import {
 } from "@/external-services/firebase-config";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { UserSchema } from "@/types/auth";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 const ScanResultScreen: FC = () => {
   // Hooks
   const router = useRouter();
   const local = useLocalSearchParams();
   const colorScheme = useColorScheme();
-  const { currentLanguage, is_arabic } = useSelectedLanguage();
+  const {
+    is_arabic,
+    modalVisible,
+    setModalVisible,
+    currentLanguage,
+    change_language,
+  } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
 
   const bar_code = local.bar_code as string;
@@ -132,6 +139,12 @@ const ScanResultScreen: FC = () => {
 
   return (
     <ProtectedRoute>
+      <LanguageSwitcher
+        modalVisible={modalVisible}
+        currentLanguage={currentLanguage}
+        setModalVisible={setModalVisible}
+        changeLanguage={change_language}
+      />
       <ScanResult
         data={product}
         user={user}

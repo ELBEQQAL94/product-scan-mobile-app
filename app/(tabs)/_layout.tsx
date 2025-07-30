@@ -1,6 +1,8 @@
 import {
+  Feather,
   FontAwesome,
   FontAwesome5,
+  Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
@@ -100,15 +102,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="setting"
+        name="settings"
         options={{
           headerShown: false,
           title: i18n.t(LanguageKey.PROFILE),
           tabBarIcon: ({ focused }) =>
             focused ? (
-              <FontAwesome name="user" size={24} color={Colors.GLOVO_GREEN} />
+              <Ionicons name="settings" size={24} color={Colors.GLOVO_GREEN} />
             ) : (
-              <FontAwesome5 name="user" size={24} color={Colors.GLOVO_GREEN} />
+              <Feather name="settings" size={24} color={Colors.GLOVO_GREEN} />
             ),
           tabBarLabelStyle: {
             fontSize: is_arabic ? 10 : 12,
