@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BarcodeScanningResult } from "expo-camera";
 import { useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
@@ -54,8 +54,12 @@ const ScanScreen = () => {
     }
   };
 
-  if (hasCompletedOnboarding) {
-    return <OnBoarding />;
+  useEffect(() => {
+    checkOnboardingStatus();
+  }, [hasCompletedOnboarding]);
+
+  if (!hasCompletedOnboarding) {
+    return <OnBoarding setHasCompletedOnboarding={setHasCompletedOnboarding} />;
   }
 
   return (

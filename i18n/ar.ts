@@ -7,7 +7,7 @@ export const ar = {
   NEED_CAMERA_PERMISSION: "نحتاج إلى إذنك لعرض الكاميرا",
   CANCEL: "إلغاء",
   GRANT_PERMISSION: "منح الإذن",
-  SLIDE_1_TITLE: "مرحبًا بك في TruthLabel",
+  SLIDE_1_TITLE: "مرحبًا بك في MyScan",
   SLIDE_1_SUBTITLE: "امسح المنتجات للكشف فورًا عما تحتويه حقًا",
   SLIDE_2_TITLE: "تحليل أي منتج",
   SLIDE_2_SUBTITLE:

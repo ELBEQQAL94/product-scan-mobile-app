@@ -2,7 +2,7 @@ import { slides } from "@/constants/on-boarding-slides";
 import { Screens } from "@/constants/screens";
 import { set_item } from "@/utils";
 import { Href, useRouter } from "expo-router";
-import { useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -13,16 +13,20 @@ import {
   useColorScheme,
 } from "react-native";
 import { i18n } from "@/i18n";
-import SelectLanguage from "../shared/SelectLanguage";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
+import LanguageSwitcher from "../shared/LanguageSwitcher";
+import { AsyncStorageKey } from "@/constants/keys";
 
 const { width } = Dimensions.get("window");
 
-const Onboarding: React.FC = () => {
+interface OnboardingProps {
+  setHasCompletedOnboarding: (completed: boolean) => void;
+}
+
+const Onboarding: FC<OnboardingProps> = ({ setHasCompletedOnboarding }) => {
   // Hooks
   const colorScheme = useColorScheme();
   const flatListRef = useRef<FlatList>(null);
-  const router = useRouter();
   const { modalVisible, currentLanguage, setModalVisible, change_language } =
     useSelectedLanguage();
 
@@ -36,34 +40,30 @@ const Onboarding: React.FC = () => {
     card: colorScheme === "dark" ? "#1E1E1E" : "white",
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentIndex < slides.length - 1) {
       const newIndex = currentIndex + 1;
       setCurrentIndex(newIndex);
       flatListRef.current?.scrollToIndex({ index: newIndex, animated: true });
     } else {
-      set_item("hasCompletedOnboarding", "true");
-      router.replace(Screens.HOME_SCREEN as Href);
+      await set_item(AsyncStorageKey.HAS_COMPLETED_ONBOARDING, "true");
+      setHasCompletedOnboarding(true);
     }
   };
 
   const skip = async () => {
-    await set_item("hasCompletedOnboarding", "true");
-    router.replace(Screens.HOME_SCREEN as Href);
+    await set_item(AsyncStorageKey.HAS_COMPLETED_ONBOARDING, "true");
+    setHasCompletedOnboarding(true);
   };
 
   return (
     <>
-      <View style={styles.header}>
-        <View>
-          <SelectLanguage
-            currentLanguage={currentLanguage}
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            changeLanguage={change_language}
-          />
-        </View>
-      </View>
+      <LanguageSwitcher
+        modalVisible={modalVisible}
+        currentLanguage={currentLanguage}
+        setModalVisible={setModalVisible}
+        changeLanguage={change_language}
+      />
       <View style={styles.main_container}>
         <View style={[styles.container, { backgroundColor: "green" }]}>
           <FlatList

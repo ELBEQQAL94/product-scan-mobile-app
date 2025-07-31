@@ -7,7 +7,7 @@ export const es = {
   NEED_CAMERA_PERMISSION: "Necesitamos su permiso para mostrar la cámara",
   CANCEL: "Cancelar",
   GRANT_PERMISSION: "Conceder permiso",
-  SLIDE_1_TITLE: "Bienvenido a TruthLabel",
+  SLIDE_1_TITLE: "Bienvenido a MyScan",
   SLIDE_1_SUBTITLE:
     "Escanea productos para revelar instantáneamente lo que realmente contienen",
   SLIDE_2_TITLE: "Analiza cualquier producto",
