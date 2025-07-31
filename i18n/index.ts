@@ -14,6 +14,6 @@ export const i18n = new I18n({
   de,
 });
 
-export const DEFAULT_LANGUAGE_APP = Language.AR;
+export const DEFAULT_LANGUAGE_APP = Language.EN;
 
 i18n.locale = DEFAULT_LANGUAGE_APP;
