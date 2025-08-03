@@ -1,7 +1,5 @@
 import { slides } from "@/constants/on-boarding-slides";
-import { Screens } from "@/constants/screens";
 import { set_item } from "@/utils";
-import { Href, useRouter } from "expo-router";
 import { FC, useRef, useState } from "react";
 import {
   View,

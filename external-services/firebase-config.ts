@@ -16,22 +16,25 @@ import {
 import { ActionTypeEnum, UserAction } from "@/enums/logs";
 import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
 import { ProductTypeFromDB } from "@/types/products";
+import { NOW_DATE, NOW_DATE_TIMESTAMP } from "@/constants/constants";
 
-const db = firestore();
-
-const NOW_DATE = format_date_to_custom_string();
-const NOW_DATE_TIMESTAMP = format_date_to_timestamp();
+// const db = firestore();
 
 // Test shas
 // Configure Google Sign-In
 // working case
+// GoogleSignin.configure({
+//   webClientId:
+//     "238005376912-g5mqaghnih33nov4fcjjuce2a7kcd7pd.apps.googleusercontent.com", //process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
+//   offlineAccess: true, // Important for getting idToken
+//   forceCodeForRefreshToken: true,
+//   accountName: "",
+//   iosClientId: "", // Add this even for Android
+//   hostedDomain: "",
+// });
+
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
-  offlineAccess: true, // Important for getting idToken
-  forceCodeForRefreshToken: true,
-  accountName: "",
-  iosClientId: "", // Add this even for Android
-  hostedDomain: "",
 });
 
 // Test this case
@@ -52,12 +55,6 @@ GoogleSignin.configure({
 //   offlineAccess: true, // Important for getting idToken
 // });
 
-// Test this case
-// Not working
-// GoogleSignin.configure({
-//   webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
-// });
-
 // register/create user account with google
 export const auth_with_google = async () => {
   const user_action: UserAction = {
@@ -66,10 +63,6 @@ export const auth_with_google = async () => {
     action_data: null,
     date_format: NOW_DATE,
   };
-
-  user_action.action_data = process.env.EXPO_PUBLIC_WEB_CLIENT_ID;
-  user_action.action_description = "web client config id";
-  await create_log(user_action);
 
   try {
     const hasPlayServices = await GoogleSignin.hasPlayServices({
@@ -143,7 +136,6 @@ export const auth_with_google = async () => {
     user_action.action_data = JSON.stringify({
       error_code: error.code,
       error_message: error.message,
-      web_client_id: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
     });
     await create_log(user_action);
   }
@@ -374,7 +366,7 @@ export const save_product_in_db = async (
 
 export const create_log = async (userAction: UserAction): Promise<void> => {
   try {
-    await addDoc(collection(db, "logs"), userAction);
+    await addDoc(collection(firestore(), "logs"), userAction);
   } catch (error: unknown) {
     console.log(
       "create new log get an error from config firebase test: ",

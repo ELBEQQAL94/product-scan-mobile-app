@@ -14,7 +14,6 @@ const OverallAssessment: FC<OverallAssessmentProps> = ({ assessment }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.assessment_title}>{assessment.title}</Text>
-
       <Text style={styles.assessment_subtitle}>{assessment.subtitle}</Text>
     </View>
   );
