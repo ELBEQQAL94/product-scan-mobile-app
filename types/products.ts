@@ -4,6 +4,7 @@ export interface ProductTypeFromDB {
   user_id: string;
   product_scan_result: ProductScanResult;
   bar_code: string;
+  created_at: string;
 }
 
 export interface ScanedProduct {

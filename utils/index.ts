@@ -169,6 +169,7 @@ export const map_to_product_db = (
       recommendations: product.recommendations,
       product_name: product.product_name,
     },
+    created_at: format_date_to_custom_string(),
   };
 
   return product_db;
