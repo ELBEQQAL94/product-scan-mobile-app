@@ -6,7 +6,7 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import "react-native-reanimated";
 import { Colors } from "@/themes/colors";
 import CustomScanTabButton from "@/components/ScanScreen/CustomScanTabButton";
@@ -14,12 +14,18 @@ import { i18n } from "@/i18n";
 import { LanguageKey } from "@/constants/keys";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { Language } from "@/enums/language";
+import { Typography } from "@/themes/typography";
+import { TouchableOpacity } from "react-native";
+import { Screens } from "@/constants/screens";
 
 export default function TabLayout() {
   const { currentLanguage } = useSelectedLanguage();
   const is_arabic = currentLanguage === Language.AR;
+  const router = useRouter();
   return (
     <Tabs
+      initialRouteName="index"
+      backBehavior="history"
       screenOptions={{
         tabBarActiveTintColor: Colors.GLOVO_GREEN,
         tabBarInactiveTintColor: Colors.GRAY,
@@ -114,6 +120,28 @@ export default function TabLayout() {
             ),
           tabBarLabelStyle: {
             fontSize: is_arabic ? 10 : 12,
+          },
+        }}
+      />
+      <Tabs.Screen
+        name={Screens.HEALTH_SETUP_SCREEN}
+        options={{
+          href: null, // Hide from tab bar
+          title: i18n.t(LanguageKey.HEALTH_PROFILE_SETUP),
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => router.back()}
+              style={{ marginLeft: 10, padding: 8 }}
+            >
+              <Ionicons name="chevron-back" size={24} color={Colors.WHITE} />
+            </TouchableOpacity>
+          ),
+          headerStyle: {
+            backgroundColor: Colors.GLOVO_GREEN,
+            ...Typography.h1,
+          },
+          headerTitleStyle: {
+            color: Colors.WHITE,
           },
         }}
       />
