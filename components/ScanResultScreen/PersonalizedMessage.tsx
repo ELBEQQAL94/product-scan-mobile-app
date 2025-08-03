@@ -1,10 +1,7 @@
-import { Typography } from "@/themes/typography";
 import { Recommendations } from "@/types/scan-result";
 import { FC, useState } from "react";
-import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, StyleSheet } from "react-native";
 import { Severity } from "@/enums/scan-result-with-ai";
-import RecommendationItem from "./RecommendationItem";
 import { i18n } from "@/i18n";
 import { LanguageKey } from "@/constants/keys";
 import PriorityIssues from "./PriorityIssues";
@@ -19,22 +16,30 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
 }) => {
   const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
 
+  console.log(recommendations);
   // Group recommendations by severity
   const criticalRecs = recommendations.filter(
-    (rec: Recommendations) => rec.severity === Severity.CRITICAL
+    (rec: Recommendations) =>
+      rec.severity.toLowerCase() === Severity.CRITICAL.toLowerCase()
   );
   const highRecs = recommendations.filter(
-    (rec) => rec.severity === Severity.HIGH
+    (rec) => rec.severity.toLowerCase() === Severity.HIGH.toLowerCase()
   );
   const moderateRecs = recommendations.filter(
-    (rec: Recommendations) => rec.severity === Severity.MODERATE
+    (rec: Recommendations) =>
+      rec.severity.toLowerCase() === Severity.MODERATE.toLowerCase()
   );
   const lowRecs = recommendations.filter(
-    (rec: Recommendations) => rec.severity === Severity.LOW
+    (rec: Recommendations) => rec.severity.toLowerCase() === Severity.LOW
   );
 
   // Combine critical and high for priority section
-  const priorityRecs = [...criticalRecs, ...highRecs];
+  const priorityRecs = [
+    ...criticalRecs,
+    ...highRecs,
+    ...lowRecs,
+    ...moderateRecs,
+  ];
 
   const toggleExpansion = (index: number) => {
     const newExpanded = new Set(expandedItems);
@@ -44,69 +49,6 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
       newExpanded.add(index);
     }
     setExpandedItems(newExpanded);
-  };
-
-  const renderRecommendationItem = (
-    rec: Recommendations,
-    index: number,
-    showBorder: boolean = true
-  ) => {
-    const isExpanded = expandedItems.has(index);
-
-    return (
-      <TouchableOpacity
-        key={index}
-        style={{
-          paddingVertical: 16,
-          paddingHorizontal: 0,
-          borderBottomWidth: showBorder ? 1 : 0,
-          borderBottomColor: "#f0f0f0",
-        }}
-        onPress={() => toggleExpansion(index)}
-        activeOpacity={0.7}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{
-                ...Typography.bodyLarge,
-                fontWeight: "600",
-                color: "#333",
-                lineHeight: 24,
-                marginBottom: isExpanded ? 12 : 0,
-              }}
-            >
-              {rec.recommendation}
-            </Text>
-
-            {isExpanded && (
-              <Text
-                style={{
-                  ...Typography.bodyMedium,
-                  color: "#666",
-                  lineHeight: 22,
-                }}
-              >
-                {rec.explanation}
-              </Text>
-            )}
-          </View>
-
-          <Ionicons
-            name={isExpanded ? "chevron-up" : "chevron-down"}
-            size={18}
-            color="#999"
-            style={{ marginLeft: 16, marginTop: 2 }}
-          />
-        </View>
-      </TouchableOpacity>
-    );
   };
 
   // Don't render if no recommendations
