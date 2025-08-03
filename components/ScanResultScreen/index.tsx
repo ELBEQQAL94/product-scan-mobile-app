@@ -24,8 +24,6 @@ const ScanResult: FC<ScanResultProps> = ({
   redirectTo,
   user,
 }) => {
-  // Mock not subscriber user
-
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -51,6 +49,16 @@ const ScanResult: FC<ScanResultProps> = ({
         </View> */}
       </ScrollView>
       <TouchableOpacity
+        onPress={() => redirectTo(Screens.PRODUCT_LIST_SCREEN)}
+        style={[{ ...styles.fab, ...styles.shopping_fab }]}
+      >
+        <MaterialCommunityIcons
+          name="shopping-outline"
+          size={28}
+          color={Colors.WHITE}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
         onPress={() => redirectTo(Screens.HOME_SCREEN)}
         style={styles.fab}
       >
@@ -66,6 +74,10 @@ const ScanResult: FC<ScanResultProps> = ({
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 16 },
+  shopping_fab: {
+    right: 20,
+    bottom: 90,
+  },
   fab: {
     position: "absolute",
     width: 56,
