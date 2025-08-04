@@ -287,7 +287,9 @@ ${
       : ""
   }
 
+CRITICAL: Your response MUST be valid JSON only. Do not include any other text, explanations, or formatting outside the JSON structure.
 IMPORTANT: Return your response as a JSON object with the following structure:
+
 {
   "score": <number between 0-100>,
   "recommendations": [
