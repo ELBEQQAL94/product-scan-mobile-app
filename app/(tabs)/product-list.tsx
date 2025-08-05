@@ -1,11 +1,9 @@
 import Products from "@/components/ProductListScreen/Products";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import { LanguageKey } from "@/constants/keys";
 import { get_products } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { i18n } from "@/i18n";
 import { ProductTypeFromDB } from "@/types/products";
 import { FC, useEffect, useState } from "react";
@@ -14,8 +12,6 @@ import { View, Text, StyleSheet } from "react-native";
 const ProductList: FC = () => {
   // Hooks
   const { user } = useAuth();
-  const { modalVisible, setModalVisible, currentLanguage, change_language } =
-    useSelectedLanguage();
 
   // States
   const [products, setProducts] = useState<ProductTypeFromDB[]>([]);
@@ -54,12 +50,6 @@ const ProductList: FC = () => {
 
   return (
     <ProtectedRoute>
-      <LanguageSwitcher
-        modalVisible={modalVisible}
-        currentLanguage={currentLanguage}
-        setModalVisible={setModalVisible}
-        changeLanguage={change_language}
-      />
       <View style={styles.container}>
         <ScreenTitle title={i18n.t(LanguageKey.SCANNED_PRODUCTS)} />
         <Products products={products} />

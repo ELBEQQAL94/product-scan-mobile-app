@@ -6,8 +6,6 @@ import OnBoarding from "@/components/HomeScreen/OnBoarding";
 import { get_item } from "@/utils";
 import Scan from "@/components/ScanScreen/Scan";
 import { AsyncStorageKey } from "@/constants/keys";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
-import { useCustomRouter } from "@/hooks/useCustomRouter";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -16,15 +14,10 @@ const ScanScreen = () => {
   const router = useRouter();
   const { user } = useAuth();
 
-  const { is_arabic } = useSelectedLanguage();
-  const { redirect_to } = useCustomRouter();
-
   // States
   const [scanned, setScanned] = useState<boolean>(false);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] =
     useState<boolean>(false);
-
-  const isAuth = user?.displayName !== null;
 
   const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
     setScanned(true);
@@ -66,11 +59,8 @@ const ScanScreen = () => {
     <ProtectedRoute>
       <Scan
         scanned={scanned}
-        isAuth={isAuth}
         handleBarcodeScanned={handleBarcodeScanned}
         redirectToScanResult={redirect_to_scan_result}
-        isArabic={is_arabic()}
-        redirectTo={redirect_to}
       />
     </ProtectedRoute>
   );

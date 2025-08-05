@@ -14,11 +14,7 @@ import {
 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { UserSchema } from "@/types/auth";
-import {
-  check_user_exists,
-  create_log,
-  logout,
-} from "@/external-services/firebase-config";
+import { check_user_exists, logout } from "@/external-services/firebase-config";
 import { Colors } from "@/themes/colors";
 import { Screens } from "@/constants/screens";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,10 +25,7 @@ import { LanguageKey } from "@/constants/keys";
 import ProfileItem from "@/components/ProfileScreen/ProfileItem";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import ProfileScreenLoading from "@/components/ProfileScreen/ProfileScreenLoading";
-import { format_date, format_date_to_custom_string } from "@/utils";
-import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
-import auth from "@react-native-firebase/auth";
-import { UserAction, ActionTypeEnum } from "@/enums/logs";
+import { format_date } from "@/utils";
 
 const Profile: FC = () => {
   // States
@@ -41,13 +34,7 @@ const Profile: FC = () => {
 
   // Hooks
   const router = useRouter();
-  const {
-    is_arabic,
-    modalVisible,
-    setModalVisible,
-    currentLanguage,
-    change_language,
-  } = useSelectedLanguage();
+  const { is_arabic } = useSelectedLanguage();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -103,12 +90,6 @@ const Profile: FC = () => {
 
   return (
     <ProtectedRoute>
-      <LanguageSwitcher
-        modalVisible={modalVisible}
-        currentLanguage={currentLanguage}
-        setModalVisible={setModalVisible}
-        changeLanguage={change_language}
-      />
       <ScreenTitle title={i18n.t(LanguageKey.MY_PROFILE)} />
       <ScrollView style={styles.container}>
         <View style={styles.section}>

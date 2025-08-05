@@ -19,18 +19,12 @@ import { LanguageKey } from "@/constants/keys";
 
 interface ScanProps {
   scanned: boolean;
-  isArabic: boolean;
-  isAuth?: boolean;
-  redirectTo: (screen: string) => void;
   handleBarcodeScanned: (result: BarcodeScanningResult) => Promise<void>;
   redirectToScanResult: (bar_code: string) => void;
 }
 
 const Scan: React.FC<ScanProps> = ({
   scanned,
-  isArabic,
-  isAuth,
-  redirectTo,
   handleBarcodeScanned,
   redirectToScanResult,
 }) => {
