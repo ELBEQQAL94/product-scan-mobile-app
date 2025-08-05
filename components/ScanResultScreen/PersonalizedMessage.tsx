@@ -8,15 +8,16 @@ import PriorityIssues from "./PriorityIssues";
 import OverallAssessment from "./OverallAssessment";
 
 interface PersonalizedMessageProps {
+  score: number;
   recommendations: Recommendations[];
 }
 
 const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
+  score,
   recommendations = [],
 }) => {
   const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
 
-  console.log(recommendations);
   // Group recommendations by severity
   const criticalRecs = recommendations.filter(
     (rec: Recommendations) =>
@@ -66,25 +67,20 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
       priorityRecs.length === 0 &&
       moderateRecs.length === 0;
 
-    if (hasHighPriority) {
+    if (score < 50) {
       return {
         title: i18n.t(LanguageKey.NOT_GOOD_FOR_YOU),
         subtitle: i18n.t(LanguageKey.THIS_PRODUCT_HAS_NEGATIVE_HEALTH_ASPECTS),
       };
-    } else if (hasOnlyModerate) {
+    } else if (score <= 50) {
       return {
         title: i18n.t(LanguageKey.CONSIDER_CAREFULLY),
         subtitle: i18n.t(LanguageKey.SOME_POINTS_TOCONSIDER),
       };
-    } else if (hasOnlyPositive) {
+    } else {
       return {
         title: i18n.t(LanguageKey.PERFECT_FOR_YOU),
         subtitle: i18n.t(LanguageKey.THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS),
-      };
-    } else {
-      return {
-        title: i18n.t(LanguageKey.HEALTH_ANALYSIS),
-        subtitle: i18n.t(LanguageKey.REVIEW_THE_INFORMATION_BELOW),
       };
     }
   };

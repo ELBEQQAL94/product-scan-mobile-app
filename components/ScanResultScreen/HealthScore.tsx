@@ -56,8 +56,9 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
   };
 
   const process_text_by_score = (): string => {
-    if (score === 50) return i18n.t(LanguageKey.AVOID_THIS_PRODUCT);
-    if (score > 50) return i18n.t(LanguageKey.EXCELLENT_CHOICE);
+    if (score < 50) return i18n.t(LanguageKey.AVOID_THIS_PRODUCT);
+    if (score === 50) return i18n.t(LanguageKey.NOT_RECOMMENDED);
+    if (score >= 50) return i18n.t(LanguageKey.EXCELLENT_CHOICE);
     return i18n.t(LanguageKey.NOT_RECOMMENDED);
   };
 

@@ -35,7 +35,10 @@ const ScanResult: FC<ScanResultProps> = ({
           isArabic={isArabic}
           redirectTo={redirectTo}
         />
-        <PersonalizedMessage recommendations={data.recommendations} />
+        <PersonalizedMessage
+          score={data.score}
+          recommendations={data.recommendations}
+        />
         {/* <View style={{ margin: 25 }}>
           <ActionButton
             label={LanguageKey.SEE_BETTER_OPTIONS}

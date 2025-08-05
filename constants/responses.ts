@@ -19,6 +19,7 @@ export interface Ingredients {
 }
 
 export interface Product {
+  nova_group: number;
   _id: string;
   _keywords: string[];
   added_countries_tags: string[];

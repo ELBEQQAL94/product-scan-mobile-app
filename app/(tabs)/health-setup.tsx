@@ -1,9 +1,8 @@
 import HealthSetupCard from "@/components/HealthSetupScreen/HealthSetupCard";
 import { FC, useState, useCallback, useMemo } from "react";
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import diseases from "@/data/diseases.json";
 import allergies from "@/data/allergies.json";
-import { Colors } from "@/themes/colors";
 import ActionButton from "@/components/shared/ActionButton";
 import { Href, useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
@@ -14,19 +13,12 @@ import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { update_user_health_data } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 const HealthSetup: FC = () => {
   // Hooks
   const router = useRouter();
   const { user } = useAuth();
-  const {
-    is_arabic,
-    modalVisible,
-    setModalVisible,
-    currentLanguage,
-    change_language,
-  } = useSelectedLanguage();
+  const { is_arabic } = useSelectedLanguage();
 
   // States
   const [currentStep, setCurrentStep] = useState<Step>(Step.DISEASES);
@@ -101,12 +93,6 @@ const HealthSetup: FC = () => {
 
   return (
     <ProtectedRoute>
-      <LanguageSwitcher
-        modalVisible={modalVisible}
-        currentLanguage={currentLanguage}
-        setModalVisible={setModalVisible}
-        changeLanguage={change_language}
-      />
       <View style={styles.container}>
         <ScrollView
           contentContainerStyle={styles.scrollview_container}

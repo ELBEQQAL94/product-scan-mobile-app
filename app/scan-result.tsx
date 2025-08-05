@@ -7,6 +7,7 @@ import { FC, useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 import ConnectionError from "@/components/ProductDetailsScreen/ConnectionError";
 import {
+  calculate_enhanced_health_score,
   get_product_by_bar_code,
   map_to_product_db,
   save_product_by_bar_code,
@@ -22,20 +23,13 @@ import {
 } from "@/external-services/firebase-config";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { UserSchema } from "@/types/auth";
-import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 const ScanResultScreen: FC = () => {
   // Hooks
   const router = useRouter();
   const local = useLocalSearchParams();
   const colorScheme = useColorScheme();
-  const {
-    is_arabic,
-    modalVisible,
-    setModalVisible,
-    currentLanguage,
-    change_language,
-  } = useSelectedLanguage();
+  const { is_arabic, currentLanguage } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
 
   const bar_code = local.bar_code as string;
@@ -79,6 +73,7 @@ const ScanResultScreen: FC = () => {
         console.log("new product: ");
         const response = await product_details(bar_code);
         if (response?.status === 1) {
+          const score = calculate_enhanced_health_score(response);
           if (!userLoading) {
             const content = ai_product_scan_prompt(
               response,
@@ -92,13 +87,12 @@ const ScanResultScreen: FC = () => {
               console.log(`ai_scan_result: ${ai_scan_result}`);
               product = {
                 status: response.status,
-                score:
-                  response.product.nutriscore_score || ai_scan_result.score,
                 image_url: response.product.image_url,
                 recommendations: ai_scan_result.recommendations,
                 product_name:
                   response.product.product_name ||
                   response.product.product_name_en,
+                score,
               };
               const product_db = map_to_product_db(user_id, bar_code, product);
               await save_product_in_db(product_db);
@@ -139,12 +133,6 @@ const ScanResultScreen: FC = () => {
 
   return (
     <ProtectedRoute>
-      <LanguageSwitcher
-        modalVisible={modalVisible}
-        currentLanguage={currentLanguage}
-        setModalVisible={setModalVisible}
-        changeLanguage={change_language}
-      />
       <ScanResult
         data={product}
         user={user}
