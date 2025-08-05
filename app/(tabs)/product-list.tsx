@@ -5,6 +5,7 @@ import { LanguageKey } from "@/constants/keys";
 import { get_products } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
 import { i18n } from "@/i18n";
+import { Typography } from "@/themes/typography";
 import { ProductTypeFromDB } from "@/types/products";
 import { FC, useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
@@ -51,8 +52,18 @@ const ProductList: FC = () => {
   return (
     <ProtectedRoute>
       <View style={styles.container}>
-        <ScreenTitle title={i18n.t(LanguageKey.SCANNED_PRODUCTS)} />
-        <Products products={products} />
+        {products.length === 0 ? (
+          <View style={styles.no_product_found_container}>
+            <Text style={styles.no_product_found_container_text}>
+              {i18n.t(LanguageKey.DONT_HAVE_SCANNED_PRODUCT)}
+            </Text>
+          </View>
+        ) : (
+          <>
+            <ScreenTitle title={i18n.t(LanguageKey.SCANNED_PRODUCTS)} />
+            <Products products={products} />
+          </>
+        )}
       </View>
     </ProtectedRoute>
   );
@@ -68,6 +79,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  no_product_found_container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  no_product_found_container_text: { ...Typography.h1 },
 });
 
 export default ProductList;

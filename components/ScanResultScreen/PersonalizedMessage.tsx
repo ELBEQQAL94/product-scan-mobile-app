@@ -59,14 +59,6 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
 
   // Helper function to determine overall assessment
   const getOverallAssessment = () => {
-    const hasHighPriority = priorityRecs.length > 0;
-    const hasOnlyModerate =
-      moderateRecs.length > 0 && priorityRecs.length === 0;
-    const hasOnlyPositive =
-      lowRecs.length > 0 &&
-      priorityRecs.length === 0 &&
-      moderateRecs.length === 0;
-
     if (score < 50) {
       return {
         title: i18n.t(LanguageKey.NOT_GOOD_FOR_YOU),

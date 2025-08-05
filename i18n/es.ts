@@ -1,4 +1,5 @@
 export const es = {
+  DONT_HAVE_SCANNED_PRODUCT: "Ningún producto escaneado",
   ACCOUNT_ACTIONS: "Gestión de cuenta",
   LOGOUT_CONFIRMATION: "¿Estás seguro de que quieres cerrar sesión?",
   LOGOUT: "Cerrar sesión",
