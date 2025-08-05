@@ -48,6 +48,12 @@ export default function Layout() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name={Screens.ONBOARDING_SCREEN}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );

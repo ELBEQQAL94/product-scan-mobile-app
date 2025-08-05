@@ -9,4 +9,5 @@ export const Screens = {
   HALAL_SCREEN: "halal",
   POFILE_SCREEN: "profile",
   SETTINGS_SCREEN: "settings",
+  ONBOARDING_SCREEN: "onboarding",
 };
