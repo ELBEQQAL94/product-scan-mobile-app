@@ -12,24 +12,24 @@ import {
 } from "react-native";
 import { i18n } from "@/i18n";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
-import LanguageSwitcher from "../shared/LanguageSwitcher";
-import { AsyncStorageKey } from "@/constants/keys";
+import { AsyncStorageKey, LanguageKey } from "@/constants/keys";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
+import { Colors } from "@/themes/colors";
+import { useRouter } from "expo-router";
+import { Screens } from "@/constants/screens";
 
 const { width } = Dimensions.get("window");
 
-interface OnboardingProps {
-  setHasCompletedOnboarding: (completed: boolean) => void;
-}
-
-const Onboarding: FC<OnboardingProps> = ({ setHasCompletedOnboarding }) => {
+const OnboardingScreen: FC = () => {
   // Hooks
   const colorScheme = useColorScheme();
   const flatListRef = useRef<FlatList>(null);
   const { modalVisible, currentLanguage, setModalVisible, change_language } =
     useSelectedLanguage();
+  const router = useRouter();
 
   // States
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const colors = {
     background: colorScheme === "dark" ? "#121212" : "white",
@@ -45,13 +45,21 @@ const Onboarding: FC<OnboardingProps> = ({ setHasCompletedOnboarding }) => {
       flatListRef.current?.scrollToIndex({ index: newIndex, animated: true });
     } else {
       await set_item(AsyncStorageKey.HAS_COMPLETED_ONBOARDING, "true");
-      setHasCompletedOnboarding(true);
+    }
+  };
+
+  const handleBack = () => {
+    if (currentIndex > 0) {
+      const newIndex = currentIndex - 1;
+      setCurrentIndex(newIndex);
+      flatListRef.current?.scrollToIndex({ index: newIndex, animated: true });
     }
   };
 
   const skip = async () => {
+    console.log("click");
     await set_item(AsyncStorageKey.HAS_COMPLETED_ONBOARDING, "true");
-    setHasCompletedOnboarding(true);
+    router.push(Screens.REGISTER_SCREEN);
   };
 
   return (
@@ -86,23 +94,34 @@ const Onboarding: FC<OnboardingProps> = ({ setHasCompletedOnboarding }) => {
           />
           <View style={styles.button_container}>
             <TouchableOpacity
-              style={[styles.button, { backgroundColor: "#CC8033" }]}
+              style={[styles.button, { backgroundColor: Colors.GLOVO_GREEN }]}
               onPress={handleNext}
             >
               <Text style={styles.button_text}>
                 {currentIndex < slides.length - 1
-                  ? i18n.t("NEXT")
-                  : i18n.t("DONE")}
+                  ? i18n.t(LanguageKey.NEXT)
+                  : i18n.t(LanguageKey.CREATE_ACCOUNT)}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: colors.background }]}
-              onPress={skip}
-            >
-              <Text style={[styles.button_text, { color: colors.text }]}>
-                {i18n.t("SKIP")}
-              </Text>
-            </TouchableOpacity>
+            {currentIndex === slides.length - 1 ? (
+              <TouchableOpacity
+                style={[styles.button, { backgroundColor: colors.background }]}
+                onPress={handleBack}
+              >
+                <Text style={[styles.button_text, { color: colors.text }]}>
+                  {i18n.t(LanguageKey.BACK)}
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={[styles.button, { backgroundColor: colors.background }]}
+                onPress={skip}
+              >
+                <Text style={[styles.button_text, { color: colors.text }]}>
+                  {i18n.t(LanguageKey.SKIP)}
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
@@ -168,4 +187,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Onboarding;
+export default OnboardingScreen;

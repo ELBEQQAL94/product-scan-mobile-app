@@ -3,6 +3,8 @@ import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/hooks/useAuth";
 import { Screens } from "@/constants/screens";
+import { AsyncStorageKey } from "@/constants/keys";
+import { get_item } from "@/utils";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -13,12 +15,25 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   fallbackScreen = Screens.LOGIN_SCREEN,
-  isPublic = false,
 }) => {
   const { user, loading } = useAuth();
   const router = useRouter();
 
+  const checkOnboardingStatus = async () => {
+    try {
+      const hasCompletedOnboarding = await get_item(
+        AsyncStorageKey.HAS_COMPLETED_ONBOARDING
+      );
+      if (!hasCompletedOnboarding) {
+        router.push(Screens.ONBOARDING_SCREEN);
+      }
+    } catch (error) {
+      console.log("checkOnboardingStatus get an error: ", error);
+    }
+  };
+
   useEffect(() => {
+    checkOnboardingStatus();
     if (!loading && !user) {
       router.replace(fallbackScreen);
     }
