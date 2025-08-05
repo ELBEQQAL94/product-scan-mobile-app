@@ -1,4 +1,5 @@
 export const fr = {
+  DONT_HAVE_SCANNED_PRODUCT: "Aucun produit scanné",
   ACCOUNT_ACTIONS: "Gestion du compte",
   LOGOUT_CONFIRMATION: "Êtes-vous sûr de vouloir vous déconnecter?",
   LOGOUT: "Se déconnecter",
