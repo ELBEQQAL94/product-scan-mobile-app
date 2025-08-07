@@ -1,5 +1,4 @@
 import { FC, useCallback } from "react";
-import { i18n } from "@/i18n";
 import {
   View,
   StyleSheet,
@@ -12,6 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import { LanguageKey } from "@/constants/keys";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ManualEntryViewProps {
   slideAnim: Animated.Value;
@@ -33,6 +33,9 @@ const ManualEntryView: FC<ManualEntryViewProps> = ({
   setManualBarcode,
   handleManualSubmit,
 }) => {
+  // Hooks
+  const { t } = useTranslation();
+
   const handleTextChange = useCallback(
     (text: string) => {
       const lastChar = text[text.length - 1];
@@ -76,10 +79,10 @@ const ManualEntryView: FC<ManualEntryViewProps> = ({
             color={Colors.GLOVO_GREEN}
           />
           <Text style={styles.manual_title}>
-            {i18n.t(LanguageKey.ENTER_BARCODE_MANUALLY)}
+            {t(LanguageKey.ENTER_BARCODE_MANUALLY)}
           </Text>
           <Text style={styles.manual_subtitle}>
-            {i18n.t(LanguageKey.TYPE_BARCODE_NUMBERS)}
+            {t(LanguageKey.TYPE_BARCODE_NUMBERS)}
           </Text>
         </View>
 
@@ -89,7 +92,7 @@ const ManualEntryView: FC<ManualEntryViewProps> = ({
             style={styles.barcode_input}
             value={manualBarcode}
             onChangeText={handleTextChange}
-            placeholder={i18n.t(LanguageKey.BARCODE_PLACEHOLDER)}
+            placeholder={t(LanguageKey.BARCODE_PLACEHOLDER)}
             placeholderTextColor={Colors.MEDIUM_GRAY}
             keyboardType="numeric"
             maxLength={13}
@@ -98,7 +101,7 @@ const ManualEntryView: FC<ManualEntryViewProps> = ({
             onSubmitEditing={handleManualSubmit}
           />
           <Text style={styles.character_count}>
-            {manualBarcode.length}/13 {i18n.t(LanguageKey.DIGITS)}
+            {manualBarcode.length}/13 {t(LanguageKey.DIGITS)}
           </Text>
         </View>
       </View>

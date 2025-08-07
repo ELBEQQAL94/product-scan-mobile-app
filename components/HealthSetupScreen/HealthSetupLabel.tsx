@@ -1,3 +1,4 @@
+import { useTranslation } from "@/hooks/useTranslation";
 import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { FC } from "react";
@@ -16,6 +17,9 @@ const HealthSetupLabel: FC<HealthSetupLabelProps> = ({
   icon,
   iconBounceAnim,
 }) => {
+  // Hooks
+  const { t } = useTranslation();
+
   return (
     <Animated.View testID={`${TEST_ID}-container`}>
       <Animated.Text
@@ -25,7 +29,7 @@ const HealthSetupLabel: FC<HealthSetupLabelProps> = ({
         {icon}
       </Animated.Text>
       <Text style={[styles.label]} testID={`${TEST_ID}-text`}>
-        {i18n.t(name)}
+        {t(name)}
       </Text>
     </Animated.View>
   );

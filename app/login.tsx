@@ -29,6 +29,7 @@ import {
 import Header from "@/components/RegisterScreen/Header";
 import AuthFooter from "@/components/shared/AuthFooter";
 import crashlytics from "@react-native-firebase/crashlytics";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const LoginScreen: FC = () => {
   // States
@@ -43,9 +44,10 @@ const LoginScreen: FC = () => {
   const router = useRouter();
   const { is_arabic } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
+  const { t } = useTranslation();
 
   const show_toast = () => {
-    ToastAndroid.show(i18n.t(LanguageKey.LOGIN_SUCCESS), ToastAndroid.SHORT);
+    ToastAndroid.show(t(LanguageKey.LOGIN_SUCCESS), ToastAndroid.SHORT);
   };
 
   const redirectToRegister = () => redirect_to(Screens.REGISTER_SCREEN);
@@ -80,20 +82,20 @@ const LoginScreen: FC = () => {
         crashlytics().setAttribute("error_type", error.message);
 
         if (error.message === FirebaseErrorMessages.EMAIL_ALREADY_IN_USE) {
-          setErrorMessage(i18n.t(LanguageKey.EMAIL_ALREADY_IN_USE));
+          setErrorMessage(t(LanguageKey.EMAIL_ALREADY_IN_USE));
         } else if (error.message === FirebaseErrorMessages.WEAK_PASSWORD) {
-          setErrorMessage(i18n.t(LanguageKey.WEAK_PASSWORD));
+          setErrorMessage(t(LanguageKey.WEAK_PASSWORD));
         } else {
           // Log unexpected Firebase errors
           crashlytics().log(`Unexpected Firebase error: ${error.message}`);
-          setErrorMessage(i18n.t(LanguageKey.TRY_LATER));
+          setErrorMessage(t(LanguageKey.TRY_LATER));
         }
       } else {
         // Log non-Error objects
         crashlytics().recordError(
           new Error(`Unknown login error: ${String(error)}`)
         );
-        setErrorMessage(i18n.t(LanguageKey.TRY_LATER));
+        setErrorMessage(t(LanguageKey.TRY_LATER));
       }
     } finally {
       setLoading(false);
@@ -130,7 +132,7 @@ const LoginScreen: FC = () => {
         );
       }
 
-      Alert.alert("Error", i18n.t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
+      Alert.alert("Error", t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
     } finally {
       setGoogleLoading(false);
     }
@@ -155,23 +157,23 @@ const LoginScreen: FC = () => {
                   { textAlign: is_arabic() ? "right" : "left" },
                 ]}
               >
-                {i18n.t(LanguageKey.LOG_IN)}
+                {t(LanguageKey.LOG_IN)}
               </Text>
               <Input
                 errorMessage={errorMessage}
-                label={i18n.t(LanguageKey.EMAIL)}
+                label={t(LanguageKey.EMAIL)}
                 value={email}
                 onChangeText={setEmail}
-                placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
+                placeholder={t(LanguageKey.ENTER_YOUR_EMAIL)}
                 isArabic={is_arabic()}
                 keyboardType="email-address"
               />
               <Input
                 errorMessage={errorMessage}
-                label={i18n.t(LanguageKey.PASSWORD)}
+                label={t(LanguageKey.PASSWORD)}
                 value={password}
                 onChangeText={setPassword}
-                placeholder={i18n.t(LanguageKey.ENTER_PASSWORD)}
+                placeholder={t(LanguageKey.ENTER_PASSWORD)}
                 secureTextEntry={!showPassword}
                 showPassword={showPassword}
                 isIconVisible={true}
@@ -202,8 +204,8 @@ const LoginScreen: FC = () => {
             </View>
 
             <AuthFooter
-              label={i18n.t(LanguageKey.DONT_HAVE_AN_ACCOUNT)}
-              link={i18n.t(LanguageKey.CREATE_ACCOUNT)}
+              label={t(LanguageKey.DONT_HAVE_AN_ACCOUNT)}
+              link={t(LanguageKey.CREATE_ACCOUNT)}
               redirectTo={redirectToRegister}
               isArabic={is_arabic()}
             />

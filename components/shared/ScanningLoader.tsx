@@ -1,5 +1,5 @@
 import { LanguageKey } from "@/constants/keys";
-import { i18n } from "@/i18n";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/themes/colors";
 import React, { FC, useEffect, useRef } from "react";
 import { View, Animated, Text, StyleSheet, Dimensions } from "react-native";
@@ -12,6 +12,10 @@ export const SCANNING_LOADER_TEST_ID = "SCANNING_LOADER_TEST_ID";
 
 // Scanning line animation - mimics barcode scanner
 const ScanningLoader: FC<ScanningLoaderProps> = ({ isVisible = true }) => {
+  // Hooks
+  const { t } = useTranslation();
+
+  // States
   const scanLine = useRef(new Animated.Value(0)).current;
   const opacity = useRef(new Animated.Value(0)).current;
 
@@ -85,9 +89,7 @@ const ScanningLoader: FC<ScanningLoaderProps> = ({ isVisible = true }) => {
           style={[styles.scan_line, { transform: [{ translateY }] }]}
         />
       </View>
-      <Text style={styles.scan_text}>
-        {i18n.t(LanguageKey.SCANNING_PRODUCT)}
-      </Text>
+      <Text style={styles.scan_text}>{t(LanguageKey.SCANNING_PRODUCT)}</Text>
     </Animated.View>
   );
 };

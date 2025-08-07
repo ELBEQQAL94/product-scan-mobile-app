@@ -2,10 +2,10 @@ import { Recommendations } from "@/types/scan-result";
 import { FC, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Severity } from "@/enums/scan-result-with-ai";
-import { i18n } from "@/i18n";
 import { LanguageKey } from "@/constants/keys";
 import PriorityIssues from "./PriorityIssues";
 import OverallAssessment from "./OverallAssessment";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PersonalizedMessageProps {
   score: number;
@@ -16,6 +16,10 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
   score,
   recommendations = [],
 }) => {
+  // Hooks
+  const { t } = useTranslation();
+
+  // States
   const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set());
 
   // Group recommendations by severity
@@ -61,18 +65,18 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
   const getOverallAssessment = () => {
     if (score < 50) {
       return {
-        title: i18n.t(LanguageKey.NOT_GOOD_FOR_YOU),
-        subtitle: i18n.t(LanguageKey.THIS_PRODUCT_HAS_NEGATIVE_HEALTH_ASPECTS),
+        title: t(LanguageKey.NOT_GOOD_FOR_YOU),
+        subtitle: t(LanguageKey.THIS_PRODUCT_HAS_NEGATIVE_HEALTH_ASPECTS),
       };
     } else if (score <= 50) {
       return {
-        title: i18n.t(LanguageKey.CONSIDER_CAREFULLY),
-        subtitle: i18n.t(LanguageKey.SOME_POINTS_TOCONSIDER),
+        title: t(LanguageKey.CONSIDER_CAREFULLY),
+        subtitle: t(LanguageKey.SOME_POINTS_TOCONSIDER),
       };
     } else {
       return {
-        title: i18n.t(LanguageKey.PERFECT_FOR_YOU),
-        subtitle: i18n.t(LanguageKey.THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS),
+        title: t(LanguageKey.PERFECT_FOR_YOU),
+        subtitle: t(LanguageKey.THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS),
       };
     }
   };

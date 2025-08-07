@@ -1,4 +1,3 @@
-import { i18n } from "@/i18n";
 import { BarcodeScanningResult, useCameraPermissions } from "expo-camera";
 import {
   View,
@@ -16,6 +15,7 @@ import ManualEntryView from "./ManualEntryView";
 import { Colors } from "@/themes/colors";
 import BottomControls from "./BottomControls";
 import { LanguageKey } from "@/constants/keys";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ScanProps {
   scanned: boolean;
@@ -28,6 +28,9 @@ const Scan: React.FC<ScanProps> = ({
   handleBarcodeScanned,
   redirectToScanResult,
 }) => {
+  // States
+  const { t } = useTranslation();
+
   // Hooks
   const [permission, requestPermission] = useCameraPermissions();
   const [isManualMode, setIsManualMode] = useState<boolean>(false);
@@ -53,8 +56,8 @@ const Scan: React.FC<ScanProps> = ({
   const handleManualSubmit = async () => {
     if (manualBarcode.length < 8) {
       Alert.alert(
-        i18n.t(LanguageKey.INVALID_BARCODE),
-        i18n.t(LanguageKey.BARCODE_TOO_SHORT)
+        t(LanguageKey.INVALID_BARCODE),
+        t(LanguageKey.BARCODE_TOO_SHORT)
       );
       return;
     }
@@ -75,22 +78,22 @@ const Scan: React.FC<ScanProps> = ({
   if (!permission) {
     return (
       <View style={styles.container}>
-        <Text>{i18n.t(LanguageKey.REQUEST_CAMERA_PERMISSION)}</Text>
+        <Text>{t(LanguageKey.REQUEST_CAMERA_PERMISSION)}</Text>
       </View>
     );
   }
 
   if (!permission.granted) {
     Alert.alert(
-      i18n.t(LanguageKey.CAMERA_PERMISSION_REQUIRED),
-      i18n.t(LanguageKey.NEED_CAMERA_PERMISSION),
+      t(LanguageKey.CAMERA_PERMISSION_REQUIRED),
+      t(LanguageKey.NEED_CAMERA_PERMISSION),
       [
         {
-          text: i18n.t(LanguageKey.CANCEL),
+          text: t(LanguageKey.CANCEL),
           style: "cancel",
         },
         {
-          text: i18n.t(LanguageKey.GRANT_PERMISSION),
+          text: t(LanguageKey.GRANT_PERMISSION),
           onPress: requestPermission,
         },
       ]

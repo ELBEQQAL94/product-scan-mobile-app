@@ -1,4 +1,5 @@
 export const ar = {
+  SELECT_LANGUAGE: "اختر اللغة",
   DONT_HAVE_SCANNED_PRODUCT: "لم يتم مسح أي منتج",
   ACCOUNT_ACTIONS: "إدارة الحساب",
   LOGOUT_CONFIRMATION: "هل أنت متأكد من أنك تريد تسجيل الخروج؟",

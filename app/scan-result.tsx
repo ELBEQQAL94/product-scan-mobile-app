@@ -107,7 +107,6 @@ const ScanResultScreen: FC = () => {
       }
     } catch (error: any) {
       console.log("fetch product details get an error: ", error.message);
-      // setError(i18n.t("CONNECTION_ERROR"));
       setError(error.message);
     } finally {
       setLoading(false);
@@ -125,11 +124,11 @@ const ScanResultScreen: FC = () => {
     return <ScanningLoader isVisible={loading} />;
   }
 
+  if ((product && product.status === 0) || !product)
+    return <ProductNotFound textColor={colors.text} retryScan={retryScan} />;
+
   if (error || !product)
     return <ConnectionError error={error} textColor={colors.text} />;
-
-  if (product.status === 0)
-    return <ProductNotFound textColor={colors.text} retryScan={retryScan} />;
 
   return (
     <ProtectedRoute>

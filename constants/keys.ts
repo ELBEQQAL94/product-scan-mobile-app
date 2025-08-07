@@ -209,4 +209,5 @@ export const AsyncStorageKey = {
   LOCATION_TIMESTAMP: "location_timestamp",
   USER_COUNTRY: "user_country",
   HAS_COMPLETED_ONBOARDING: "hasCompletedOnboarding",
+  LANGUAGE_CODE: "language_code",
 };

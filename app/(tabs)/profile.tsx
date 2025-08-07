@@ -26,6 +26,7 @@ import ProfileItem from "@/components/ProfileScreen/ProfileItem";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import ProfileScreenLoading from "@/components/ProfileScreen/ProfileScreenLoading";
 import { format_date } from "@/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Profile: FC = () => {
   // States
@@ -36,6 +37,7 @@ const Profile: FC = () => {
   const router = useRouter();
   const { is_arabic } = useSelectedLanguage();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchUserData();
@@ -67,21 +69,17 @@ const Profile: FC = () => {
   };
 
   const handle_logout = () => {
-    Alert.alert(
-      i18n.t(LanguageKey.LOGOUT),
-      i18n.t(LanguageKey.LOGOUT_CONFIRMATION),
-      [
-        {
-          text: i18n.t(LanguageKey.CANCEL),
-          style: "cancel",
-        },
-        {
-          text: i18n.t(LanguageKey.LOGOUT),
-          style: "destructive",
-          onPress: on_logout,
-        },
-      ]
-    );
+    Alert.alert(t(LanguageKey.LOGOUT), t(LanguageKey.LOGOUT_CONFIRMATION), [
+      {
+        text: t(LanguageKey.CANCEL),
+        style: "cancel",
+      },
+      {
+        text: t(LanguageKey.LOGOUT),
+        style: "destructive",
+        onPress: on_logout,
+      },
+    ]);
   };
 
   if (loading) {
@@ -90,7 +88,7 @@ const Profile: FC = () => {
 
   return (
     <ProtectedRoute>
-      <ScreenTitle title={i18n.t(LanguageKey.MY_PROFILE)} />
+      <ScreenTitle title={t(LanguageKey.MY_PROFILE)} />
       <ScrollView style={styles.container}>
         <View style={styles.section}>
           <Text
@@ -99,14 +97,14 @@ const Profile: FC = () => {
               { textAlign: is_arabic() ? "right" : "left" },
             ]}
           >
-            {i18n.t(LanguageKey.PERSONAL_INFORMATION)}
+            {t(LanguageKey.PERSONAL_INFORMATION)}
           </Text>
 
           <ProfileItem
             icon={
               <FontAwesome name="at" size={20} color={Colors.GLOVO_GREEN} />
             }
-            label={i18n.t(LanguageKey.USERNAME)}
+            label={t(LanguageKey.USERNAME)}
             value={userData?.username || ""}
             isArabic={is_arabic()}
           />
@@ -119,7 +117,7 @@ const Profile: FC = () => {
               { textAlign: is_arabic() ? "right" : "left" },
             ]}
           >
-            {i18n.t(LanguageKey.HEALTH_INFORMATION)}
+            {t(LanguageKey.HEALTH_INFORMATION)}
           </Text>
 
           <ProfileItem
@@ -130,7 +128,7 @@ const Profile: FC = () => {
                 color={Colors.GLOVO_GREEN}
               />
             }
-            label={i18n.t(LanguageKey.DISEASES)}
+            label={t(LanguageKey.DISEASES)}
             value={userData?.selected_diseases || []}
             onEdit={handle_edit}
             isArabic={is_arabic()}
@@ -145,7 +143,7 @@ const Profile: FC = () => {
                 color={Colors.GLOVO_GREEN}
               />
             }
-            label={i18n.t(LanguageKey.ALLERGIES)}
+            label={t(LanguageKey.ALLERGIES)}
             value={userData?.selected_allergies || []}
             onEdit={handle_edit}
             isArabic={is_arabic()}
@@ -160,7 +158,7 @@ const Profile: FC = () => {
               { textAlign: is_arabic() ? "right" : "left" },
             ]}
           >
-            {i18n.t(LanguageKey.ACCOUNT_INFORMATION)}
+            {t(LanguageKey.ACCOUNT_INFORMATION)}
           </Text>
 
           <View style={styles.infoItem}>
@@ -171,7 +169,7 @@ const Profile: FC = () => {
                 color={Colors.GLOVO_GREEN}
               />
               <Text style={styles.itemLabel}>
-                {i18n.t(LanguageKey.EMAIL_VERIFIED)}
+                {t(LanguageKey.EMAIL_VERIFIED)}
               </Text>
             </View>
             <View style={styles.statusBadge}>
@@ -186,8 +184,8 @@ const Profile: FC = () => {
                 ]}
               >
                 {userData?.is_email_verified
-                  ? i18n.t(LanguageKey.VERIFIED)
-                  : i18n.t(LanguageKey.NOT_VERIFIED)}
+                  ? t(LanguageKey.VERIFIED)
+                  : t(LanguageKey.NOT_VERIFIED)}
               </Text>
             </View>
           </View>
@@ -200,7 +198,7 @@ const Profile: FC = () => {
                 color={Colors.GLOVO_GREEN}
               />
               <Text style={styles.itemLabel}>
-                {i18n.t(LanguageKey.SUBSCRIPTION)}
+                {t(LanguageKey.SUBSCRIPTION)}
               </Text>
             </View>
             <View style={styles.statusBadge}>
@@ -215,8 +213,8 @@ const Profile: FC = () => {
                 ]}
               >
                 {userData?.is_subscribed
-                  ? i18n.t(LanguageKey.PREMIUM)
-                  : i18n.t(LanguageKey.FREE)}
+                  ? t(LanguageKey.PREMIUM)
+                  : t(LanguageKey.FREE)}
               </Text>
             </View>
           </View>
@@ -229,7 +227,7 @@ const Profile: FC = () => {
                 color={Colors.GLOVO_GREEN}
               />
               <Text style={styles.itemLabel}>
-                {i18n.t(LanguageKey.MEMBER_SINCE)}
+                {t(LanguageKey.MEMBER_SINCE)}
               </Text>
             </View>
             <Text style={styles.itemValue}>
@@ -245,7 +243,7 @@ const Profile: FC = () => {
               { textAlign: is_arabic() ? "right" : "left" },
             ]}
           >
-            {i18n.t(LanguageKey.HEALTH_PROFILE_STATUS)}
+            {t(LanguageKey.HEALTH_PROFILE_STATUS)}
           </Text>
 
           <View style={styles.healthStatusContainer}>
@@ -269,8 +267,8 @@ const Profile: FC = () => {
               ]}
             >
               {userData?.is_profile_health_created
-                ? i18n.t(LanguageKey.HEALTH_PROFILE_COMPLETED)
-                : i18n.t(LanguageKey.HEALTH_PROFILE_INCOMPLETE)}
+                ? t(LanguageKey.HEALTH_PROFILE_COMPLETED)
+                : t(LanguageKey.HEALTH_PROFILE_INCOMPLETE)}
             </Text>
             {!userData?.is_profile_health_created && (
               <TouchableOpacity
@@ -278,7 +276,7 @@ const Profile: FC = () => {
                 onPress={handle_edit}
               >
                 <Text style={styles.completeButtonText}>
-                  {i18n.t(LanguageKey.COMPLETE_NOW)}
+                  {t(LanguageKey.COMPLETE_NOW)}
                 </Text>
               </TouchableOpacity>
             )}
@@ -293,14 +291,12 @@ const Profile: FC = () => {
               { textAlign: is_arabic() ? "right" : "left" },
             ]}
           >
-            {i18n.t(LanguageKey.ACCOUNT_ACTIONS)}
+            {t(LanguageKey.ACCOUNT_ACTIONS)}
           </Text>
 
           <TouchableOpacity style={styles.logoutButton} onPress={handle_logout}>
             <MaterialIcons name="logout" size={20} color="#fff" />
-            <Text style={styles.logoutButtonText}>
-              {i18n.t(LanguageKey.LOGOUT)}
-            </Text>
+            <Text style={styles.logoutButtonText}>{t(LanguageKey.LOGOUT)}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

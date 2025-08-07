@@ -1,4 +1,5 @@
 import { LanguageKey } from "@/constants/keys";
+import { useTranslation } from "@/hooks/useTranslation";
 import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { FontAwesome } from "@expo/vector-icons";
@@ -22,10 +23,13 @@ const ProfileItem: FC<ProfileItemProps> = ({
   isEdit = false,
   onEdit,
 }) => {
+  // Hooks
+  const { t } = useTranslation();
+
   const displayValue =
     Array.isArray(value) && value.length > 0
       ? value.join(", ")
-      : i18n.t(LanguageKey.NOT_SET);
+      : t(LanguageKey.NOT_SET);
 
   return (
     <View style={styles.profile_item}>

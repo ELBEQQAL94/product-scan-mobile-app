@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BarcodeScanningResult } from "expo-camera";
 import { useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
 import Scan from "@/components/ScanScreen/Scan";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const ScanScreen = () => {
   // Hooks
   const router = useRouter();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   // States
   const [scanned, setScanned] = useState<boolean>(false);
-
   const handleBarcodeScanned = async (result: BarcodeScanningResult) => {
     setScanned(true);
     const bar_code = result.data;

@@ -3,6 +3,7 @@ import CommonButton from "./CommonButton";
 import { i18n } from "@/i18n";
 import { useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ConnectionErrorProps {
   textColor: string;
@@ -15,16 +16,14 @@ const ConnectionError: React.FC<ConnectionErrorProps> = ({
 }) => {
   // Hooks
   const router = useRouter();
+  const { t } = useTranslation();
 
   const refresh_screen = () => router.replace(Screens.HOME_SCREEN);
 
   return (
     <View style={styles.container}>
       <Text style={[styles.text, { color: textColor }]}>{error}</Text>
-      <CommonButton
-        label={i18n.t("CONNECTION_ERROR")}
-        action={refresh_screen}
-      />
+      <CommonButton label={t("CONNECTION_ERROR")} action={refresh_screen} />
     </View>
   );
 };

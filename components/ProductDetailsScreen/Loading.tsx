@@ -1,16 +1,19 @@
-import { i18n } from "@/i18n";
+import { useTranslation } from "@/hooks/useTranslation";
 import { View, Text } from "react-native";
 
 interface LoadingProps {
-    textColor: string;
-};
+  textColor: string;
+}
 
 const Loading: React.FC<LoadingProps> = ({ textColor }) => {
-    return (
-        <View>
-            <Text style={{ color: textColor }}>{i18n.t('LOADING')}</Text>
-        </View>
-    );
+  // Hooks
+  const { t } = useTranslation();
+
+  return (
+    <View>
+      <Text style={{ color: textColor }}>{t("LOADING")}</Text>
+    </View>
+  );
 };
 
 export default Loading;

@@ -1,3 +1,5 @@
+import { LanguageKey } from "@/constants/keys";
+import { useTranslation } from "@/hooks/useTranslation";
 import { i18n } from "@/i18n";
 import {
   View,
@@ -23,6 +25,9 @@ const SelectLanguage: React.FC<SelectLanguageProps> = ({
   setModalVisible,
   changeLanguage,
 }) => {
+  // Hooks
+  const { t } = useTranslation();
+
   // States
   const colorScheme = useColorScheme();
 
@@ -59,7 +64,9 @@ const SelectLanguage: React.FC<SelectLanguageProps> = ({
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Select Language</Text>
+            <Text style={styles.modalTitle}>
+              {t(LanguageKey.SELECT_LANGUAGE)}
+            </Text>
 
             <FlatList
               data={languages}
@@ -83,7 +90,7 @@ const SelectLanguage: React.FC<SelectLanguageProps> = ({
               onPress={() => setModalVisible(false)}
             >
               <Text style={styles.closeButtonText}>
-                {i18n.t("CANCEL", { defaultValue: "Cancel" })}
+                {t("CANCEL", { defaultValue: "Cancel" })}
               </Text>
             </TouchableOpacity>
           </View>

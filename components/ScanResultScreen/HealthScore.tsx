@@ -1,5 +1,5 @@
 import { LanguageKey } from "@/constants/keys";
-import { i18n } from "@/i18n";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
@@ -11,6 +11,9 @@ interface HealthScoreProps {
 }
 
 const HealthScore: FC<HealthScoreProps> = ({ score }) => {
+  // Hooks
+  const { t } = useTranslation();
+
   const colorValues = useRef([
     new Animated.Value(0),
     new Animated.Value(0),
@@ -56,10 +59,10 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
   };
 
   const process_text_by_score = (): string => {
-    if (score < 50) return i18n.t(LanguageKey.AVOID_THIS_PRODUCT);
-    if (score === 50) return i18n.t(LanguageKey.NOT_RECOMMENDED);
-    if (score >= 50) return i18n.t(LanguageKey.EXCELLENT_CHOICE);
-    return i18n.t(LanguageKey.NOT_RECOMMENDED);
+    if (score < 50) return t(LanguageKey.AVOID_THIS_PRODUCT);
+    if (score === 50) return t(LanguageKey.NOT_RECOMMENDED);
+    if (score >= 50) return t(LanguageKey.EXCELLENT_CHOICE);
+    return t(LanguageKey.NOT_RECOMMENDED);
   };
 
   // Function to interpolate color based on animation value

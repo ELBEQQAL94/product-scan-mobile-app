@@ -162,6 +162,17 @@ export const format_date = (timestamp: number) => {
   return new Date(timestamp).toLocaleDateString();
 };
 
+export const load_saved_language = async () => {
+  try {
+    const savedLanguage = await get_item(AsyncStorageKey.LANGUAGE_CODE);
+    if (savedLanguage) {
+      return savedLanguage;
+    }
+  } catch (error) {
+    console.error("Error loading saved language:", error);
+  }
+};
+
 interface CategoryDefaults {
   [category: string]: {
     baseScore: number;

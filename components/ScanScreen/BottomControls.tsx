@@ -1,4 +1,5 @@
 import { LanguageKey } from "@/constants/keys";
+import { useTranslation } from "@/hooks/useTranslation";
 import { i18n } from "@/i18n";
 import { Typography } from "@/themes/typography";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,6 +17,9 @@ const BottomControls: FC<BottomControlsProps> = ({
   isManualMode,
   toggleMode,
 }) => {
+  // Hooks
+  const { t } = useTranslation();
+
   return (
     <View style={styles.bottom_controls} testID={BOTTOM_CONTROLS_TEST_ID}>
       <TouchableOpacity style={styles.mode_toggle} onPress={toggleMode}>
@@ -25,17 +29,15 @@ const BottomControls: FC<BottomControlsProps> = ({
           color="white"
         />
         <Text style={styles.mode_toggle_text}>
-          {isManualMode
-            ? i18n.t(LanguageKey.CAMERA)
-            : i18n.t(LanguageKey.MANUAL)}
+          {isManualMode ? t(LanguageKey.CAMERA) : t(LanguageKey.MANUAL)}
         </Text>
       </TouchableOpacity>
 
       {/* Tip Text */}
       <Text style={styles.tip_text}>
         {isManualMode
-          ? i18n.t(LanguageKey.FIND_NUMBERS_BELOW_BARCODE)
-          : i18n.t(LanguageKey.TAP_MANUAL_TO_TYPE_BARCODE)}
+          ? t(LanguageKey.FIND_NUMBERS_BELOW_BARCODE)
+          : t(LanguageKey.TAP_MANUAL_TO_TYPE_BARCODE)}
       </Text>
     </View>
   );
