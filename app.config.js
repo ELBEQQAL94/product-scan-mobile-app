@@ -1,5 +1,9 @@
 export default {
   expo: {
+    name: "MyScan",
+    slug: "truth-label",
+    icon: "./assets/images/icon.png",
+    version: "1.0.0",
     plugins: [
       [
         "@react-native-google-signin/google-signin",
@@ -40,6 +44,13 @@ export default {
           },
         },
       ],
+      [
+        "expo-splash-screen",
+        {
+          image: "./assets/images/splash-icon.png",
+          imageWidth: 200,
+        },
+      ],
     ],
     extra: {
       eas: {
@@ -51,6 +62,8 @@ export default {
       versionCode: 3,
       googleServicesFile:
         process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
+      image: "./assets/images/splash.png",
+      resizeMode: "contain",
     },
     ios: {
       googleServicesFile: process.env.GOOGLE_SERVICES_PLIST,
