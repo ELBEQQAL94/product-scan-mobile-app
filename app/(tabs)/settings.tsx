@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { Colors } from "@/themes/colors";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { i18n } from "@/i18n";
@@ -14,22 +14,20 @@ import { LanguageKey } from "@/constants/keys";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
+import { useLanguage } from "@/context/LanguageProvider";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const SettingsScreen: FC = () => {
-  const {
-    is_arabic,
-    modalVisible,
-    setModalVisible,
-    currentLanguage,
-    change_language,
-  } = useSelectedLanguage();
+  const { is_arabic, modalVisible, setModalVisible } = useSelectedLanguage();
+  const { language, setLanguage } = useLanguage();
+  const { t } = useTranslation();
 
   const openLanguageModal = () => {
     setModalVisible(true);
   };
 
   const getLanguageDisplayName = () => {
-    switch (currentLanguage) {
+    switch (language) {
       case "en":
         return "English";
       case "ar":
@@ -49,11 +47,11 @@ const SettingsScreen: FC = () => {
     <ProtectedRoute>
       <LanguageSwitcher
         modalVisible={modalVisible}
-        currentLanguage={currentLanguage}
+        currentLanguage={language}
         setModalVisible={setModalVisible}
-        changeLanguage={change_language}
+        changeLanguage={setLanguage}
       />
-      <ScreenTitle title={i18n.t(LanguageKey.SETTINGS)} />
+      <ScreenTitle title={t(LanguageKey.SETTINGS)} />
       <ScrollView style={styles.container}>
         {/* App Preferences Section */}
         <View style={styles.section}>
@@ -63,7 +61,7 @@ const SettingsScreen: FC = () => {
               { textAlign: is_arabic() ? "right" : "left" },
             ]}
           >
-            {i18n.t(LanguageKey.APP_PREFERENCES)}
+            {t(LanguageKey.APP_PREFERENCES)}
           </Text>
 
           <TouchableOpacity
@@ -93,7 +91,7 @@ const SettingsScreen: FC = () => {
                   },
                 ]}
               >
-                {i18n.t(LanguageKey.LANGUAGE)}
+                {t(LanguageKey.LANGUAGE)}
               </Text>
             </View>
             <View
@@ -124,7 +122,7 @@ const SettingsScreen: FC = () => {
               { textAlign: is_arabic() ? "right" : "left" },
             ]}
           >
-            {i18n.t(LanguageKey.NOTIFICATIONS)}
+            {t(LanguageKey.NOTIFICATIONS)}
           </Text>
 
           <TouchableOpacity
@@ -153,7 +151,7 @@ const SettingsScreen: FC = () => {
                   },
                 ]}
               >
-                {i18n.t(LanguageKey.PUSH_NOTIFICATIONS)}
+                {t(LanguageKey.PUSH_NOTIFICATIONS)}
               </Text>
             </View>
             <MaterialIcons
@@ -189,7 +187,7 @@ const SettingsScreen: FC = () => {
                   },
                 ]}
               >
-                {i18n.t(LanguageKey.EMAIL_NOTIFICATIONS)}
+                {t(LanguageKey.EMAIL_NOTIFICATIONS)}
               </Text>
             </View>
             <MaterialIcons
@@ -208,7 +206,7 @@ const SettingsScreen: FC = () => {
               { textAlign: is_arabic() ? "right" : "left" },
             ]}
           >
-            {i18n.t(LanguageKey.PRIVACY_SECURITY)}
+            {t(LanguageKey.PRIVACY_SECURITY)}
           </Text>
 
           <TouchableOpacity
@@ -233,7 +231,7 @@ const SettingsScreen: FC = () => {
                   },
                 ]}
               >
-                {i18n.t(LanguageKey.CHANGE_PASSWORD)}
+                {t(LanguageKey.CHANGE_PASSWORD)}
               </Text>
             </View>
             <MaterialIcons
@@ -269,7 +267,7 @@ const SettingsScreen: FC = () => {
                   },
                 ]}
               >
-                {i18n.t(LanguageKey.PRIVACY_POLICY)}
+                {t(LanguageKey.PRIVACY_POLICY)}
               </Text>
             </View>
             <MaterialIcons
@@ -288,7 +286,7 @@ const SettingsScreen: FC = () => {
               { textAlign: is_arabic() ? "right" : "left" },
             ]}
           >
-            {i18n.t(LanguageKey.SUPPORT)}
+            {t(LanguageKey.SUPPORT)}
           </Text>
 
           <TouchableOpacity
@@ -313,7 +311,7 @@ const SettingsScreen: FC = () => {
                   },
                 ]}
               >
-                {i18n.t(LanguageKey.HELP_CENTER)}
+                {t(LanguageKey.HELP_CENTER)}
               </Text>
             </View>
             <MaterialIcons
@@ -349,7 +347,7 @@ const SettingsScreen: FC = () => {
                   },
                 ]}
               >
-                {i18n.t(LanguageKey.SEND_FEEDBACK)}
+                {t(LanguageKey.SEND_FEEDBACK)}
               </Text>
             </View>
             <MaterialIcons
@@ -381,7 +379,7 @@ const SettingsScreen: FC = () => {
                   },
                 ]}
               >
-                {i18n.t(LanguageKey.ABOUT)}
+                {t(LanguageKey.ABOUT)}
               </Text>
             </View>
             <MaterialIcons

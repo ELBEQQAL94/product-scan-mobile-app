@@ -4,6 +4,7 @@ import ScreenTitle from "@/components/shared/ScreenTitle";
 import { LanguageKey } from "@/constants/keys";
 import { get_products } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "@/hooks/useTranslation";
 import { i18n } from "@/i18n";
 import { Typography } from "@/themes/typography";
 import { ProductTypeFromDB } from "@/types/products";
@@ -13,6 +14,7 @@ import { View, Text, StyleSheet } from "react-native";
 const ProductList: FC = () => {
   // Hooks
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   // States
   const [products, setProducts] = useState<ProductTypeFromDB[]>([]);
@@ -44,7 +46,7 @@ const ProductList: FC = () => {
   if (loading) {
     return (
       <View style={styles.loading_container}>
-        <Text>{i18n.t(LanguageKey.LOADING)}</Text>
+        <Text>{t(LanguageKey.LOADING)}</Text>
       </View>
     );
   }
@@ -55,12 +57,12 @@ const ProductList: FC = () => {
         {products.length === 0 ? (
           <View style={styles.no_product_found_container}>
             <Text style={styles.no_product_found_container_text}>
-              {i18n.t(LanguageKey.DONT_HAVE_SCANNED_PRODUCT)}
+              {t(LanguageKey.DONT_HAVE_SCANNED_PRODUCT)}
             </Text>
           </View>
         ) : (
           <>
-            <ScreenTitle title={i18n.t(LanguageKey.SCANNED_PRODUCTS)} />
+            <ScreenTitle title={t(LanguageKey.SCANNED_PRODUCTS)} />
             <Products products={products} />
           </>
         )}

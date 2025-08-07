@@ -13,7 +13,7 @@ interface LanguageSwitcherProps {
   modalVisible: boolean;
   currentLanguage: string;
   setModalVisible: (visible: boolean) => void;
-  changeLanguage: (code: string) => void;
+  changeLanguage: (lang: Language) => Promise<void>;
 }
 
 const LanguageSwitcher: FC<LanguageSwitcherProps> = ({
@@ -26,8 +26,8 @@ const LanguageSwitcher: FC<LanguageSwitcherProps> = ({
   setModalVisible,
   changeLanguage,
 }) => {
-  const handle_language_select = (languageCode: string) => {
-    changeLanguage(languageCode);
+  const handle_language_select = (language: Language) => {
+    changeLanguage(language);
   };
 
   if (!visible) {

@@ -1,4 +1,5 @@
 import { LanguageKey } from "@/constants/keys";
+import { useTranslation } from "@/hooks/useTranslation";
 import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { FC } from "react";
@@ -11,6 +12,9 @@ interface ProfileScreenLoadingProps {
 const ProfileScreenLoading: FC<ProfileScreenLoadingProps> = ({
   isArabic = false,
 }) => {
+  // Hooks
+  const { t } = useTranslation();
+
   return (
     <View style={styles.loading_container}>
       <Text
@@ -19,7 +23,7 @@ const ProfileScreenLoading: FC<ProfileScreenLoadingProps> = ({
           { textAlign: isArabic ? "right" : "left" },
         ]}
       >
-        {i18n.t(LanguageKey.LOADING_PROFILE)}
+        {t(LanguageKey.LOADING_PROFILE)}
       </Text>
     </View>
   );

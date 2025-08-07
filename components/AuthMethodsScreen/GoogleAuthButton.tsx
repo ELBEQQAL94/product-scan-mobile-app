@@ -4,6 +4,7 @@ import { Colors } from "@/themes/colors";
 import { FC } from "react";
 import { TouchableOpacity, Text, StyleSheet, Image, Alert } from "react-native";
 import CustomActiveIndicator from "../shared/CustomActivityIndicator";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface GoogleAuthButtonProps {
   loading: boolean;
@@ -14,6 +15,9 @@ const GoogleAuthButton: FC<GoogleAuthButtonProps> = ({
   loading,
   handleAuth,
 }) => {
+  // Hooks
+  const { t } = useTranslation();
+
   return (
     <TouchableOpacity
       style={[styles.google_button, loading && styles.disabled]}
@@ -28,8 +32,8 @@ const GoogleAuthButton: FC<GoogleAuthButtonProps> = ({
       <CustomActiveIndicator loading={loading} />
       <Text style={styles.google_button_text}>
         {loading
-          ? i18n.t(LanguageKey.SIGNING_IN)
-          : i18n.t(LanguageKey.CONTINUE_WITH_GOOGLE)}
+          ? t(LanguageKey.SIGNING_IN)
+          : t(LanguageKey.CONTINUE_WITH_GOOGLE)}
       </Text>
     </TouchableOpacity>
   );

@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { View, StyleSheet, Text, Platform } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { BarcodeScanningResult, CameraView } from "expo-camera";
-import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import { LanguageKey } from "@/constants/keys";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface CameraViewContainerProps {
   handleBarcodeScanned: (result: BarcodeScanningResult) => Promise<void>;
@@ -19,6 +19,8 @@ const CameraViewContainer: FC<CameraViewContainerProps> = ({
   isManualMode,
   scanned,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <View
       style={[styles.camera_container, isManualMode && styles.hidden]}
@@ -52,7 +54,7 @@ const CameraViewContainer: FC<CameraViewContainerProps> = ({
 
           {/* Instruction Text */}
           <Text style={styles.instruction_text}>
-            {i18n.t(LanguageKey.POSITION_BARCODE_IN_FRAME)}
+            {t(LanguageKey.POSITION_BARCODE_IN_FRAME)}
           </Text>
         </View>
       </CameraView>

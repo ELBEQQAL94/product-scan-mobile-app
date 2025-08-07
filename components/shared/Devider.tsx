@@ -1,14 +1,17 @@
 import { LanguageKey } from "@/constants/keys";
-import { i18n } from "@/i18n";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/themes/colors";
 import { FC } from "react";
 import { Text, View, StyleSheet } from "react-native";
 
 const Devider: FC = () => {
+  // Hooks
+  const { t } = useTranslation();
+
   return (
     <View style={styles.divider}>
       <View style={styles.dividerLine} />
-      <Text style={styles.dividerText}>{i18n.t(LanguageKey.OR)}</Text>
+      <Text style={styles.dividerText}>{t(LanguageKey.OR)}</Text>
       <View style={styles.dividerLine} />
     </View>
   );

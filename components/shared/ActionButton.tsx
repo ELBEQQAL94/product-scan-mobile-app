@@ -1,4 +1,3 @@
-import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import { ComponentType, FC } from "react";
@@ -9,9 +8,9 @@ import {
   StyleSheet,
   TextStyle,
   ViewStyle,
-  ActivityIndicator,
 } from "react-native";
 import CustomActiveIndicator from "./CustomActivityIndicator";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface IconProps {
   style?: TextStyle | ViewStyle;
@@ -49,6 +48,9 @@ const ActionButton: FC<ActionButtonProps> = ({
   disabled = false,
   onPress,
 }) => {
+  // Hooks
+  const { t } = useTranslation();
+
   const defaultIconProps: IconProps = {
     style: { ...styles.icon, ...iconStyles },
     size: 20,
@@ -82,7 +84,7 @@ const ActionButton: FC<ActionButtonProps> = ({
           ]}
           testID={`${TEST_ID}-text`}
         >
-          {i18n.t(label)}
+          {t(label)}
         </Text>
         {Icon && <Icon {...defaultIconProps} color={Colors.BLUE_GRAY} />}
         <CustomActiveIndicator loading={loading} />

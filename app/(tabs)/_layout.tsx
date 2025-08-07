@@ -10,18 +10,19 @@ import { Tabs, useRouter } from "expo-router";
 import "react-native-reanimated";
 import { Colors } from "@/themes/colors";
 import CustomScanTabButton from "@/components/ScanScreen/CustomScanTabButton";
-import { i18n } from "@/i18n";
 import { LanguageKey } from "@/constants/keys";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
-import { Language } from "@/enums/language";
 import { Typography } from "@/themes/typography";
 import { TouchableOpacity } from "react-native";
 import { Screens } from "@/constants/screens";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function TabLayout() {
-  const { currentLanguage } = useSelectedLanguage();
-  const is_arabic = currentLanguage === Language.AR;
+  // Hooks
+  const { is_arabic } = useSelectedLanguage();
   const router = useRouter();
+  const { t } = useTranslation();
+
   return (
     <Tabs
       initialRouteName="index"
@@ -48,7 +49,7 @@ export default function TabLayout() {
         name="product-list"
         options={{
           headerShown: false,
-          title: i18n.t(LanguageKey.PRODUCT_LIST),
+          title: t(LanguageKey.PRODUCT_LIST),
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons
               name={focused ? "shopping" : "shopping-outline"}
@@ -63,7 +64,7 @@ export default function TabLayout() {
         name="halal"
         options={{
           headerShown: false,
-          title: i18n.t(LanguageKey.HALAL),
+          title: t(LanguageKey.HALAL),
           tabBarIcon: ({ focused }) =>
             focused ? (
               <MaterialIcons
@@ -83,7 +84,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: i18n.t(LanguageKey.HOME),
+          title: t(LanguageKey.HOME),
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <CustomScanTabButton focused={focused} />
@@ -95,7 +96,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           headerShown: false,
-          title: i18n.t(LanguageKey.PROFILE),
+          title: t(LanguageKey.PROFILE),
           tabBarIcon: ({ focused }) =>
             focused ? (
               <FontAwesome name="user" size={24} color={Colors.GLOVO_GREEN} />
@@ -103,7 +104,7 @@ export default function TabLayout() {
               <FontAwesome5 name="user" size={24} color={Colors.GLOVO_GREEN} />
             ),
           tabBarLabelStyle: {
-            fontSize: is_arabic ? 10 : 12,
+            fontSize: is_arabic() ? 10 : 12,
           },
         }}
       />
@@ -111,7 +112,7 @@ export default function TabLayout() {
         name="settings"
         options={{
           headerShown: false,
-          title: i18n.t(LanguageKey.PROFILE),
+          title: t(LanguageKey.PROFILE),
           tabBarIcon: ({ focused }) =>
             focused ? (
               <Ionicons name="settings" size={24} color={Colors.GLOVO_GREEN} />
@@ -119,7 +120,7 @@ export default function TabLayout() {
               <Feather name="settings" size={24} color={Colors.GLOVO_GREEN} />
             ),
           tabBarLabelStyle: {
-            fontSize: is_arabic ? 10 : 12,
+            fontSize: is_arabic() ? 10 : 12,
           },
         }}
       />
@@ -127,7 +128,7 @@ export default function TabLayout() {
         name={Screens.HEALTH_SETUP_SCREEN}
         options={{
           href: null, // Hide from tab bar
-          title: i18n.t(LanguageKey.HEALTH_PROFILE_SETUP),
+          title: t(LanguageKey.HEALTH_PROFILE_SETUP),
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => router.back()}

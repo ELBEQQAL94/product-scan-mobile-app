@@ -32,6 +32,7 @@ import {
 } from "react-native";
 import AuthFooter from "@/components/shared/AuthFooter";
 import Terms from "@/components/RegisterScreen/Terms";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const RegisterScreen: FC = () => {
   // States
@@ -50,9 +51,10 @@ const RegisterScreen: FC = () => {
   const router = useRouter();
   const { is_arabic } = useSelectedLanguage();
   const { redirect_to } = useCustomRouter();
+  const { t } = useTranslation();
 
   const show_toast = () => {
-    ToastAndroid.show(i18n.t(LanguageKey.ACCOUNT_CREATED), ToastAndroid.SHORT);
+    ToastAndroid.show(t(LanguageKey.ACCOUNT_CREATED), ToastAndroid.SHORT);
   };
 
   const handle_next = () => {
@@ -61,7 +63,7 @@ const RegisterScreen: FC = () => {
       setErrorMessage(null);
       setStep(AuthSteps.PASSWORD);
     } else {
-      setErrorMessage(i18n.t(LanguageKey.EMAIL_NOT_VALID));
+      setErrorMessage(t(LanguageKey.EMAIL_NOT_VALID));
     }
   };
 
@@ -77,7 +79,7 @@ const RegisterScreen: FC = () => {
       confirmPassword.length > 0 &&
       password !== confirmPassword
     ) {
-      setErrorMessage(i18n.t(LanguageKey.PASSWORDS_DO_NOT_MATCH));
+      setErrorMessage(t(LanguageKey.PASSWORDS_DO_NOT_MATCH));
       return;
     }
     try {
@@ -90,13 +92,13 @@ const RegisterScreen: FC = () => {
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message === FirebaseErrorMessages.EMAIL_ALREADY_IN_USE) {
-          setErrorMessage(i18n.t(LanguageKey.EMAIL_ALREADY_IN_USE));
+          setErrorMessage(t(LanguageKey.EMAIL_ALREADY_IN_USE));
         }
         if (error.message === FirebaseErrorMessages.WEAK_PASSWORD) {
-          setErrorMessage(i18n.t(LanguageKey.WEAK_PASSWORD));
+          setErrorMessage(t(LanguageKey.WEAK_PASSWORD));
         }
       } else {
-        setErrorMessage(i18n.t(LanguageKey.TRY_LATER));
+        setErrorMessage(t(LanguageKey.TRY_LATER));
       }
     } finally {
       setLoading(false);
@@ -110,7 +112,7 @@ const RegisterScreen: FC = () => {
       show_toast();
       redirect_to(Screens.HOME_SCREEN);
     } catch (error: unknown) {
-      Alert.alert("Error", i18n.t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
+      Alert.alert("Error", t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
     } finally {
       setGoogleLoading(false);
     }
@@ -149,16 +151,16 @@ const RegisterScreen: FC = () => {
                       { textAlign: is_arabic() ? "right" : "left" },
                     ]}
                   >
-                    {i18n.t(LanguageKey.CREATE_YOUR_ACCOUNT)}
+                    {t(LanguageKey.CREATE_YOUR_ACCOUNT)}
                   </Text>
 
                   {/* Email Input */}
                   <Input
                     errorMessage={errorMessage}
-                    label={i18n.t(LanguageKey.EMAIL)}
+                    label={t(LanguageKey.EMAIL)}
                     value={email}
                     onChangeText={setEmail}
-                    placeholder={i18n.t(LanguageKey.ENTER_YOUR_EMAIL)}
+                    placeholder={t(LanguageKey.ENTER_YOUR_EMAIL)}
                     isArabic={is_arabic()}
                     keyboardType="email-address"
                   />
@@ -195,7 +197,7 @@ const RegisterScreen: FC = () => {
                       { textAlign: is_arabic() ? "right" : "left" },
                     ]}
                   >
-                    {i18n.t(LanguageKey.CREATE_PASSWORD)}
+                    {t(LanguageKey.CREATE_PASSWORD)}
                   </Text>
                   <Text
                     style={[
@@ -203,16 +205,16 @@ const RegisterScreen: FC = () => {
                       { textAlign: is_arabic() ? "right" : "left" },
                     ]}
                   >
-                    {i18n.t(LanguageKey.CREATING_ACCOUNT_FOR)} {email}
+                    {t(LanguageKey.CREATING_ACCOUNT_FOR)} {email}
                   </Text>
 
                   {/* Password Input */}
                   <Input
                     errorMessage={errorMessage}
-                    label={i18n.t(LanguageKey.PASSWORD)}
+                    label={t(LanguageKey.PASSWORD)}
                     value={password}
                     onChangeText={setPassword}
-                    placeholder={i18n.t(LanguageKey.ENTER_PASSWORD)}
+                    placeholder={t(LanguageKey.ENTER_PASSWORD)}
                     secureTextEntry={!showPassword}
                     showPassword={showPassword}
                     isIconVisible={true}
@@ -223,10 +225,10 @@ const RegisterScreen: FC = () => {
                   {/* Confirm Password Input */}
                   <Input
                     errorMessage={errorMessage}
-                    label={i18n.t(LanguageKey.CONFIRM_PASSWORD)}
+                    label={t(LanguageKey.CONFIRM_PASSWORD)}
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
-                    placeholder={i18n.t(LanguageKey.CONFIRM_PASSWORD)}
+                    placeholder={t(LanguageKey.CONFIRM_PASSWORD)}
                     secureTextEntry={!showConfirmPassword}
                     showPassword={showConfirmPassword}
                     isIconVisible={true}
@@ -286,8 +288,8 @@ const RegisterScreen: FC = () => {
         {/* Footer positioned at bottom */}
         <View style={styles.footerContainer}>
           <AuthFooter
-            label={i18n.t(LanguageKey.ALREADY_HAVE_AN_ACCOUNT)}
-            link={i18n.t(LanguageKey.LOG_IN)}
+            label={t(LanguageKey.ALREADY_HAVE_AN_ACCOUNT)}
+            link={t(LanguageKey.LOG_IN)}
             redirectTo={redirect_to_login}
             isArabic={is_arabic()}
           />

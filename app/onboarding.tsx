@@ -10,13 +10,13 @@ import {
   Dimensions,
   useColorScheme,
 } from "react-native";
-import { i18n } from "@/i18n";
 import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { AsyncStorageKey, LanguageKey } from "@/constants/keys";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 import { Colors } from "@/themes/colors";
 import { useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const { width } = Dimensions.get("window");
 
@@ -27,6 +27,7 @@ const OnboardingScreen: FC = () => {
   const { modalVisible, currentLanguage, setModalVisible, change_language } =
     useSelectedLanguage();
   const router = useRouter();
+  const { t } = useTranslation();
 
   // States
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -82,10 +83,8 @@ const OnboardingScreen: FC = () => {
             renderItem={({ item }) => (
               <View style={styles.slide}>
                 <View style={styles.text_container}>
-                  <Text style={styles.title}>{i18n.t(item.title)}</Text>
-                  <Text style={styles.description}>
-                    {i18n.t(item.subtitle)}
-                  </Text>
+                  <Text style={styles.title}>{t(item.title)}</Text>
+                  <Text style={styles.description}>{t(item.subtitle)}</Text>
                 </View>
               </View>
             )}
@@ -99,8 +98,8 @@ const OnboardingScreen: FC = () => {
             >
               <Text style={styles.button_text}>
                 {currentIndex < slides.length - 1
-                  ? i18n.t(LanguageKey.NEXT)
-                  : i18n.t(LanguageKey.CREATE_ACCOUNT)}
+                  ? t(LanguageKey.NEXT)
+                  : t(LanguageKey.CREATE_ACCOUNT)}
               </Text>
             </TouchableOpacity>
             {currentIndex === slides.length - 1 ? (
@@ -109,7 +108,7 @@ const OnboardingScreen: FC = () => {
                 onPress={handleBack}
               >
                 <Text style={[styles.button_text, { color: colors.text }]}>
-                  {i18n.t(LanguageKey.BACK)}
+                  {t(LanguageKey.BACK)}
                 </Text>
               </TouchableOpacity>
             ) : (
@@ -118,7 +117,7 @@ const OnboardingScreen: FC = () => {
                 onPress={skip}
               >
                 <Text style={[styles.button_text, { color: colors.text }]}>
-                  {i18n.t(LanguageKey.SKIP)}
+                  {t(LanguageKey.SKIP)}
                 </Text>
               </TouchableOpacity>
             )}
