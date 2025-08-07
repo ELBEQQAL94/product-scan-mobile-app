@@ -46,6 +46,7 @@ const OnboardingScreen: FC = () => {
       flatListRef.current?.scrollToIndex({ index: newIndex, animated: true });
     } else {
       await set_item(AsyncStorageKey.HAS_COMPLETED_ONBOARDING, "true");
+      router.push(Screens.REGISTER_SCREEN);
     }
   };
 
@@ -58,7 +59,6 @@ const OnboardingScreen: FC = () => {
   };
 
   const skip = async () => {
-    console.log("click");
     await set_item(AsyncStorageKey.HAS_COMPLETED_ONBOARDING, "true");
     router.push(Screens.REGISTER_SCREEN);
   };
