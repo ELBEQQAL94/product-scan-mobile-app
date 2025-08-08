@@ -12,8 +12,6 @@ import {
   auth_with_google,
 } from "@/external-services/firebase-config";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
-import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { is_email_valid } from "@/utils";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -33,6 +31,7 @@ import {
 import AuthFooter from "@/components/shared/AuthFooter";
 import Terms from "@/components/RegisterScreen/Terms";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useLanguage } from "@/context/LanguageProvider";
 
 const RegisterScreen: FC = () => {
   // States
@@ -49,7 +48,7 @@ const RegisterScreen: FC = () => {
 
   // Hooks
   const router = useRouter();
-  const { is_arabic } = useSelectedLanguage();
+  const { is_arabic } = useLanguage();
   const { redirect_to } = useCustomRouter();
   const { t } = useTranslation();
 
@@ -148,7 +147,7 @@ const RegisterScreen: FC = () => {
                   <Text
                     style={[
                       styles.title,
-                      { textAlign: is_arabic() ? "right" : "left" },
+                      { textAlign: is_arabic ? "right" : "left" },
                     ]}
                   >
                     {t(LanguageKey.CREATE_YOUR_ACCOUNT)}
@@ -161,7 +160,7 @@ const RegisterScreen: FC = () => {
                     value={email}
                     onChangeText={setEmail}
                     placeholder={t(LanguageKey.ENTER_YOUR_EMAIL)}
-                    isArabic={is_arabic()}
+                    isArabic={is_arabic}
                     keyboardType="email-address"
                   />
 
@@ -178,7 +177,7 @@ const RegisterScreen: FC = () => {
                       paddingHorizontal: 16,
                       marginBottom: 24,
                     }}
-                    isArabic={is_arabic()}
+                    isArabic={is_arabic}
                   />
 
                   <Devider />
@@ -194,7 +193,7 @@ const RegisterScreen: FC = () => {
                   <Text
                     style={[
                       styles.title,
-                      { textAlign: is_arabic() ? "right" : "left" },
+                      { textAlign: is_arabic ? "right" : "left" },
                     ]}
                   >
                     {t(LanguageKey.CREATE_PASSWORD)}
@@ -202,7 +201,7 @@ const RegisterScreen: FC = () => {
                   <Text
                     style={[
                       styles.description,
-                      { textAlign: is_arabic() ? "right" : "left" },
+                      { textAlign: is_arabic ? "right" : "left" },
                     ]}
                   >
                     {t(LanguageKey.CREATING_ACCOUNT_FOR)} {email}
@@ -218,7 +217,7 @@ const RegisterScreen: FC = () => {
                     secureTextEntry={!showPassword}
                     showPassword={showPassword}
                     isIconVisible={true}
-                    isArabic={is_arabic()}
+                    isArabic={is_arabic}
                     setVisibility={setShowPassword}
                   />
 
@@ -232,7 +231,7 @@ const RegisterScreen: FC = () => {
                     secureTextEntry={!showConfirmPassword}
                     showPassword={showConfirmPassword}
                     isIconVisible={true}
-                    isArabic={is_arabic()}
+                    isArabic={is_arabic}
                     setVisibility={setShowConfirmPassword}
                   />
 
@@ -249,7 +248,7 @@ const RegisterScreen: FC = () => {
                       paddingHorizontal: 16,
                       marginBottom: 24,
                     }}
-                    isArabic={is_arabic()}
+                    isArabic={is_arabic}
                     loading={loading}
                   />
 
@@ -274,7 +273,7 @@ const RegisterScreen: FC = () => {
                       name: "arrow-left-long",
                       size: 24,
                     }}
-                    isArabic={is_arabic()}
+                    isArabic={is_arabic}
                     iconStyles={{ color: Colors.BLACK }}
                   />
 
@@ -291,7 +290,7 @@ const RegisterScreen: FC = () => {
             label={t(LanguageKey.ALREADY_HAVE_AN_ACCOUNT)}
             link={t(LanguageKey.LOG_IN)}
             redirectTo={redirect_to_login}
-            isArabic={is_arabic()}
+            isArabic={is_arabic}
           />
         </View>
       </KeyboardAvoidingView>

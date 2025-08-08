@@ -7,11 +7,17 @@ import { AsyncStorageKey } from "@/constants/keys";
 type LanguageContextType = {
   language: Language;
   setLanguage: (lang: Language) => Promise<void>;
+  modalVisible: boolean;
+  setModalVisible: (modalVisible: boolean) => void;
+  is_arabic: boolean;
 };
 
 const LanguageContext = createContext<LanguageContextType>({
   language: Language.EN,
   setLanguage: async () => {},
+  modalVisible: false,
+  setModalVisible: () => {},
+  is_arabic: false,
 });
 
 export const LanguageProvider = ({
@@ -20,12 +26,16 @@ export const LanguageProvider = ({
   children: React.ReactNode;
 }) => {
   const [language, setLanguageState] = useState<Language>(Language.EN);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const setLanguage = async (lang: Language) => {
     i18n.locale = lang;
     await set_item(AsyncStorageKey.LANGUAGE_CODE, lang);
     setLanguageState(lang);
+    setModalVisible(false);
   };
+
+  const is_arabic = language === Language.AR;
 
   useEffect(() => {
     (async () => {
@@ -37,7 +47,15 @@ export const LanguageProvider = ({
   }, []);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage }}>
+    <LanguageContext.Provider
+      value={{
+        language,
+        setLanguage,
+        modalVisible,
+        setModalVisible,
+        is_arabic,
+      }}
+    >
       {children}
     </LanguageContext.Provider>
   );

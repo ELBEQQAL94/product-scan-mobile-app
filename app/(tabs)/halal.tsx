@@ -1,5 +1,6 @@
 import Scan from "@/components/ScanScreen/Scan";
 import { Screens } from "@/constants/screens";
+import { useAuth } from "@/hooks/useAuth";
 import { BarcodeScanningResult } from "expo-camera";
 import { useRouter } from "expo-router";
 import { FC, useState } from "react";
@@ -7,6 +8,7 @@ import { FC, useState } from "react";
 const HalalScreen: FC = () => {
   // Hooks
   const router = useRouter();
+  const { user } = useAuth();
 
   // States
   const [scanned, setScanned] = useState<boolean>(false);
@@ -20,17 +22,16 @@ const HalalScreen: FC = () => {
     }
   };
 
+  const redirect_to_scan_result = (bar_code: string) =>
+    router.push(
+      `${Screens.SCAN_RESULT_SCREEN}?bar_code=${bar_code}&user_id=${user?.uid}`
+    );
+
   return (
     <Scan
       scanned={scanned}
       handleBarcodeScanned={handleBarcodeScanned}
-      isArabic={false}
-      redirectTo={function (screen: string): void {
-        throw new Error("Function not implemented.");
-      }}
-      redirectToScanResult={function (bar_code: string): void {
-        throw new Error("Function not implemented.");
-      }}
+      redirectToScanResult={redirect_to_scan_result}
     />
   );
 };

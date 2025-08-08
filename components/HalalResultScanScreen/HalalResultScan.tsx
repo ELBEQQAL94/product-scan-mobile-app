@@ -5,8 +5,8 @@ import { HalalProductResponse } from "@/types/scan-result";
 import { Typography } from "@/themes/typography";
 import { Colors } from "@/themes/colors";
 import { HalalCheckStatus } from "@/enums/scan-result-with-ai";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useLanguage } from "@/context/LanguageProvider";
 
 interface HalalResultScanProps {
   imageUri: string;
@@ -20,7 +20,7 @@ const HalalResultScan: FC<HalalResultScanProps> = ({
   currentLanguage,
 }) => {
   // Hooks
-  const { is_arabic } = useSelectedLanguage();
+  const { is_arabic } = useLanguage();
   const { t } = useTranslation();
 
   return (
@@ -44,7 +44,7 @@ const HalalResultScan: FC<HalalResultScanProps> = ({
           style={[
             styles.summary,
             {
-              textAlign: is_arabic() ? "right" : "left",
+              textAlign: is_arabic ? "right" : "left",
               ...Typography.bodyLarge,
             },
           ]}
