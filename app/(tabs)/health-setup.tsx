@@ -9,16 +9,16 @@ import { Screens } from "@/constants/screens";
 import { Step } from "@/enums/step";
 import { LanguageKey } from "@/constants/keys";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { update_user_health_data } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { useLanguage } from "@/context/LanguageProvider";
 
 const HealthSetup: FC = () => {
   // Hooks
   const router = useRouter();
   const { user } = useAuth();
-  const { is_arabic } = useSelectedLanguage();
+  const { is_arabic } = useLanguage();
 
   // States
   const [currentStep, setCurrentStep] = useState<Step>(Step.DISEASES);
@@ -119,7 +119,7 @@ const HealthSetup: FC = () => {
                 size: 24,
               }}
               onPress={handleBack}
-              isArabic={is_arabic()}
+              isArabic={is_arabic}
               containerStyles={styles.backButton}
             />
           )}
@@ -133,7 +133,7 @@ const HealthSetup: FC = () => {
               size: 24,
             }}
             onPress={handleNext}
-            isArabic={is_arabic()}
+            isArabic={is_arabic}
             containerStyles={
               isAllergiesStep ? styles.nextButtonWithBack : styles.nextButton
             }

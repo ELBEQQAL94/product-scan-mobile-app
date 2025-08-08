@@ -12,7 +12,6 @@ import {
   map_to_product_db,
   save_product_by_bar_code,
 } from "@/utils";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import ScanResult from "@/components/ScanResultScreen";
 import { ai_product_scan_prompt } from "@/prompt";
 import ScanningLoader from "@/components/shared/ScanningLoader";
@@ -23,13 +22,14 @@ import {
 } from "@/external-services/firebase-config";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { UserSchema } from "@/types/auth";
+import { useLanguage } from "@/context/LanguageProvider";
 
 const ScanResultScreen: FC = () => {
   // Hooks
   const router = useRouter();
   const local = useLocalSearchParams();
   const colorScheme = useColorScheme();
-  const { is_arabic, currentLanguage } = useSelectedLanguage();
+  const { is_arabic, language } = useLanguage();
   const { redirect_to } = useCustomRouter();
 
   const bar_code = local.bar_code as string;
@@ -75,11 +75,7 @@ const ScanResultScreen: FC = () => {
         if (response?.status === 1) {
           const score = calculate_enhanced_health_score(response);
           if (!userLoading) {
-            const content = ai_product_scan_prompt(
-              response,
-              user,
-              currentLanguage
-            );
+            const content = ai_product_scan_prompt(response, user, language);
             const ai_scan_result = await ai_scan(content);
 
             if (ai_scan_result) {
@@ -135,7 +131,7 @@ const ScanResultScreen: FC = () => {
       <ScanResult
         data={product}
         user={user}
-        isArabic={is_arabic()}
+        isArabic={is_arabic}
         redirectTo={redirect_to}
       />
     </ProtectedRoute>

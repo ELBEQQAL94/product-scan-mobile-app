@@ -5,7 +5,6 @@ import { LanguageKey } from "@/constants/keys";
 import { get_products } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "@/hooks/useTranslation";
-import { i18n } from "@/i18n";
 import { Typography } from "@/themes/typography";
 import { ProductTypeFromDB } from "@/types/products";
 import { FC, useEffect, useState } from "react";

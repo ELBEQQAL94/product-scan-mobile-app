@@ -19,14 +19,13 @@ import { Colors } from "@/themes/colors";
 import { Screens } from "@/constants/screens";
 import { useAuth } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
-import { i18n } from "@/i18n";
 import { LanguageKey } from "@/constants/keys";
 import ProfileItem from "@/components/ProfileScreen/ProfileItem";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import ProfileScreenLoading from "@/components/ProfileScreen/ProfileScreenLoading";
 import { format_date } from "@/utils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useLanguage } from "@/context/LanguageProvider";
 
 const Profile: FC = () => {
   // States
@@ -35,7 +34,7 @@ const Profile: FC = () => {
 
   // Hooks
   const router = useRouter();
-  const { is_arabic } = useSelectedLanguage();
+  const { is_arabic } = useLanguage();
   const { user } = useAuth();
   const { t } = useTranslation();
 
@@ -94,7 +93,7 @@ const Profile: FC = () => {
           <Text
             style={[
               styles.sectionTitle,
-              { textAlign: is_arabic() ? "right" : "left" },
+              { textAlign: is_arabic ? "right" : "left" },
             ]}
           >
             {t(LanguageKey.PERSONAL_INFORMATION)}
@@ -106,7 +105,7 @@ const Profile: FC = () => {
             }
             label={t(LanguageKey.USERNAME)}
             value={userData?.username || ""}
-            isArabic={is_arabic()}
+            isArabic={is_arabic}
           />
         </View>
 
@@ -114,7 +113,7 @@ const Profile: FC = () => {
           <Text
             style={[
               styles.sectionTitle,
-              { textAlign: is_arabic() ? "right" : "left" },
+              { textAlign: is_arabic ? "right" : "left" },
             ]}
           >
             {t(LanguageKey.HEALTH_INFORMATION)}
@@ -131,7 +130,7 @@ const Profile: FC = () => {
             label={t(LanguageKey.DISEASES)}
             value={userData?.selected_diseases || []}
             onEdit={handle_edit}
-            isArabic={is_arabic()}
+            isArabic={is_arabic}
             isEdit={true}
           />
 
@@ -146,7 +145,7 @@ const Profile: FC = () => {
             label={t(LanguageKey.ALLERGIES)}
             value={userData?.selected_allergies || []}
             onEdit={handle_edit}
-            isArabic={is_arabic()}
+            isArabic={is_arabic}
             isEdit={true}
           />
         </View>
@@ -155,7 +154,7 @@ const Profile: FC = () => {
           <Text
             style={[
               styles.sectionTitle,
-              { textAlign: is_arabic() ? "right" : "left" },
+              { textAlign: is_arabic ? "right" : "left" },
             ]}
           >
             {t(LanguageKey.ACCOUNT_INFORMATION)}
@@ -240,7 +239,7 @@ const Profile: FC = () => {
           <Text
             style={[
               styles.sectionTitle,
-              { textAlign: is_arabic() ? "right" : "left" },
+              { textAlign: is_arabic ? "right" : "left" },
             ]}
           >
             {t(LanguageKey.HEALTH_PROFILE_STATUS)}
@@ -263,7 +262,7 @@ const Profile: FC = () => {
             <Text
               style={[
                 styles.healthStatusText,
-                { textAlign: is_arabic() ? "right" : "left" },
+                { textAlign: is_arabic ? "right" : "left" },
               ]}
             >
               {userData?.is_profile_health_created
@@ -288,7 +287,7 @@ const Profile: FC = () => {
           <Text
             style={[
               styles.sectionTitle,
-              { textAlign: is_arabic() ? "right" : "left" },
+              { textAlign: is_arabic ? "right" : "left" },
             ]}
           >
             {t(LanguageKey.ACCOUNT_ACTIONS)}

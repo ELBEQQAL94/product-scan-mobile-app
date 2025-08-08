@@ -5,7 +5,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { Screens } from "@/constants/screens";
 import { AsyncStorageKey } from "@/constants/keys";
 import { get_item } from "@/utils";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -19,7 +18,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const { currentLanguage } = useSelectedLanguage(); // Add this hook
 
   const checkOnboardingStatus = async () => {
     try {

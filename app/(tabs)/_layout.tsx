@@ -11,15 +11,15 @@ import "react-native-reanimated";
 import { Colors } from "@/themes/colors";
 import CustomScanTabButton from "@/components/ScanScreen/CustomScanTabButton";
 import { LanguageKey } from "@/constants/keys";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { Typography } from "@/themes/typography";
 import { TouchableOpacity } from "react-native";
 import { Screens } from "@/constants/screens";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useLanguage } from "@/context/LanguageProvider";
 
 export default function TabLayout() {
   // Hooks
-  const { is_arabic } = useSelectedLanguage();
+  const { is_arabic } = useLanguage();
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -104,7 +104,7 @@ export default function TabLayout() {
               <FontAwesome5 name="user" size={24} color={Colors.GLOVO_GREEN} />
             ),
           tabBarLabelStyle: {
-            fontSize: is_arabic() ? 10 : 12,
+            fontSize: is_arabic ? 10 : 12,
           },
         }}
       />
@@ -120,7 +120,7 @@ export default function TabLayout() {
               <Feather name="settings" size={24} color={Colors.GLOVO_GREEN} />
             ),
           tabBarLabelStyle: {
-            fontSize: is_arabic() ? 10 : 12,
+            fontSize: is_arabic ? 10 : 12,
           },
         }}
       />

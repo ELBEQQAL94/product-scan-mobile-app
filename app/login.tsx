@@ -10,8 +10,6 @@ import {
   log_in_with_email_and_password,
 } from "@/external-services/firebase-config";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
-import { i18n } from "@/i18n";
 import { Colors } from "@/themes/colors";
 import { useRouter } from "expo-router";
 import { FC, useState } from "react";
@@ -30,6 +28,7 @@ import Header from "@/components/RegisterScreen/Header";
 import AuthFooter from "@/components/shared/AuthFooter";
 import crashlytics from "@react-native-firebase/crashlytics";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useLanguage } from "@/context/LanguageProvider";
 
 const LoginScreen: FC = () => {
   // States
@@ -42,7 +41,7 @@ const LoginScreen: FC = () => {
 
   // Hooks
   const router = useRouter();
-  const { is_arabic } = useSelectedLanguage();
+  const { is_arabic } = useLanguage();
   const { redirect_to } = useCustomRouter();
   const { t } = useTranslation();
 
@@ -154,7 +153,7 @@ const LoginScreen: FC = () => {
               <Text
                 style={[
                   styles.title,
-                  { textAlign: is_arabic() ? "right" : "left" },
+                  { textAlign: is_arabic ? "right" : "left" },
                 ]}
               >
                 {t(LanguageKey.LOG_IN)}
@@ -165,7 +164,7 @@ const LoginScreen: FC = () => {
                 value={email}
                 onChangeText={setEmail}
                 placeholder={t(LanguageKey.ENTER_YOUR_EMAIL)}
-                isArabic={is_arabic()}
+                isArabic={is_arabic}
                 keyboardType="email-address"
               />
               <Input
@@ -177,7 +176,7 @@ const LoginScreen: FC = () => {
                 secureTextEntry={!showPassword}
                 showPassword={showPassword}
                 isIconVisible={true}
-                isArabic={is_arabic()}
+                isArabic={is_arabic}
                 setVisibility={setShowPassword}
               />
               <ActionButton
@@ -193,7 +192,7 @@ const LoginScreen: FC = () => {
                   paddingHorizontal: 16,
                   marginBottom: 24,
                 }}
-                isArabic={is_arabic()}
+                isArabic={is_arabic}
                 loading={loading}
               />
               <Devider />
@@ -207,7 +206,7 @@ const LoginScreen: FC = () => {
               label={t(LanguageKey.DONT_HAVE_AN_ACCOUNT)}
               link={t(LanguageKey.CREATE_ACCOUNT)}
               redirectTo={redirectToRegister}
-              isArabic={is_arabic()}
+              isArabic={is_arabic}
             />
           </View>
         </ScrollView>

@@ -8,8 +8,6 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Colors } from "@/themes/colors";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
-import { i18n } from "@/i18n";
 import { LanguageKey } from "@/constants/keys";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ScreenTitle from "@/components/shared/ScreenTitle";
@@ -18,8 +16,8 @@ import { useLanguage } from "@/context/LanguageProvider";
 import { useTranslation } from "@/hooks/useTranslation";
 
 const SettingsScreen: FC = () => {
-  const { is_arabic, modalVisible, setModalVisible } = useSelectedLanguage();
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, modalVisible, setModalVisible, is_arabic } =
+    useLanguage();
   const { t } = useTranslation();
 
   const openLanguageModal = () => {
@@ -58,7 +56,7 @@ const SettingsScreen: FC = () => {
           <Text
             style={[
               styles.sectionTitle,
-              { textAlign: is_arabic() ? "right" : "left" },
+              { textAlign: is_arabic ? "right" : "left" },
             ]}
           >
             {t(LanguageKey.APP_PREFERENCES)}
@@ -67,14 +65,14 @@ const SettingsScreen: FC = () => {
           <TouchableOpacity
             style={[
               styles.settingItem,
-              { flexDirection: is_arabic() ? "row-reverse" : "row" },
+              { flexDirection: is_arabic ? "row-reverse" : "row" },
             ]}
             onPress={openLanguageModal}
           >
             <View
               style={[
                 styles.itemLeft,
-                { flexDirection: is_arabic() ? "row-reverse" : "row" },
+                { flexDirection: is_arabic ? "row-reverse" : "row" },
               ]}
             >
               <MaterialIcons
@@ -86,8 +84,8 @@ const SettingsScreen: FC = () => {
                 style={[
                   styles.itemLabel,
                   {
-                    marginLeft: is_arabic() ? 0 : 10,
-                    marginRight: is_arabic() ? 10 : 0,
+                    marginLeft: is_arabic ? 0 : 10,
+                    marginRight: is_arabic ? 10 : 0,
                   },
                 ]}
               >
@@ -97,17 +95,17 @@ const SettingsScreen: FC = () => {
             <View
               style={[
                 styles.itemRight,
-                { flexDirection: is_arabic() ? "row-reverse" : "row" },
+                { flexDirection: is_arabic ? "row-reverse" : "row" },
               ]}
             >
               <Text style={styles.itemValue}>{getLanguageDisplayName()}</Text>
               <MaterialIcons
-                name={is_arabic() ? "chevron-left" : "chevron-right"}
+                name={is_arabic ? "chevron-left" : "chevron-right"}
                 size={20}
                 color="#666"
                 style={{
-                  marginLeft: is_arabic() ? 0 : 5,
-                  marginRight: is_arabic() ? 5 : 0,
+                  marginLeft: is_arabic ? 0 : 5,
+                  marginRight: is_arabic ? 5 : 0,
                 }}
               />
             </View>
@@ -119,7 +117,7 @@ const SettingsScreen: FC = () => {
           <Text
             style={[
               styles.sectionTitle,
-              { textAlign: is_arabic() ? "right" : "left" },
+              { textAlign: is_arabic ? "right" : "left" },
             ]}
           >
             {t(LanguageKey.NOTIFICATIONS)}
@@ -128,13 +126,13 @@ const SettingsScreen: FC = () => {
           <TouchableOpacity
             style={[
               styles.settingItem,
-              { flexDirection: is_arabic() ? "row-reverse" : "row" },
+              { flexDirection: is_arabic ? "row-reverse" : "row" },
             ]}
           >
             <View
               style={[
                 styles.itemLeft,
-                { flexDirection: is_arabic() ? "row-reverse" : "row" },
+                { flexDirection: is_arabic ? "row-reverse" : "row" },
               ]}
             >
               <MaterialIcons
@@ -146,8 +144,8 @@ const SettingsScreen: FC = () => {
                 style={[
                   styles.itemLabel,
                   {
-                    marginLeft: is_arabic() ? 0 : 10,
-                    marginRight: is_arabic() ? 10 : 0,
+                    marginLeft: is_arabic ? 0 : 10,
+                    marginRight: is_arabic ? 10 : 0,
                   },
                 ]}
               >
@@ -155,7 +153,7 @@ const SettingsScreen: FC = () => {
               </Text>
             </View>
             <MaterialIcons
-              name={is_arabic() ? "chevron-left" : "chevron-right"}
+              name={is_arabic ? "chevron-left" : "chevron-right"}
               size={20}
               color="#666"
             />
@@ -164,13 +162,13 @@ const SettingsScreen: FC = () => {
           <TouchableOpacity
             style={[
               styles.settingItem,
-              { flexDirection: is_arabic() ? "row-reverse" : "row" },
+              { flexDirection: is_arabic ? "row-reverse" : "row" },
             ]}
           >
             <View
               style={[
                 styles.itemLeft,
-                { flexDirection: is_arabic() ? "row-reverse" : "row" },
+                { flexDirection: is_arabic ? "row-reverse" : "row" },
               ]}
             >
               <MaterialIcons
@@ -182,8 +180,8 @@ const SettingsScreen: FC = () => {
                 style={[
                   styles.itemLabel,
                   {
-                    marginLeft: is_arabic() ? 0 : 10,
-                    marginRight: is_arabic() ? 10 : 0,
+                    marginLeft: is_arabic ? 0 : 10,
+                    marginRight: is_arabic ? 10 : 0,
                   },
                 ]}
               >
@@ -191,7 +189,7 @@ const SettingsScreen: FC = () => {
               </Text>
             </View>
             <MaterialIcons
-              name={is_arabic() ? "chevron-left" : "chevron-right"}
+              name={is_arabic ? "chevron-left" : "chevron-right"}
               size={20}
               color="#666"
             />
@@ -203,7 +201,7 @@ const SettingsScreen: FC = () => {
           <Text
             style={[
               styles.sectionTitle,
-              { textAlign: is_arabic() ? "right" : "left" },
+              { textAlign: is_arabic ? "right" : "left" },
             ]}
           >
             {t(LanguageKey.PRIVACY_SECURITY)}
@@ -212,13 +210,13 @@ const SettingsScreen: FC = () => {
           <TouchableOpacity
             style={[
               styles.settingItem,
-              { flexDirection: is_arabic() ? "row-reverse" : "row" },
+              { flexDirection: is_arabic ? "row-reverse" : "row" },
             ]}
           >
             <View
               style={[
                 styles.itemLeft,
-                { flexDirection: is_arabic() ? "row-reverse" : "row" },
+                { flexDirection: is_arabic ? "row-reverse" : "row" },
               ]}
             >
               <MaterialIcons name="lock" size={20} color={Colors.GLOVO_GREEN} />
@@ -226,8 +224,8 @@ const SettingsScreen: FC = () => {
                 style={[
                   styles.itemLabel,
                   {
-                    marginLeft: is_arabic() ? 0 : 10,
-                    marginRight: is_arabic() ? 10 : 0,
+                    marginLeft: is_arabic ? 0 : 10,
+                    marginRight: is_arabic ? 10 : 0,
                   },
                 ]}
               >
@@ -235,7 +233,7 @@ const SettingsScreen: FC = () => {
               </Text>
             </View>
             <MaterialIcons
-              name={is_arabic() ? "chevron-left" : "chevron-right"}
+              name={is_arabic ? "chevron-left" : "chevron-right"}
               size={20}
               color="#666"
             />
@@ -244,13 +242,13 @@ const SettingsScreen: FC = () => {
           <TouchableOpacity
             style={[
               styles.settingItem,
-              { flexDirection: is_arabic() ? "row-reverse" : "row" },
+              { flexDirection: is_arabic ? "row-reverse" : "row" },
             ]}
           >
             <View
               style={[
                 styles.itemLeft,
-                { flexDirection: is_arabic() ? "row-reverse" : "row" },
+                { flexDirection: is_arabic ? "row-reverse" : "row" },
               ]}
             >
               <MaterialIcons
@@ -262,8 +260,8 @@ const SettingsScreen: FC = () => {
                 style={[
                   styles.itemLabel,
                   {
-                    marginLeft: is_arabic() ? 0 : 10,
-                    marginRight: is_arabic() ? 10 : 0,
+                    marginLeft: is_arabic ? 0 : 10,
+                    marginRight: is_arabic ? 10 : 0,
                   },
                 ]}
               >
@@ -271,7 +269,7 @@ const SettingsScreen: FC = () => {
               </Text>
             </View>
             <MaterialIcons
-              name={is_arabic() ? "chevron-left" : "chevron-right"}
+              name={is_arabic ? "chevron-left" : "chevron-right"}
               size={20}
               color="#666"
             />
@@ -283,7 +281,7 @@ const SettingsScreen: FC = () => {
           <Text
             style={[
               styles.sectionTitle,
-              { textAlign: is_arabic() ? "right" : "left" },
+              { textAlign: is_arabic ? "right" : "left" },
             ]}
           >
             {t(LanguageKey.SUPPORT)}
@@ -292,13 +290,13 @@ const SettingsScreen: FC = () => {
           <TouchableOpacity
             style={[
               styles.settingItem,
-              { flexDirection: is_arabic() ? "row-reverse" : "row" },
+              { flexDirection: is_arabic ? "row-reverse" : "row" },
             ]}
           >
             <View
               style={[
                 styles.itemLeft,
-                { flexDirection: is_arabic() ? "row-reverse" : "row" },
+                { flexDirection: is_arabic ? "row-reverse" : "row" },
               ]}
             >
               <MaterialIcons name="help" size={20} color={Colors.GLOVO_GREEN} />
@@ -306,8 +304,8 @@ const SettingsScreen: FC = () => {
                 style={[
                   styles.itemLabel,
                   {
-                    marginLeft: is_arabic() ? 0 : 10,
-                    marginRight: is_arabic() ? 10 : 0,
+                    marginLeft: is_arabic ? 0 : 10,
+                    marginRight: is_arabic ? 10 : 0,
                   },
                 ]}
               >
@@ -315,7 +313,7 @@ const SettingsScreen: FC = () => {
               </Text>
             </View>
             <MaterialIcons
-              name={is_arabic() ? "chevron-left" : "chevron-right"}
+              name={is_arabic ? "chevron-left" : "chevron-right"}
               size={20}
               color="#666"
             />
@@ -324,13 +322,13 @@ const SettingsScreen: FC = () => {
           <TouchableOpacity
             style={[
               styles.settingItem,
-              { flexDirection: is_arabic() ? "row-reverse" : "row" },
+              { flexDirection: is_arabic ? "row-reverse" : "row" },
             ]}
           >
             <View
               style={[
                 styles.itemLeft,
-                { flexDirection: is_arabic() ? "row-reverse" : "row" },
+                { flexDirection: is_arabic ? "row-reverse" : "row" },
               ]}
             >
               <MaterialIcons
@@ -342,8 +340,8 @@ const SettingsScreen: FC = () => {
                 style={[
                   styles.itemLabel,
                   {
-                    marginLeft: is_arabic() ? 0 : 10,
-                    marginRight: is_arabic() ? 10 : 0,
+                    marginLeft: is_arabic ? 0 : 10,
+                    marginRight: is_arabic ? 10 : 0,
                   },
                 ]}
               >
@@ -351,7 +349,7 @@ const SettingsScreen: FC = () => {
               </Text>
             </View>
             <MaterialIcons
-              name={is_arabic() ? "chevron-left" : "chevron-right"}
+              name={is_arabic ? "chevron-left" : "chevron-right"}
               size={20}
               color="#666"
             />
@@ -360,13 +358,13 @@ const SettingsScreen: FC = () => {
           <TouchableOpacity
             style={[
               styles.settingItem,
-              { flexDirection: is_arabic() ? "row-reverse" : "row" },
+              { flexDirection: is_arabic ? "row-reverse" : "row" },
             ]}
           >
             <View
               style={[
                 styles.itemLeft,
-                { flexDirection: is_arabic() ? "row-reverse" : "row" },
+                { flexDirection: is_arabic ? "row-reverse" : "row" },
               ]}
             >
               <MaterialIcons name="info" size={20} color={Colors.GLOVO_GREEN} />
@@ -374,8 +372,8 @@ const SettingsScreen: FC = () => {
                 style={[
                   styles.itemLabel,
                   {
-                    marginLeft: is_arabic() ? 0 : 10,
-                    marginRight: is_arabic() ? 10 : 0,
+                    marginLeft: is_arabic ? 0 : 10,
+                    marginRight: is_arabic ? 10 : 0,
                   },
                 ]}
               >
@@ -383,7 +381,7 @@ const SettingsScreen: FC = () => {
               </Text>
             </View>
             <MaterialIcons
-              name={is_arabic() ? "chevron-left" : "chevron-right"}
+              name={is_arabic ? "chevron-left" : "chevron-right"}
               size={20}
               color="#666"
             />

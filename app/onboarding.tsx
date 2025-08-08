@@ -10,13 +10,13 @@ import {
   Dimensions,
   useColorScheme,
 } from "react-native";
-import { useSelectedLanguage } from "@/hooks/useSelectedLanguage";
 import { AsyncStorageKey, LanguageKey } from "@/constants/keys";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 import { Colors } from "@/themes/colors";
 import { useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useLanguage } from "@/context/LanguageProvider";
 
 const { width } = Dimensions.get("window");
 
@@ -24,8 +24,8 @@ const OnboardingScreen: FC = () => {
   // Hooks
   const colorScheme = useColorScheme();
   const flatListRef = useRef<FlatList>(null);
-  const { modalVisible, currentLanguage, setModalVisible, change_language } =
-    useSelectedLanguage();
+  const { modalVisible, language, setModalVisible, setLanguage } =
+    useLanguage();
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -67,9 +67,9 @@ const OnboardingScreen: FC = () => {
     <>
       <LanguageSwitcher
         modalVisible={modalVisible}
-        currentLanguage={currentLanguage}
+        currentLanguage={language}
         setModalVisible={setModalVisible}
-        changeLanguage={change_language}
+        changeLanguage={setLanguage}
       />
       <View style={styles.main_container}>
         <View style={[styles.container, { backgroundColor: "green" }]}>
@@ -102,7 +102,7 @@ const OnboardingScreen: FC = () => {
                   : t(LanguageKey.CREATE_ACCOUNT)}
               </Text>
             </TouchableOpacity>
-            {currentIndex === slides.length - 1 ? (
+            {currentIndex > 0 ? (
               <TouchableOpacity
                 style={[styles.button, { backgroundColor: colors.background }]}
                 onPress={handleBack}
