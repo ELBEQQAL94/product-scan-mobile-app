@@ -20,40 +20,9 @@ import { NOW_DATE, NOW_DATE_TIMESTAMP } from "@/constants/constants";
 
 // const db = firestore();
 
-// Test shas
-// Configure Google Sign-In
-// working case
-// GoogleSignin.configure({
-//   webClientId:
-//     "238005376912-g5mqaghnih33nov4fcjjuce2a7kcd7pd.apps.googleusercontent.com", //process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
-//   offlineAccess: true, // Important for getting idToken
-//   forceCodeForRefreshToken: true,
-//   accountName: "",
-//   iosClientId: "", // Add this even for Android
-//   hostedDomain: "",
-// });
-
 GoogleSignin.configure({
   webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
 });
-
-// Test this case
-
-// GoogleSignin.configure({
-//   webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
-//   offlineAccess: true, // Important for getting idToken
-//   forceCodeForRefreshToken: true,
-//   accountName: "",
-//   iosClientId: "", // Add this even for Android
-//   hostedDomain: "",
-// });
-
-// Test this case
-// Not working
-// GoogleSignin.configure({
-//   webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
-//   offlineAccess: true, // Important for getting idToken
-// });
 
 // register/create user account with google
 export const auth_with_google = async () => {
@@ -342,7 +311,6 @@ export const get_products = async (
 export const save_product_in_db = async (
   product_from_db: ProductTypeFromDB
 ) => {
-  console.log(`product_from_db: ${JSON.stringify(product_from_db)}`);
   const user_action: UserAction = {
     action_type: ActionTypeEnum.SAVE_PRODUCT_IN_DB,
     action_description: "create product in db",
@@ -351,8 +319,32 @@ export const save_product_in_db = async (
   };
 
   try {
+    // Check if product already exists by bar_code
+    if (product_from_db.bar_code) {
+      const querySnapshot = await firestore()
+        .collection("products")
+        .where("bar_code", "==", product_from_db.bar_code)
+        .limit(1)
+        .get();
+
+      if (!querySnapshot.empty) {
+        user_action.action_description =
+          "Product already exists, skipped creation";
+        user_action.action_data = JSON.stringify({
+          bar_code: product_from_db.bar_code,
+        });
+        await create_log(user_action);
+        return;
+      }
+    } else {
+      user_action.action_description =
+        "Warning: Product created without bar_code duplicate check";
+    }
+
+    // Create the product if it doesn't exist
     user_action.action_data = JSON.stringify(product_from_db);
     await firestore().collection("products").add(product_from_db);
+    console.log("Product created successfully");
     await create_log(user_action);
   } catch (error: any) {
     user_action.action_description = "Error when create new product";
