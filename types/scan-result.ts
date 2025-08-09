@@ -11,7 +11,7 @@ export interface ScanResultResponse {
   recommendations: Recommendations[];
 }
 
-export interface HalalProductResponse {
+export interface HalalScanResultResponse {
   status: HalalCheckStatus;
   summary: string;
 }

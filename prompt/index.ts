@@ -181,7 +181,7 @@ const generatePersonalizedInstructions = (
 export const ai_product_scan_prompt = (
   data: OpenFoodResponseAPI,
   user: UserSchema | null = null,
-  language: Language = Language.AR
+  language: Language
 ) => {
   const langConfig = languageInstructions[language];
 

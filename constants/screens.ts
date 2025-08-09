@@ -10,4 +10,5 @@ export const Screens = {
   POFILE_SCREEN: "profile",
   SETTINGS_SCREEN: "settings",
   ONBOARDING_SCREEN: "onboarding",
+  HALAL_SCAN_RESULT_SCREEN: "halal-scan-result",
 };

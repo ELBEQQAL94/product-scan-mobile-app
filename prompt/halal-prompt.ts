@@ -1,10 +1,7 @@
 import { OpenFoodData } from "@/constants/responses";
 import { Language } from "@/enums/language";
 
-export const halal_prompt = (
-  data: OpenFoodData,
-  language: Language = Language.AR
-) => {
+export const halal_prompt = (data: OpenFoodData, language: Language) => {
   const productName = data.product.product_name || "Unknown Product";
   const ingredients = data.product.ingredients || [];
   const ingredientsText = data.product.ingredients_text || "";

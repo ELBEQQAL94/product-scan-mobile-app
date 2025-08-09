@@ -1,4 +1,5 @@
 export const fr = {
+  HALAL_CHECK_ONLY_MESSAGE: "Ce scan est uniquement pour la vérification Halal",
   SELECT_LANGUAGE: "Sélectionner la langue",
   DONT_HAVE_SCANNED_PRODUCT: "Aucun produit scanné",
   ACCOUNT_ACTIONS: "Gestion du compte",

@@ -1,4 +1,5 @@
 export const ar = {
+  HALAL_CHECK_ONLY_MESSAGE: "هذا المسح للتحقق من الحلال فقط",
   SELECT_LANGUAGE: "اختر اللغة",
   DONT_HAVE_SCANNED_PRODUCT: "لم يتم مسح أي منتج",
   ACCOUNT_ACTIONS: "إدارة الحساب",
