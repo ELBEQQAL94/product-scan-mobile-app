@@ -8,14 +8,10 @@ import { get_item } from "@/utils";
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  fallbackScreen?: string;
   isPublic?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  children,
-  fallbackScreen = Screens.LOGIN_SCREEN,
-}) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { user, loading } = useAuth();
   const router = useRouter();
 
@@ -35,9 +31,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   useEffect(() => {
     checkOnboardingStatus();
     if (!loading && !user) {
-      router.replace(fallbackScreen);
+      router.replace(Screens.LOGIN_SCREEN);
     }
-  }, [user, loading, router, fallbackScreen]);
+  }, [user, loading, router]);
 
   if (loading) {
     return (
@@ -46,6 +42,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
       </View>
     );
   }
+
+  console.log("user protected route: ", user);
 
   if (!user) {
     return null; // Return null while redirecting

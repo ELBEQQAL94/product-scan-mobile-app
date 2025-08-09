@@ -1,3 +1,4 @@
+import { HalalCheckStatus } from "@/enums/scan-result-with-ai";
 import { Recommendations } from "@/types/scan-result";
 
 export interface Ingredients {
@@ -326,4 +327,13 @@ export interface ProductScanResult {
   image_url: string;
   recommendations: Recommendations[];
   product_name: string;
+}
+
+export interface IHalalScanResult {
+  product_status: number;
+  status: HalalCheckStatus;
+  summary: string;
+  image_url: string;
+  product_name: string;
+  score: number;
 }

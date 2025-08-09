@@ -51,6 +51,12 @@ export default function Layout() {
             }}
           />
           <Stack.Screen
+            name={Screens.HALAL_SCAN_RESULT_SCREEN}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
             name={Screens.ONBOARDING_SCREEN}
             options={{
               headerShown: false,

@@ -23,6 +23,7 @@ import {
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { UserSchema } from "@/types/auth";
 import { useLanguage } from "@/context/LanguageProvider";
+import { ScanResultResponse } from "@/types/scan-result";
 
 const ScanResultScreen: FC = () => {
   // Hooks
@@ -76,7 +77,9 @@ const ScanResultScreen: FC = () => {
           const score = calculate_enhanced_health_score(response);
           if (!userLoading) {
             const content = ai_product_scan_prompt(response, user, language);
-            const ai_scan_result = await ai_scan(content);
+            const ai_scan_result = (await ai_scan(
+              content
+            )) as ScanResultResponse;
 
             if (ai_scan_result) {
               console.log("you call a chat");
