@@ -1,5 +1,7 @@
+import { LanguageKey } from "@/constants/keys";
 import { Screens } from "@/constants/screens";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import { ProductTypeFromDB } from "@/types/products";
@@ -15,8 +17,10 @@ const Product: FC<ProductProps> = ({ product }) => {
   // Hooks
   const router = useRouter();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const get_score_color = (score: number) => {
+    if (score === 0) return Colors.WHITE;
     if (score < 50) return Colors.RED;
     else if (score === 50) return Colors.YELLOW;
     else return Colors.LIGHT_GREEN;
@@ -51,7 +55,11 @@ const Product: FC<ProductProps> = ({ product }) => {
             >
               {product.product_scan_result.score}
             </Text>
-            <Text style={styles.score}>/100</Text>
+            <Text style={styles.score}>
+              {product.product_scan_result.score > 0
+                ? "/100"
+                : t(LanguageKey.SCORE_NOT_AVAILABLE)}
+            </Text>
           </View>
         </View>
       </View>

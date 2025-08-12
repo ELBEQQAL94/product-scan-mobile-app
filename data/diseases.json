@@ -2,41 +2,121 @@
   {
     "id": "diabetes",
     "name": "DIABETES",
-    "icon": "🩺"
+    "icon": "🩺",
+    "description": "DIABETES_DESCRIPTION"
   },
   {
     "id": "pregnancy_nursing",
     "name": "PREGNANT_NURSING",
-    "icon": "🤰"
+    "icon": "🤰",
+    "description": "PREGNANT_NURSING_DESCRIPTION"
   },
   {
     "id": "heart_disease",
     "name": "HEART_DISEASE",
-    "icon": "❤️"
+    "icon": "❤️",
+    "description": "HEART_DISEASE_DESCRIPTION"
   },
   {
     "id": "arthritis",
     "name": "ARTHRITIS",
-    "icon": "🦴"
+    "icon": "🦴",
+    "description": "ARTHRITIS_DESCRIPTION"
   },
   {
     "id": "kidney_disease",
     "name": "KIDNEY_DISEASE",
-    "icon": "🫘"
+    "icon": "🩺",
+    "description": "KIDNEY_DISEASE_DESCRIPTION"
   },
   {
     "id": "liver_disease",
     "name": "LIVER_DISEASE",
-    "icon": "🫀"
+    "icon": "🟤",
+    "description": "LIVER_DISEASE_DESCRIPTION"
   },
   {
     "id": "osteoporosis",
     "name": "OSTEOPOROSIS",
-    "icon": "🦴"
+    "icon": "🦴",
+    "description": "OSTEOPOROSIS_DESCRIPTION"
   },
   {
     "id": "anemia",
     "name": "ANEMIA",
-    "icon": "🩸"
+    "icon": "🩸",
+    "description": "ANEMIA_DESCRIPTION"
+  },
+  {
+    "id": "sensitive_skin",
+    "name": "SENSITIVE_SKIN",
+    "icon": "😶",
+    "description": "SENSITIVE_SKIN_DESCRIPTION"
+  },
+  {
+    "id": "eczema_dermatitis",
+    "name": "ECZEMA_DERMATITIS",
+    "icon": "🔴",
+    "description": "ECZEMA_DERMATITIS_DESCRIPTION"
+  },
+  {
+    "id": "psoriasis",
+    "name": "PSORIASIS",
+    "icon": "🌡️",
+    "description": "PSORIASIS_DESCRIPTION"
+  },
+  {
+    "id": "rosacea",
+    "name": "ROSACEA",
+    "icon": "🌹",
+    "description": "ROSACEA_DESCRIPTION"
+  },
+  {
+    "id": "acne_prone",
+    "name": "ACNE_PRONE",
+    "icon": "😟",
+    "description": "ACNE_PRONE_DESCRIPTION"
+  },
+  {
+    "id": "contact_dermatitis",
+    "name": "CONTACT_DERMATITIS",
+    "icon": "⚠️",
+    "description": "CONTACT_DERMATITIS_DESCRIPTION"
+  },
+  {
+    "id": "melasma",
+    "name": "MELASMA",
+    "icon": "☀️",
+    "description": "MELASMA_DESCRIPTION"
+  },
+  {
+    "id": "hormone_sensitive",
+    "name": "HORMONE_SENSITIVE",
+    "icon": "⚖️",
+    "description": "HORMONE_SENSITIVE_DESCRIPTION"
+  },
+  {
+    "id": "autoimmune_conditions",
+    "name": "AUTOIMMUNE_CONDITIONS",
+    "icon": "🛡️",
+    "description": "AUTOIMMUNE_CONDITIONS_DESCRIPTION"
+  },
+  {
+    "id": "chemotherapy",
+    "name": "CHEMOTHERAPY_TREATMENT",
+    "icon": "💊",
+    "description": "CHEMOTHERAPY_TREATMENT_DESCRIPTION"
+  },
+  {
+    "id": "elderly_aging",
+    "name": "ELDERLY_AGING_SKIN",
+    "icon": "👵",
+    "description": "ELDERLY_AGING_SKIN_DESCRIPTION"
+  },
+  {
+    "id": "teen_puberty",
+    "name": "TEEN_PUBERTY",
+    "icon": "👦",
+    "description": "TEEN_PUBERTY_DESCRIPTION"
   }
 ]

@@ -1,4 +1,125 @@
 export const en = {
+  SCORE_NOT_AVAILABLE: "Score not available for this product",
+  ORGANIC_ONLY: "Organic only",
+  NATURAL_ONLY: "Natural only",
+  CRUELTY_FREE_ONLY: "Cruelty free only",
+  PREGNANCY_SAFE_ONLY: "Pregnancy safe only",
+  CARMINE: "Carmine",
+  BISMUTH_OXYCHLORIDE: "Bismuth oxychloride",
+  LATEX: "Latex",
+  NICKEL: "Nickel",
+  LANOLIN: "Lanolin",
+  BENZOYL_PEROXIDE: "Benzoyl peroxide",
+  GLYCOLIC_ACID: "Glycolic acid",
+  SALICYLIC_ACID: "Salicylic acid",
+  RETINOIDS: "Retinoids",
+  ESSENTIAL_OILS: "Essential oils",
+  DRYING_ALCOHOLS: "Drying alcohols",
+  MINERAL_OIL: "Mineral oil",
+  SILICONES: "Silicones",
+  FRAGRANCE_ALLERGENS: "Fragrance allergens",
+  PHTHALATES: "Phthalates",
+  FORMALDEHYDE_RELEASERS: "Formaldehyde releasers",
+  SULFATES: "Sulfates",
+  ECZEMA: "Eczema",
+  PARABENS: "Parabens",
+  CHEMOTHERAPY_TREATMENT: "Chemotherapy treatment",
+  AUTOIMMUNE_CONDITIONS: "Autoimmune conditions",
+  HORMONE_SENSITIVE: "Hormone sensitive",
+  MELASMA: "Melasma",
+  CONTACT_DERMATITIS: "Contact dermatitis",
+  TEEN_PUBERTY: "Teen puberty",
+  ELDERLY_AGING_SKIN: "Elderly aging skin",
+  ACNE_PRONE: "Acne prone",
+  ROSACEA: "Rosacea",
+  PSORIASIS: "Psoriasis",
+  ECZEMA_DERMATITIS: "Eczema dermatitis",
+  SENSITIVE_SKIN: "Sensitive skin",
+  ORGANIC_ONLY_DESCRIPTION:
+    "Preference for certified organic ingredients grown without synthetic pesticides or fertilizers",
+  NATURAL_ONLY_DESCRIPTION:
+    "Preference for ingredients derived from natural plant, mineral, or biological sources",
+  CRUELTY_FREE_ONLY_DESCRIPTION:
+    "Ethical preference for products not tested on animals during development or production",
+  PREGNANCY_SAFE_ONLY_DESCRIPTION:
+    "Special safety requirements during pregnancy to avoid ingredients harmful to developing baby",
+  CARMINE_DESCRIPTION:
+    "Allergic reaction to red pigment derived from crushed insects, not suitable for vegans",
+  BISMUTH_OXYCHLORIDE_DESCRIPTION:
+    "Sensitivity to mineral makeup ingredient that can cause itching and cystic acne",
+  LATEX_DESCRIPTION:
+    "Allergic reaction to natural rubber latex found in some beauty tools and products",
+  NICKEL_DESCRIPTION:
+    "Allergic reaction to nickel metal found in jewelry, makeup tools, and some cosmetic products",
+  LANOLIN_DESCRIPTION:
+    "Allergic reaction to wool-derived moisturizing ingredient found in many skincare products",
+  BENZOYL_PEROXIDE_DESCRIPTION: "Sensitivity to acne treatment",
+  GLYCOLIC_ACID_DESCRIPTION:
+    "Sensitivity to alpha hydroxy acid that can increase sun sensitivity and cause irritation",
+  SALICYLIC_ACID_DESCRIPTION:
+    "Sensitivity to beta hydroxy acid that can cause irritation or aspirin-like allergic reactions",
+  RETINOIDS_DESCRIPTION:
+    "Avoidance of vitamin A derivatives due to pregnancy, sensitivity, or medication interactions",
+  ESSENTIAL_OILS_DESCRIPTION:
+    "Sensitivity to concentrated plant oils that can cause allergic reactions or irritation",
+  DRYING_ALCOHOLS_DESCRIPTION:
+    "Sensitivity to denatured alcohols that can dry out and irritate sensitive skin",
+  MINERAL_OIL_DESCRIPTION:
+    "Sensitivity to petroleum-derived ingredients that may clog pores",
+  SILICONES_DESCRIPTION:
+    "Preference to avoid synthetic polymers that can build up on hair and skin over time",
+  FRAGRANCE_ALLERGENS_DESCRIPTION:
+    "Allergic reaction to specific scent molecules commonly found in perfumes and cosmetics",
+  PHTHALATES_DESCRIPTION:
+    "Sensitivity to plasticizers that may disrupt hormones",
+  FORMALDEHYDE_RELEASERS_DESCRIPTION:
+    "Sensitivity to preservatives that slowly release formaldehyde, a known carcinogen",
+  SULFATES_DESCRIPTION:
+    "Sensitivity to cleansing agents that can irritate skin",
+  ECZEMA_DESCRIPTION:
+    "Chronic skin condition causing dry, itchy, inflamed patches",
+  PARABENS_DESCRIPTION:
+    "Sensitivity to preservatives that may disrupt hormones",
+  DIABETES_DESCRIPTION:
+    "A chronic condition where blood sugar levels are too high due to the body's inability to produce or properly use insulin",
+  PREGNANT_NURSING_DESCRIPTION:
+    "The period when a woman is carrying a developing baby or breastfeeding, requiring special nutritional and safety considerations",
+  HEART_DISEASE_DESCRIPTION:
+    "A group of conditions affecting the heart and blood vessels, including coronary artery disease, heart failure, and arrhythmias",
+  ARTHRITIS_DESCRIPTION:
+    "Inflammation of one or more joints causing pain, stiffness, swelling, and reduced range of motion",
+  KIDNEY_DISEASE_DESCRIPTION:
+    "A condition where the kidneys gradually lose their ability to filter waste and excess fluid from the blood",
+  LIVER_DISEASE_DESCRIPTION:
+    "Any condition that damages the liver and affects its ability to function properly, including processing toxins and nutrients",
+  OSTEOPOROSIS_DESCRIPTION:
+    "A bone disease where bone density decreases, making bones weak and more likely to fracture",
+  ANEMIA_DESCRIPTION:
+    "A condition where you don't have enough healthy red blood cells to carry adequate oxygen to your body's tissues",
+  SENSITIVE_SKIN_DESCRIPTION:
+    "A skin condition where the skin reacts easily to products or environmental factors, causing redness, burning, stinging, or itching",
+  ECZEMA_DERMATITIS_DESCRIPTION:
+    "A chronic inflammatory skin condition causing dry, itchy, inflamed patches that can crack, bleed, and become infected",
+  PSORIASIS_DESCRIPTION:
+    "An autoimmune skin condition causing rapid skin cell buildup, resulting in thick, scaly, silvery patches on the skin",
+  ROSACEA_DESCRIPTION:
+    "A chronic inflammatory skin condition causing persistent facial redness, visible blood vessels, and sometimes bumps or pustules",
+  ACNE_PRONE_DESCRIPTION:
+    "Skin that frequently develops blackheads, whiteheads, or inflamed pimples due to clogged pores and excess oil production",
+  CONTACT_DERMATITIS_DESCRIPTION:
+    "An allergic or irritant reaction that occurs when skin comes into direct contact with certain substances, causing inflammation",
+  MELASMA_DESCRIPTION:
+    "A skin condition causing brown or gray patches on the face, often triggered by hormonal changes or sun exposure",
+  HORMONE_SENSITIVE_DESCRIPTION:
+    "A condition where the body reacts adversely to hormone-disrupting chemicals, often affecting reproductive or endocrine health",
+  AUTOIMMUNE_CONDITIONS_DESCRIPTION:
+    "Diseases where the immune system mistakenly attacks healthy body tissues, such as lupus, rheumatoid arthritis, or multiple sclerosis",
+  CHEMOTHERAPY_TREATMENT_DESCRIPTION:
+    "Cancer treatment using powerful drugs that can make skin extremely sensitive and require gentle, minimal-ingredient products",
+  ELDERLY_AGING_SKIN_DESCRIPTION:
+    "Natural skin changes that occur with age, including thinning, dryness, reduced elasticity, and increased sensitivity",
+  TEEN_PUBERTY_DESCRIPTION:
+    "The developmental period when hormonal changes cause increased oil production, often leading to acne and skin sensitivity",
   HALAL_CHECK_ONLY_MESSAGE: "This scan is for Halal check only",
   SELECT_LANGUAGE: "Select language",
   DONT_HAVE_SCANNED_PRODUCT: "No product scanned",
@@ -42,53 +163,116 @@ export const en = {
   CONNECTION_ERROR: "Check connection and try again.",
   DIABETES: "Diabetes",
   HIGH_BLOOD_PRESSURE: "High Blood Pressure",
+  HIGH_BLOOD_PRESSURE_DESCRIPTION: "",
   PREGNANT_NURSING: "Pregnant/Nursing",
   TAKING_MEDICATIONS: "Taking Medications",
+  TAKING_MEDICATIONS_DESCRIPTION: "",
   WEIGHT_MANAGEMENT: "Weight Management",
+  WEIGHT_MANAGEMENT_DESCRIPTION: "",
   HEART_DISEASE: "Heart Disease",
   ARTHRITIS: "Arthritis",
   ASTHMA: "Asthma",
+  ASTHMA_DESCRIPTION: "Asthma",
   KIDNEY_DISEASE: "Kidney Disease",
-  LIVER_DISEASE: "Liver Disease",
-  THYROID_ISSUES: "Thyroid Issues",
-  CELIAC_DISEASE: "Celiac Disease",
   IBS: "IBS",
+  IBS_DESCRIPTION: "IBS",
   OSTEOPOROSIS: "Osteoporosis",
   ANEMIA: "Anemia",
   TREE_NUTS: "Tree Nuts",
+  TREE_NUTS_DESCRIPTION:
+    "Allergic reaction to nuts that grow on trees like almonds, walnuts, cashews, and hazelnuts",
   DAIRY: "Dairy",
+  DAIRY_DESCRIPTION:
+    "Inability to digest or allergic reaction to milk proteins in dairy products",
   GLUTEN: "Gluten",
+  GLUTEN_DESCRIPTION:
+    "Immune reaction to gluten protein found in wheat, barley, rye, and related grains",
   EGGS: "Eggs",
+  EGGS_DESCRIPTION:
+    "Allergic reaction to proteins found in chicken eggs, both whites and yolks",
   SHELLFISH: "Shellfish",
+  SHELLFISH_DESCRIPTION:
+    "Allergic reaction to crustaceans like shrimp, crab, lobster, and crawfish",
   SOY: "Soy",
+  SOY_DESCRIPTION:
+    "Allergic reaction to proteins found in soybeans and soy-derived products",
   FISH: "Fish",
+  FISH_DESCRIPTION:
+    "Allergic reaction to proteins found in finned fish like salmon, tuna, and cod",
   SESAME: "Sesame",
+  SESAME_DESCRIPTION:
+    "Allergic reaction to sesame seeds and sesame-derived products like tahini",
   PEANUTS: "Peanuts",
+  PEANUTS_DESCRIPTION:
+    "Allergic reaction to peanuts, which are legumes, not tree nuts",
   MOLLUSKS: "Mollusks",
+  MOLLUSKS_DESCRIPTION:
+    "Allergic reaction to soft-bodied shellfish like oysters, clams, mussels, and squid",
   SULFITES: "Sulfites",
+  SULFITES_DESCRIPTION:
+    "Sensitivity to sulfur compounds used as preservatives in wine, dried fruits, and processed foods",
   MSG: "MSG",
+  MSG_DESCRIPTION: "Sensitivity to monosodium glutamate, a flavor enhancer",
   NIGHTSHADES: "Nightshades",
+  NIGHTSHADES_DESCRIPTION:
+    "Sensitivity to plants in the nightshade family including tomatoes, potatoes, peppers, and eggplant",
   HISTAMINE: "Histamine",
+  HISTAMINE_DESCRIPTION:
+    "Inability to properly break down histamine found in aged cheeses, fermented foods, and wine",
   ARTIFICIAL_COLORS: "Artificial Colors",
   CORN: "Corn",
+  CORN_DESCRIPTION:
+    "Allergic reaction to corn and corn-derived products like corn syrup and corn starch",
   CITRUS: "Citrus",
+  CITRUS_DESCRIPTION:
+    "Allergic reaction to citrus fruits like oranges, lemons, limes, and grapefruits",
   STRAWBERRIES: "Strawberries",
+  STRAWBERRIES_DESCRIPTION:
+    "Allergic reaction to strawberries, which can cause oral allergy syndrome in some people",
   CHOCOLATE: "Chocolate",
+  CHOCOLATE_DESCRIPTION:
+    "Allergic reaction to cocoa or other compounds found in chocolate products",
   MUSHROOMS: "Mushrooms",
+  MUSHROOMS_DESCRIPTION: "Allergic reaction to edible fungi and mushrooms",
   KIWI: "Kiwi",
+  KIWI_DESCRIPTION:
+    "Allergic reaction to kiwi fruit, often associated with latex allergy",
   AVOCADO: "Avocado",
+  AVOCADO_DESCRIPTION:
+    "Allergic reaction to avocados, often linked to latex or birch pollen allergies",
   BANANA: "Banana",
+  BANANA_DESCRIPTION:
+    "Allergic reaction to bananas, commonly associated with latex allergy",
   COCONUT: "Coconut",
+  COCONUT_DESCRIPTION:
+    "Allergic reaction to coconut meat, milk, or oil, though relatively rare",
   MUSTARD: "Mustard",
+  MUSTARD_DESCRIPTION:
+    "Allergic reaction to mustard seeds or mustard-containing products",
   CELERY: "Celery",
+  CELERY_DESCRIPTION:
+    "Allergic reaction to celery, which can be severe and is common in Europe",
   VEGETARIAN: "Vegetarian",
+  VEGETARIAN_DESCRIPTION:
+    "Avoids meat, poultry, and fish while allowing dairy and eggs",
   VEGAN: "Vegan",
+  VEGAN_DESCRIPTION:
+    "Avoids all animal products including meat, dairy, eggs, and honey",
   KETO: "Keto",
+  KETO_DESCRIPTION: "Low-carbohydrate, high-fat diet inducing ketosis",
   LOW_CARB: "Low Carb",
+  LOW_CARB_DESCRIPTION:
+    "Diet restricting carbohydrate intake for weight or health",
   LOW_SODIUM: "Low Sodium",
+  LOW_SODIUM_DESCRIPTION:
+    "Restricts salt intake to manage blood pressure or heart conditions",
   LOW_SUGAR: "Low Sugar",
+  LOW_SUGAR_DESCRIPTION:
+    "Limits sugar intake for diabetes management or weight control",
   PALEO: "Paleo",
+  PALEO_DESCRIPTION: "Diet focusing on unprocessed foods eaten by early humans",
   GLUTEN_FREE: "Gluten-Free",
+  GLUTEN_FREE_DESCRIPTION: "Strict avoidance of gluten-containing grains",
   CONTINUE: "Continue",
   HEALTH_PROFILE_SETUP: "Health Profile Setup",
   SEE_BETTER_OPTIONS: "See Better Options",

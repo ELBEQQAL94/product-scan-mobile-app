@@ -324,6 +324,7 @@ export const save_product_in_db = async (
       const querySnapshot = await firestore()
         .collection("products")
         .where("bar_code", "==", product_from_db.bar_code)
+        .where("user_id", "==", product_from_db.user_id)
         .limit(1)
         .get();
 
