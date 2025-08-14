@@ -169,11 +169,8 @@ const styles = StyleSheet.create({
     position: "relative",
     elevation: 0, // Remove default Android shadow
     shadowOpacity: 0, // Remove default iOS shadow
-    flexBasis: "30%",
-    height: 120,
-    width: 120,
-    justifyContent: "center",
-    alignItems: "center",
+    // flexBasis: "30%",
+    height: 80,
   },
 });
 
