@@ -4,12 +4,17 @@ import {
   OpenFoodResponseAPI,
   OpenStreetMapResponse,
 } from "@/constants/responses";
-import { ScanResultResponse } from "@/types/scan-result";
+import {
+  HalalScanResultResponse,
+  ScanResultResponse,
+} from "@/types/scan-result";
 
 export const ai_scan = async (
   content: string
-): Promise<ScanResultResponse | undefined> => {
-  const client = new OpenAI({ apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY });
+): Promise<ScanResultResponse | HalalScanResultResponse | undefined> => {
+  const client = new OpenAI({
+    apiKey: process.env.EXPO_PUBLIC_OPENAI_API_KEY,
+  });
   const OPENAI_MODEL = process.env.EXPO_PUBLIC_OPENAI_MODEL || "gpt-4.1-nano";
 
   try {
@@ -39,9 +44,16 @@ export const product_details = async (
   bar_code: string
 ): Promise<undefined | OpenFoodResponseAPI> => {
   try {
-    const BASE_FOOD_URL = `https://world.openfoodfacts.org/api/v0/product/${bar_code}.json`;
-    const response = await axios.get(BASE_FOOD_URL);
-    return response.data as OpenFoodResponseAPI;
+    try {
+      const BASE_FOOD_URL = `https://world.openfoodfacts.org/api/v0/product/${bar_code}.json`;
+      const response = await axios.get(BASE_FOOD_URL);
+      return response.data as OpenFoodResponseAPI;
+    } catch {
+      console.log("Food facts failed, trying beauty facts");
+      const base_beauty_url = `https://world.openbeautyfacts.org/api/v0/product/${bar_code}.json`;
+      const beautyResponse = await axios.get(base_beauty_url);
+      return beautyResponse.data as OpenFoodResponseAPI;
+    }
   } catch (error: unknown) {
     console.log("product details get an error: ", error);
   }

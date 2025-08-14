@@ -1,4 +1,126 @@
 export const fr = {
+  PRODUC_NAME_NOT_FOUND: "Nom du produit introuvable",
+  SCORE_NOT_AVAILABLE: "Score non disponible pour ce produit",
+  ORGANIC_ONLY: "Bio seulement",
+  NATURAL_ONLY: "Naturel seulement",
+  CRUELTY_FREE_ONLY: "Sans cruauté seulement",
+  PREGNANCY_SAFE_ONLY: "Sûr pour grossesse seulement",
+  CARMINE: "Carmin",
+  BISMUTH_OXYCHLORIDE: "Oxychlorure de bismuth",
+  LATEX: "Latex",
+  NICKEL: "Nickel",
+  LANOLIN: "Lanoline",
+  BENZOYL_PEROXIDE: "Peroxyde de benzoyle",
+  GLYCOLIC_ACID: "Acide glycolique",
+  SALICYLIC_ACID: "Acide salicylique",
+  RETINOIDS: "Rétinoïdes",
+  ESSENTIAL_OILS: "Huiles essentielles",
+  DRYING_ALCOHOLS: "Alcools asséchants",
+  MINERAL_OIL: "Huile minérale",
+  SILICONES: "Silicones",
+  FRAGRANCE_ALLERGENS: "Allergènes de parfum",
+  PHTHALATES: "Phtalates",
+  FORMALDEHYDE_RELEASERS: "Libérateurs de formaldéhyde",
+  SULFATES: "Sulfates",
+  ECZEMA: "Eczéma",
+  PARABENS: "Parabènes",
+  CHEMOTHERAPY_TREATMENT: "Traitement de chimiothérapie",
+  AUTOIMMUNE_CONDITIONS: "Conditions auto-immunes",
+  HORMONE_SENSITIVE: "Sensible aux hormones",
+  MELASMA: "Mélasma",
+  CONTACT_DERMATITIS: "Dermatite de contact",
+  TEEN_PUBERTY: "Adolescence et puberté",
+  ELDERLY_AGING_SKIN: "Peau âgée",
+  ACNE_PRONE: "Sujette à l'acné",
+  ROSACEA: "Rosacée",
+  PSORIASIS: "Psoriasis",
+  ECZEMA_DERMATITIS: "Eczéma dermatite",
+  SENSITIVE_SKIN: "Peau sensible",
+  ORGANIC_ONLY_DESCRIPTION:
+    "Préférence pour les ingrédients biologiques certifiés cultivés sans pesticides synthétiques ni engrais",
+  NATURAL_ONLY_DESCRIPTION:
+    "Préférence pour les ingrédients dérivés de sources naturelles végétales, minérales ou biologiques",
+  CRUELTY_FREE_ONLY_DESCRIPTION:
+    "Préférence éthique pour les produits non testés sur les animaux pendant le développement ou la production",
+  PREGNANCY_SAFE_ONLY_DESCRIPTION:
+    "Exigences de sécurité spéciales pendant la grossesse pour éviter les ingrédients nocifs pour le bébé en développement",
+  CARMINE_DESCRIPTION:
+    "Réaction allergique au pigment rouge dérivé d'insectes broyés, non adapté aux végétaliens",
+  BISMUTH_OXYCHLORIDE_DESCRIPTION:
+    "Sensibilité à l'ingrédient de maquillage minéral qui peut causer des démangeaisons et de l'acné kystique",
+  LATEX_DESCRIPTION:
+    "Réaction allergique au latex de caoutchouc naturel trouvé dans certains outils de beauté et produits",
+  NICKEL_DESCRIPTION:
+    "Réaction allergique au métal nickel trouvé dans les bijoux, outils de maquillage et certains produits cosmétiques",
+  LANOLIN_DESCRIPTION:
+    "Réaction allergique à l'ingrédient hydratant dérivé de la laine trouvé dans de nombreux produits de soins de la peau",
+  BENZOYL_PEROXIDE_DESCRIPTION: "Sensibilité au traitement de l'acné",
+  GLYCOLIC_ACID_DESCRIPTION:
+    "Sensibilité à l'acide alpha-hydroxy qui peut augmenter la sensibilité au soleil et causer de l'irritation",
+  SALICYLIC_ACID_DESCRIPTION:
+    "Sensibilité à l'acide bêta-hydroxy qui peut causer de l'irritation ou des réactions allergiques similaires à l'aspirine",
+  RETINOIDS_DESCRIPTION:
+    "Évitement des dérivés de vitamine A en raison de grossesse, sensibilité ou interactions médicamenteuses",
+  ESSENTIAL_OILS_DESCRIPTION:
+    "Sensibilité aux huiles végétales concentrées qui peuvent causer des réactions allergiques ou de l'irritation",
+  DRYING_ALCOHOLS_DESCRIPTION:
+    "Sensibilité aux alcools dénaturés qui peuvent assécher et irriter la peau sensible",
+  MINERAL_OIL_DESCRIPTION:
+    "Sensibilité aux ingrédients dérivés du pétrole qui peuvent obstruer les pores",
+  SILICONES_DESCRIPTION:
+    "Préférence d'éviter les polymères synthétiques qui peuvent s'accumuler sur les cheveux et la peau avec le temps",
+  FRAGRANCE_ALLERGENS_DESCRIPTION:
+    "Réaction allergique à des molécules de parfum spécifiques couramment trouvées dans les parfums et cosmétiques",
+  PHTHALATES_DESCRIPTION:
+    "Sensibilité aux plastifiants qui peuvent perturber les hormones",
+  FORMALDEHYDE_RELEASERS_DESCRIPTION:
+    "Sensibilité aux conservateurs qui libèrent lentement du formaldéhyde, un cancérigène connu",
+  SULFATES_DESCRIPTION:
+    "Sensibilité aux agents nettoyants qui peuvent irriter la peau",
+  ECZEMA_DESCRIPTION:
+    "Condition cutanée chronique causant des plaques sèches, qui démangent et enflammées",
+  PARABENS_DESCRIPTION:
+    "Sensibilité aux conservateurs qui peuvent perturber les hormones",
+  DIABETES_DESCRIPTION:
+    "Une condition chronique où les niveaux de sucre dans le sang sont trop élevés en raison de l'incapacité du corps à produire ou utiliser correctement l'insuline",
+  PREGNANT_NURSING_DESCRIPTION:
+    "La période où une femme porte un bébé en développement ou allaite, nécessitant des considérations nutritionnelles et de sécurité particulières",
+  HEART_DISEASE_DESCRIPTION:
+    "Un groupe de conditions affectant le cœur et les vaisseaux sanguins, incluant les maladies coronariennes, l'insuffisance cardiaque et les arythmies",
+  ARTHRITIS_DESCRIPTION:
+    "Inflammation d'une ou plusieurs articulations causant douleur, raideur, gonflement et réduction de l'amplitude de mouvement",
+  KIDNEY_DISEASE_DESCRIPTION:
+    "Une condition où les reins perdent progressivement leur capacité à filtrer les déchets et l'excès de liquide du sang",
+  LIVER_DISEASE_DESCRIPTION:
+    "Toute condition qui endommage le foie et affecte sa capacité à fonctionner correctement, incluant le traitement des toxines et nutriments",
+  OSTEOPOROSIS_DESCRIPTION:
+    "Une maladie osseuse où la densité osseuse diminue, rendant les os faibles et plus susceptibles de se fracturer",
+  ANEMIA_DESCRIPTION:
+    "Une condition où vous n'avez pas assez de globules rouges sains pour transporter suffisamment d'oxygène vers les tissus de votre corps",
+  SENSITIVE_SKIN_DESCRIPTION:
+    "Une condition cutanée où la peau réagit facilement aux produits ou facteurs environnementaux, causant rougeurs, brûlures, picotements ou démangeaisons",
+  ECZEMA_DERMATITIS_DESCRIPTION:
+    "Une condition inflammatoire chronique de la peau causant des plaques sèches, qui démangent et enflammées qui peuvent se fissurer, saigner et s'infecter",
+  PSORIASIS_DESCRIPTION:
+    "Une condition cutanée auto-immune causant une accumulation rapide de cellules cutanées, résultant en plaques épaisses, squameuses et argentées sur la peau",
+  ROSACEA_DESCRIPTION:
+    "Une condition inflammatoire chronique de la peau causant des rougeurs faciales persistantes, des vaisseaux sanguins visibles et parfois des bosses ou pustules",
+  ACNE_PRONE_DESCRIPTION:
+    "Peau qui développe fréquemment des points noirs, points blancs ou boutons enflammés dus aux pores obstrués et à la production excessive d'huile",
+  CONTACT_DERMATITIS_DESCRIPTION:
+    "Une réaction allergique ou irritante qui se produit lorsque la peau entre en contact direct avec certaines substances, causant une inflammation",
+  MELASMA_DESCRIPTION:
+    "Une condition cutanée causant des taches brunes ou grises sur le visage, souvent déclenchée par des changements hormonaux ou l'exposition au soleil",
+  HORMONE_SENSITIVE_DESCRIPTION:
+    "Une condition où le corps réagit défavorablement aux produits chimiques perturbateurs hormonaux, affectant souvent la santé reproductive ou endocrinienne",
+  AUTOIMMUNE_CONDITIONS_DESCRIPTION:
+    "Maladies où le système immunitaire attaque par erreur les tissus corporels sains, comme le lupus, l'arthrite rhumatoïde ou la sclérose en plaques",
+  CHEMOTHERAPY_TREATMENT_DESCRIPTION:
+    "Traitement du cancer utilisant des médicaments puissants qui peuvent rendre la peau extrêmement sensible et nécessiter des produits doux avec des ingrédients minimaux",
+  ELDERLY_AGING_SKIN_DESCRIPTION:
+    "Changements naturels de la peau qui surviennent avec l'âge, incluant l'amincissement, la sécheresse, l'élasticité réduite et la sensibilité accrue",
+  TEEN_PUBERTY_DESCRIPTION:
+    "La période de développement où les changements hormonaux causent une production d'huile accrue, menant souvent à l'acné et la sensibilité cutanée",
   HALAL_CHECK_ONLY_MESSAGE: "Ce scan est uniquement pour la vérification Halal",
   SELECT_LANGUAGE: "Sélectionner la langue",
   DONT_HAVE_SCANNED_PRODUCT: "Aucun produit scanné",

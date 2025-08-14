@@ -1,4 +1,126 @@
 export const de = {
+  PRODUC_NAME_NOT_FOUND: "Produktname nicht gefunden",
+  SCORE_NOT_AVAILABLE: "Bewertung für dieses Produkt nicht verfügbar",
+  ORGANIC_ONLY: "Nur bio",
+  NATURAL_ONLY: "Nur natürlich",
+  CRUELTY_FREE_ONLY: "Nur tierversuchsfrei",
+  PREGNANCY_SAFE_ONLY: "Nur schwangerschaftssicher",
+  CARMINE: "Karmin",
+  BISMUTH_OXYCHLORIDE: "Bismutoxychlorid",
+  LATEX: "Latex",
+  NICKEL: "Nickel",
+  LANOLIN: "Lanolin",
+  BENZOYL_PEROXIDE: "Benzoylperoxid",
+  GLYCOLIC_ACID: "Glykolsäure",
+  SALICYLIC_ACID: "Salicylsäure",
+  RETINOIDS: "Retinoide",
+  ESSENTIAL_OILS: "Ätherische Öle",
+  DRYING_ALCOHOLS: "Trocknende Alkohole",
+  MINERAL_OIL: "Mineralöl",
+  SILICONES: "Silikone",
+  FRAGRANCE_ALLERGENS: "Duftstoffallergene",
+  PHTHALATES: "Phthalate",
+  FORMALDEHYDE_RELEASERS: "Formaldehydabspalter",
+  SULFATES: "Sulfate",
+  ECZEMA: "Ekzem",
+  PARABENS: "Parabene",
+  CHEMOTHERAPY_TREATMENT: "Chemotherapie-Behandlung",
+  AUTOIMMUNE_CONDITIONS: "Autoimmunerkrankungen",
+  HORMONE_SENSITIVE: "Hormonsensitiv",
+  MELASMA: "Melasma",
+  CONTACT_DERMATITIS: "Kontaktdermatitis",
+  TEEN_PUBERTY: "Teenager-Pubertät",
+  ELDERLY_AGING_SKIN: "Alternde Haut",
+  ACNE_PRONE: "Zu Akne neigend",
+  ROSACEA: "Rosazea",
+  PSORIASIS: "Schuppenflechte",
+  ECZEMA_DERMATITIS: "Ekzem-Dermatitis",
+  SENSITIVE_SKIN: "Empfindliche Haut",
+  ORGANIC_ONLY_DESCRIPTION:
+    "Bevorzugung zertifizierter Bio-Inhaltsstoffe, die ohne synthetische Pestizide oder Düngemittel angebaut wurden",
+  NATURAL_ONLY_DESCRIPTION:
+    "Bevorzugung von Inhaltsstoffen aus natürlichen pflanzlichen, mineralischen oder biologischen Quellen",
+  CRUELTY_FREE_ONLY_DESCRIPTION:
+    "Ethische Bevorzugung von Produkten, die während der Entwicklung oder Produktion nicht an Tieren getestet wurden",
+  PREGNANCY_SAFE_ONLY_DESCRIPTION:
+    "Besondere Sicherheitsanforderungen während der Schwangerschaft zur Vermeidung schädlicher Inhaltsstoffe für das ungeborene Kind",
+  CARMINE_DESCRIPTION:
+    "Allergische Reaktion auf rotes Pigment aus zerdrückten Insekten, nicht für Veganer geeignet",
+  BISMUTH_OXYCHLORIDE_DESCRIPTION:
+    "Empfindlichkeit gegenüber mineralischen Make-up-Inhaltsstoffen, die Juckreiz und zystische Akne verursachen können",
+  LATEX_DESCRIPTION:
+    "Allergische Reaktion auf Naturkautschuklatex in einigen Beauty-Tools und Produkten",
+  NICKEL_DESCRIPTION:
+    "Allergische Reaktion auf Nickelmetall in Schmuck, Make-up-Tools und einigen Kosmetikprodukten",
+  LANOLIN_DESCRIPTION:
+    "Allergische Reaktion auf wollabgeleitete feuchtigkeitsspendende Inhaltsstoffe in vielen Hautpflegeprodukten",
+  BENZOYL_PEROXIDE_DESCRIPTION: "Empfindlichkeit gegenüber Akne-Behandlung",
+  GLYCOLIC_ACID_DESCRIPTION:
+    "Empfindlichkeit gegenüber Alpha-Hydroxysäure, die Sonnenempfindlichkeit erhöhen und Reizungen verursachen kann",
+  SALICYLIC_ACID_DESCRIPTION:
+    "Empfindlichkeit gegenüber Beta-Hydroxysäure, die Reizungen oder aspirinähnliche allergische Reaktionen verursachen kann",
+  RETINOIDS_DESCRIPTION:
+    "Vermeidung von Vitamin-A-Derivaten aufgrund von Schwangerschaft, Empfindlichkeit oder Medikamenteninteraktionen",
+  ESSENTIAL_OILS_DESCRIPTION:
+    "Empfindlichkeit gegenüber konzentrierten Pflanzenölen, die allergische Reaktionen oder Reizungen verursachen können",
+  DRYING_ALCOHOLS_DESCRIPTION:
+    "Empfindlichkeit gegenüber denaturierten Alkoholen, die empfindliche Haut austrocknen und reizen können",
+  MINERAL_OIL_DESCRIPTION:
+    "Empfindlichkeit gegenüber erdölbasierten Inhaltsstoffen, die Poren verstopfen können",
+  SILICONES_DESCRIPTION:
+    "Bevorzugung der Vermeidung synthetischer Polymere, die sich im Laufe der Zeit auf Haar und Haut ansammeln können",
+  FRAGRANCE_ALLERGENS_DESCRIPTION:
+    "Allergische Reaktion auf spezifische Duftmoleküle, die häufig in Parfüms und Kosmetika vorkommen",
+  PHTHALATES_DESCRIPTION:
+    "Empfindlichkeit gegenüber Weichmachern, die Hormone stören können",
+  FORMALDEHYDE_RELEASERS_DESCRIPTION:
+    "Empfindlichkeit gegenüber Konservierungsstoffen, die langsam Formaldehyd freisetzen, ein bekanntes Karzinogen",
+  SULFATES_DESCRIPTION:
+    "Empfindlichkeit gegenüber Reinigungsmitteln, die die Haut reizen können",
+  ECZEMA_DESCRIPTION:
+    "Chronische Hauterkrankung, die trockene, juckende, entzündete Stellen verursacht",
+  PARABENS_DESCRIPTION:
+    "Empfindlichkeit gegenüber Konservierungsstoffen, die Hormone stören können",
+  DIABETES_DESCRIPTION:
+    "Eine chronische Erkrankung, bei der der Blutzuckerspiegel zu hoch ist, da der Körper nicht in der Lage ist, Insulin zu produzieren oder richtig zu verwenden",
+  PREGNANT_NURSING_DESCRIPTION:
+    "Die Zeit, in der eine Frau ein sich entwickelndes Baby trägt oder stillt, was besondere ernährungsbedingte und sicherheitstechnische Überlegungen erfordert",
+  HEART_DISEASE_DESCRIPTION:
+    "Eine Gruppe von Erkrankungen, die Herz und Blutgefäße betreffen, einschließlich koronarer Herzkrankheit, Herzinsuffizienz und Arrhythmien",
+  ARTHRITIS_DESCRIPTION:
+    "Entzündung eines oder mehrerer Gelenke, die Schmerzen, Steifheit, Schwellungen und eingeschränkte Beweglichkeit verursacht",
+  KIDNEY_DISEASE_DESCRIPTION:
+    "Eine Erkrankung, bei der die Nieren allmählich ihre Fähigkeit verlieren, Abfallstoffe und überschüssige Flüssigkeit aus dem Blut zu filtern",
+  LIVER_DISEASE_DESCRIPTION:
+    "Jede Erkrankung, die die Leber schädigt und ihre Fähigkeit beeinträchtigt, ordnungsgemäß zu funktionieren, einschließlich der Verarbeitung von Giftstoffen und Nährstoffen",
+  OSTEOPOROSIS_DESCRIPTION:
+    "Eine Knochenerkrankung, bei der die Knochendichte abnimmt, wodurch die Knochen schwach werden und anfälliger für Brüche sind",
+  ANEMIA_DESCRIPTION:
+    "Ein Zustand, bei dem Sie nicht genügend gesunde rote Blutkörperchen haben, um ausreichend Sauerstoff zu den Geweben Ihres Körpers zu transportieren",
+  SENSITIVE_SKIN_DESCRIPTION:
+    "Ein Hautzustand, bei dem die Haut leicht auf Produkte oder Umweltfaktoren reagiert und Rötungen, Brennen, Stechen oder Juckreiz verursacht",
+  ECZEMA_DERMATITIS_DESCRIPTION:
+    "Eine chronische entzündliche Hauterkrankung, die trockene, juckende, entzündete Stellen verursacht, die reißen, bluten und sich infizieren können",
+  PSORIASIS_DESCRIPTION:
+    "Eine Autoimmun-Hauterkrankung, die eine schnelle Ansammlung von Hautzellen verursacht und zu dicken, schuppigen, silbrigen Flecken auf der Haut führt",
+  ROSACEA_DESCRIPTION:
+    "Eine chronische entzündliche Hauterkrankung, die anhaltende Gesichtsrötung, sichtbare Blutgefäße und manchmal Beulen oder Pusteln verursacht",
+  ACNE_PRONE_DESCRIPTION:
+    "Haut, die häufig Mitesser, Whitheads oder entzündete Pickel entwickelt aufgrund verstopfter Poren und übermäßiger Ölproduktion",
+  CONTACT_DERMATITIS_DESCRIPTION:
+    "Eine allergische oder reizende Reaktion, die auftritt, wenn die Haut direkten Kontakt mit bestimmten Substanzen hat und Entzündungen verursacht",
+  MELASMA_DESCRIPTION:
+    "Ein Hautzustand, der braune oder graue Flecken im Gesicht verursacht, oft ausgelöst durch hormonelle Veränderungen oder Sonneneinstrahlung",
+  HORMONE_SENSITIVE_DESCRIPTION:
+    "Ein Zustand, bei dem der Körper nachteilig auf hormonverändernde Chemikalien reagiert, was oft die reproduktive oder endokrine Gesundheit beeinträchtigt",
+  AUTOIMMUNE_CONDITIONS_DESCRIPTION:
+    "Krankheiten, bei denen das Immunsystem fälschlicherweise gesunde Körpergewebe angreift, wie Lupus, rheumatoide Arthritis oder Multiple Sklerose",
+  CHEMOTHERAPY_TREATMENT_DESCRIPTION:
+    "Krebsbehandlung mit starken Medikamenten, die die Haut extrem empfindlich machen können und sanfte Produkte mit minimalen Inhaltsstoffen erfordern",
+  ELDERLY_AGING_SKIN_DESCRIPTION:
+    "Natürliche Hautveränderungen, die mit dem Alter auftreten, einschließlich Verdünnung, Trockenheit, reduzierter Elastizität und erhöhter Empfindlichkeit",
+  TEEN_PUBERTY_DESCRIPTION:
+    "Die Entwicklungsperiode, in der hormonelle Veränderungen eine erhöhte Ölproduktion verursachen, was oft zu Akne und Hautempfindlichkeit führt",
   HALAL_CHECK_ONLY_MESSAGE: "Dieser Scan ist nur für die Halal-Überprüfung",
   SELECT_LANGUAGE: "Sprache auswählen",
   DONT_HAVE_SCANNED_PRODUCT: "Kein Produkt gescannt",

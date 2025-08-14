@@ -9,6 +9,7 @@ import ConnectionError from "@/components/ProductDetailsScreen/ConnectionError";
 import {
   calculate_enhanced_health_score,
   get_product_by_bar_code,
+  get_score,
   map_to_product_db,
   save_product_by_bar_code,
 } from "@/utils";
@@ -74,7 +75,18 @@ const ScanResultScreen: FC = () => {
         console.log("new product: ");
         const response = await product_details(bar_code);
         if (response?.status === 1) {
-          const score = calculate_enhanced_health_score(response);
+          const grade = response.product.grade;
+          const nutriscore_grade = response.product.nutriscore_grade;
+          const ecoscore_score = response.product.ecoscore_score;
+          const nutriscore_score = response.product.nutriscore_score;
+
+          const score = get_score(
+            ecoscore_score,
+            nutriscore_score,
+            nutriscore_grade,
+            grade
+          );
+
           if (!userLoading) {
             const content = ai_product_scan_prompt(response, user, language);
             const ai_scan_result = (await ai_scan(

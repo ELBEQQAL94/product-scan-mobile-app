@@ -5,13 +5,18 @@ import Product from "./Product";
 
 interface ProductProps {
   products: ProductTypeFromDB[];
+  removeProduct: (codeBar: string) => void;
 }
 
-const Products: FC<ProductProps> = ({ products }) => {
+const Products: FC<ProductProps> = ({ products, removeProduct }) => {
   return (
     <ScrollView style={styles.container}>
       {products.map((product: ProductTypeFromDB, index: number) => (
-        <Product key={index} product={product} />
+        <Product
+          key={index}
+          product={product}
+          onProductRemoved={removeProduct}
+        />
       ))}
     </ScrollView>
   );

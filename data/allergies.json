@@ -2,171 +2,355 @@
   {
     "id": "tree_nuts",
     "name": "TREE_NUTS",
-    "icon": "🥜"
-  },
-  {
-    "id": "dairy",
-    "name": "DAIRY",
-    "icon": "🥛"
-  },
-  {
-    "id": "gluten",
-    "name": "GLUTEN",
-    "icon": "🌾"
-  },
-  {
-    "id": "eggs",
-    "name": "EGGS",
-    "icon": "🥚"
-  },
-  {
-    "id": "shellfish",
-    "name": "SHELLFISH",
-    "icon": "🦐"
-  },
-  {
-    "id": "soy",
-    "name": "SOY",
-    "icon": "🫘"
-  },
-  {
-    "id": "fish",
-    "name": "FISH",
-    "icon": "🐟"
-  },
-  {
-    "id": "sesame",
-    "name": "SESAME",
-    "icon": "🌰"
+    "icon": "🌰",
+    "description": "TREE_NUTS_DESCRIPTION"
   },
   {
     "id": "peanuts",
     "name": "PEANUTS",
-    "icon": "🥜"
+    "icon": "🥜",
+    "description": "PEANUTS_DESCRIPTION"
+  },
+  {
+    "id": "dairy",
+    "name": "DAIRY",
+    "icon": "🥛",
+    "description": "DAIRY_DESCRIPTION"
+  },
+  {
+    "id": "gluten",
+    "name": "GLUTEN",
+    "icon": "🌾",
+    "description": "GLUTEN_DESCRIPTION"
+  },
+  {
+    "id": "eggs",
+    "name": "EGGS",
+    "icon": "🥚",
+    "description": "EGGS_DESCRIPTION"
+  },
+  {
+    "id": "shellfish",
+    "name": "SHELLFISH",
+    "icon": "🦐",
+    "description": "SHELLFISH_DESCRIPTION"
   },
   {
     "id": "mollusks",
     "name": "MOLLUSKS",
-    "icon": "🦪"
+    "icon": "🦪",
+    "description": "MOLLUSKS_DESCRIPTION"
   },
   {
-    "id": "sulfites",
-    "name": "SULFITES",
-    "icon": "🍷"
+    "id": "fish",
+    "name": "FISH",
+    "icon": "🐟",
+    "description": "FISH_DESCRIPTION"
   },
   {
-    "id": "msg",
-    "name": "MSG",
-    "icon": "🥢"
+    "id": "soy",
+    "name": "SOY",
+    "icon": "🌱",
+    "description": "SOY_DESCRIPTION"
   },
   {
-    "id": "nightshades",
-    "name": "NIGHTSHADES",
-    "icon": "🍅"
-  },
-  {
-    "id": "histamine",
-    "name": "HISTAMINE",
-    "icon": "🍯"
-  },
-  {
-    "id": "artificial_colors",
-    "name": "ARTIFICIAL_COLORS",
-    "icon": "🌈"
+    "id": "sesame",
+    "name": "SESAME",
+    "icon": "⚪",
+    "description": "SESAME_DESCRIPTION"
   },
   {
     "id": "corn",
     "name": "CORN",
-    "icon": "🌽"
+    "icon": "🌽",
+    "description": "CORN_DESCRIPTION"
   },
   {
     "id": "citrus",
     "name": "CITRUS",
-    "icon": "🍊"
+    "icon": "🍊",
+    "description": "CITRUS_DESCRIPTION"
   },
   {
     "id": "strawberries",
     "name": "STRAWBERRIES",
-    "icon": "🍓"
+    "icon": "🍓",
+    "description": "STRAWBERRIES_DESCRIPTION"
   },
   {
     "id": "chocolate",
     "name": "CHOCOLATE",
-    "icon": "🍫"
+    "icon": "🍫",
+    "description": "CHOCOLATE_DESCRIPTION"
   },
   {
     "id": "mushrooms",
     "name": "MUSHROOMS",
-    "icon": "🍄"
+    "icon": "🍄",
+    "description": "MUSHROOMS_DESCRIPTION"
   },
   {
     "id": "kiwi",
     "name": "KIWI",
-    "icon": "🥝"
+    "icon": "🥝",
+    "description": "KIWI_DESCRIPTION"
   },
   {
     "id": "avocado",
     "name": "AVOCADO",
-    "icon": "🥑"
+    "icon": "🥑",
+    "description": "AVOCADO_DESCRIPTION"
   },
   {
     "id": "banana",
     "name": "BANANA",
-    "icon": "🍌"
+    "icon": "🍌",
+    "description": "BANANA_DESCRIPTION"
   },
   {
     "id": "coconut",
     "name": "COCONUT",
-    "icon": "🥥"
+    "icon": "🥥",
+    "description": "COCONUT_DESCRIPTION"
   },
   {
     "id": "mustard",
     "name": "MUSTARD",
-    "icon": "🌶️"
+    "icon": "🟡",
+    "description": "MUSTARD_DESCRIPTION"
   },
   {
     "id": "celery",
     "name": "CELERY",
-    "icon": "🥬"
+    "icon": "🥬",
+    "description": "CELERY_DESCRIPTION"
+  },
+  {
+    "id": "sulfites",
+    "name": "SULFITES",
+    "icon": "🍷",
+    "description": "SULFITES_DESCRIPTION"
+  },
+  {
+    "id": "msg",
+    "name": "MSG",
+    "icon": "🥢",
+    "description": "MSG_DESCRIPTION"
+  },
+  {
+    "id": "nightshades",
+    "name": "NIGHTSHADES",
+    "icon": "🍅",
+    "description": "NIGHTSHADES_DESCRIPTION"
+  },
+  {
+    "id": "histamine",
+    "name": "HISTAMINE",
+    "icon": "🧀",
+    "description": "HISTAMINE_DESCRIPTION"
   },
   {
     "id": "vegetarian",
     "name": "VEGETARIAN",
-    "icon": "🌱"
+    "icon": "🌱",
+    "description": "VEGETARIAN_DESCRIPTION"
   },
   {
     "id": "vegan",
     "name": "VEGAN",
-    "icon": "🌿"
+    "icon": "🌿",
+    "description": "VEGAN_DESCRIPTION"
   },
   {
     "id": "keto",
     "name": "KETO",
-    "icon": "🥩"
+    "icon": "🥩",
+    "description": "KETO_DESCRIPTION"
   },
   {
     "id": "low_carb",
     "name": "LOW_CARB",
-    "icon": "🍞"
+    "icon": "🥗",
+    "description": "LOW_CARB_DESCRIPTION"
   },
   {
     "id": "low_sodium",
     "name": "LOW_SODIUM",
-    "icon": "🧂"
+    "icon": "🧂",
+    "description": "LOW_SODIUM_DESCRIPTION"
   },
   {
     "id": "low_sugar",
     "name": "LOW_SUGAR",
-    "icon": "🍯"
+    "icon": "🍬",
+    "description": "LOW_SUGAR_DESCRIPTION"
   },
   {
     "id": "paleo",
     "name": "PALEO",
-    "icon": "🥗"
+    "icon": "🍖",
+    "description": "PALEO_DESCRIPTION"
   },
   {
     "id": "gluten_free",
     "name": "GLUTEN_FREE",
-    "icon": "🚫"
+    "icon": "🚫🌾",
+    "description": "GLUTEN_FREE_DESCRIPTION"
+  },
+  {
+    "id": "sensitive_skin",
+    "name": "SENSITIVE_SKIN",
+    "icon": "😶",
+    "description": "SENSITIVE_SKIN_DESCRIPTION"
+  },
+  {
+    "id": "acne_prone",
+    "name": "ACNE_PRONE",
+    "icon": "😟",
+    "description": "ACNE_PRONE_DESCRIPTION"
+  },
+  {
+    "id": "rosacea",
+    "name": "ROSACEA",
+    "icon": "🌹",
+    "description": "ROSACEA_DESCRIPTION"
+  },
+  {
+    "id": "eczema",
+    "name": "ECZEMA",
+    "icon": "🔴",
+    "description": "ECZEMA_DESCRIPTION"
+  },
+  {
+    "id": "parabens",
+    "name": "PARABENS",
+    "icon": "🧴",
+    "description": "PARABENS_DESCRIPTION"
+  },
+  {
+    "id": "sulfates",
+    "name": "SULFATES",
+    "icon": "🧽",
+    "description": "SULFATES_DESCRIPTION"
+  },
+  {
+    "id": "formaldehyde_releasers",
+    "name": "FORMALDEHYDE_RELEASERS",
+    "icon": "⚠️",
+    "description": "FORMALDEHYDE_RELEASERS_DESCRIPTION"
+  },
+  {
+    "id": "phthalates",
+    "name": "PHTHALATES",
+    "icon": "💄",
+    "description": "PHTHALATES_DESCRIPTION"
+  },
+  {
+    "id": "fragrance_allergens",
+    "name": "FRAGRANCE_ALLERGENS",
+    "icon": "🌸",
+    "description": "FRAGRANCE_ALLERGENS_DESCRIPTION"
+  },
+  {
+    "id": "silicones",
+    "name": "SILICONES",
+    "icon": "✨",
+    "description": "SILICONES_DESCRIPTION"
+  },
+  {
+    "id": "mineral_oil",
+    "name": "MINERAL_OIL",
+    "icon": "🛢️",
+    "description": "MINERAL_OIL_DESCRIPTION"
+  },
+  {
+    "id": "drying_alcohols",
+    "name": "DRYING_ALCOHOLS",
+    "icon": "💧",
+    "description": "DRYING_ALCOHOLS_DESCRIPTION"
+  },
+  {
+    "id": "essential_oils",
+    "name": "ESSENTIAL_OILS",
+    "icon": "🌿",
+    "description": "ESSENTIAL_OILS_DESCRIPTION"
+  },
+  {
+    "id": "retinoids",
+    "name": "RETINOIDS",
+    "icon": "💊",
+    "description": "RETINOIDS_DESCRIPTION"
+  },
+  {
+    "id": "salicylic_acid",
+    "name": "SALICYLIC_ACID",
+    "icon": "🧪",
+    "description": "SALICYLIC_ACID_DESCRIPTION"
+  },
+  {
+    "id": "glycolic_acid",
+    "name": "GLYCOLIC_ACID",
+    "icon": "🍋",
+    "description": "GLYCOLIC_ACID_DESCRIPTION"
+  },
+  {
+    "id": "benzoyl_peroxide",
+    "name": "BENZOYL_PEROXIDE",
+    "icon": "💥",
+    "description": "BENZOYL_PEROXIDE_DESCRIPTION"
+  },
+  {
+    "id": "lanolin",
+    "name": "LANOLIN",
+    "icon": "🐑",
+    "description": "LANOLIN_DESCRIPTION"
+  },
+  {
+    "id": "nickel",
+    "name": "NICKEL",
+    "icon": "💍",
+    "description": "NICKEL_DESCRIPTION"
+  },
+  {
+    "id": "latex",
+    "name": "LATEX",
+    "icon": "🧤",
+    "description": "LATEX_DESCRIPTION"
+  },
+  {
+    "id": "bismuth_oxychloride",
+    "name": "BISMUTH_OXYCHLORIDE",
+    "icon": "💎",
+    "description": "BISMUTH_OXYCHLORIDE_DESCRIPTION"
+  },
+  {
+    "id": "carmine",
+    "name": "CARMINE",
+    "icon": "🐞",
+    "description": "CARMINE_DESCRIPTION"
+  },
+  {
+    "id": "pregnancy_safe_only",
+    "name": "PREGNANCY_SAFE_ONLY",
+    "icon": "🤱",
+    "description": "PREGNANCY_SAFE_ONLY_DESCRIPTION"
+  },
+  {
+    "id": "cruelty_free_only",
+    "name": "CRUELTY_FREE_ONLY",
+    "icon": "🐰",
+    "description": "CRUELTY_FREE_ONLY_DESCRIPTION"
+  },
+  {
+    "id": "natural_only",
+    "name": "NATURAL_ONLY",
+    "icon": "🌱",
+    "description": "NATURAL_ONLY_DESCRIPTION"
+  },
+  {
+    "id": "organic_only",
+    "name": "ORGANIC_ONLY",
+    "icon": "🌿",
+    "description": "ORGANIC_ONLY_DESCRIPTION"
   }
 ]

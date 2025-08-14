@@ -53,12 +53,14 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
   };
 
   const process_color_by_score = (): string => {
+    if (score === 0) return Colors.TRANSPARENT;
     if (score === 50) return Colors.ORANGE;
     if (score > 50) return Colors.LIGHT_GREEN;
     return Colors.RED;
   };
 
   const process_text_by_score = (): string => {
+    if (score === 0) return t(LanguageKey.SCORE_NOT_AVAILABLE);
     if (score < 50) return t(LanguageKey.AVOID_THIS_PRODUCT);
     if (score === 50) return t(LanguageKey.NOT_RECOMMENDED);
     if (score >= 50) return t(LanguageKey.EXCELLENT_CHOICE);
@@ -91,52 +93,56 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
 
   return (
     <View>
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          marginBottom: 12,
-        }}
-      >
+      {score > 0 && (
         <View
           style={{
             display: "flex",
             flexDirection: "row",
+            alignItems: "center",
+            marginBottom: 12,
           }}
         >
-          {[...Array(6)].map((_, index: number) => (
-            <Animated.View
-              key={index}
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            {[...Array(6)].map((_, index: number) => (
+              <Animated.View
+                key={index}
+                style={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: 5,
+                  backgroundColor: get_interpolated_color(colorValues[index]),
+                  borderWidth: 1,
+                  borderColor: Colors.BLACK,
+                  marginRight: index < 5 ? 2 : 0,
+                }}
+              />
+            ))}
+
+            {/* Static black circles */}
+            <Entypo
+              name="circle"
+              size={10}
+              color={Colors.BLACK}
               style={{
+                marginLeft: 2,
                 width: 10,
                 height: 10,
                 borderRadius: 5,
-                backgroundColor: get_interpolated_color(colorValues[index]),
-                borderWidth: 1,
-                borderColor: Colors.BLACK,
-                marginRight: index < 5 ? 2 : 0,
+                marginRight: 2,
               }}
             />
-          ))}
-
-          {/* Static black circles */}
-          <Entypo
-            name="circle"
-            size={10}
-            color={Colors.BLACK}
-            style={{
-              marginLeft: 2,
-              width: 10,
-              height: 10,
-              borderRadius: 5,
-              marginRight: 2,
-            }}
-          />
-          <Entypo name="circle" size={10} color={Colors.BLACK} />
+            <Entypo name="circle" size={10} color={Colors.BLACK} />
+          </View>
+          <Text style={{ marginLeft: 10, ...Typography.h2 }}>
+            {score} / 100
+          </Text>
         </View>
-        <Text style={{ marginLeft: 10, ...Typography.h2 }}>{score}/100</Text>
-      </View>
+      )}
 
       <View
         style={{ display: "flex", flexDirection: "row", alignItems: "center" }}

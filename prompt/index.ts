@@ -1,7 +1,6 @@
-import { OpenFoodData, OpenFoodResponseAPI } from "@/constants/responses";
+import { OpenFoodResponseAPI } from "@/constants/responses";
 import { Language } from "@/enums/language";
 import { UserSchema } from "@/types/auth";
-import { UserHealthSetupProfile } from "@/types/health-setup";
 
 // Language-specific instructions
 const languageInstructions = {

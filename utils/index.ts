@@ -103,6 +103,20 @@ export const get_product_by_bar_code = async (
   }
 };
 
+export const remove_product_from_cache = async (
+  bar_code: string
+): Promise<boolean> => {
+  try {
+    await AsyncStorage.removeItem(`${PRODUCT_PREFIX}${bar_code}`);
+    return true;
+  } catch (error) {
+    console.error(
+      `remove product from cache: ${bar_code} got an error: ${error}`
+    );
+    return false;
+  }
+};
+
 export const format_date_to_timestamp = (): number => {
   const current_date = Date.now();
   return current_date;
@@ -313,7 +327,7 @@ export const calculate_enhanced_health_score = (
   );
 
   // 3. CALCULATE CONFIDENCE BASED ON DATA AVAILABILITY
-  confidence *= calculateDataConfidence(nutrients, extractedNutrients);
+  confidence *= calculateDataConfidence(nutrients);
 
   // 4. APPLY ENHANCED SCORING LOGIC
 
@@ -557,10 +571,7 @@ function extractNutrients(
   };
 }
 
-function calculateDataConfidence(
-  nutrients: any,
-  extracted: NutrientProfile
-): number {
+function calculateDataConfidence(nutrients: any): number {
   const criticalNutrients = [
     "sugars",
     "saturated_fat",
@@ -579,3 +590,41 @@ function calculateDataConfidence(
 
   return Math.max(0.2, availableCount / criticalNutrients.length);
 }
+
+export const get_score = (
+  ecoscore_score?: string | number,
+  nutriscore_score?: number,
+  nutriscore_grade?: string,
+  grade?: string
+): number => {
+  if (
+    grade ||
+    nutriscore_grade ||
+    (nutriscore_grade && ecoscore_score && isNaN(+ecoscore_score))
+  ) {
+    if (grade === "a" || nutriscore_grade === "a") {
+      return 100;
+    }
+
+    if (grade === "b" || nutriscore_grade === "b") {
+      return 70;
+    }
+
+    if (grade === "c" || nutriscore_grade === "c") {
+      return 50;
+    }
+
+    if (grade === "d" || nutriscore_grade === "d") {
+      return 30;
+    }
+
+    if (grade === "e" || nutriscore_grade === "e") {
+      return 20;
+    }
+  }
+
+  if (ecoscore_score && !isNaN(+ecoscore_score)) return +ecoscore_score;
+  if (nutriscore_score && !isNaN(+nutriscore_score)) return +nutriscore_score;
+
+  return 0;
+};

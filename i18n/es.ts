@@ -1,4 +1,126 @@
 export const es = {
+  PRODUC_NAME_NOT_FOUND: "Nombre del producto no encontrado",
+  SCORE_NOT_AVAILABLE: "Puntuación no disponible para este producto",
+  ORGANIC_ONLY: "Solo orgánico",
+  NATURAL_ONLY: "Solo natural",
+  CRUELTY_FREE_ONLY: "Solo libre de crueldad",
+  PREGNANCY_SAFE_ONLY: "Solo seguro para embarazo",
+  CARMINE: "Carmín",
+  BISMUTH_OXYCHLORIDE: "Oxicloruro de bismuto",
+  LATEX: "Látex",
+  NICKEL: "Níquel",
+  LANOLIN: "Lanolina",
+  BENZOYL_PEROXIDE: "Peróxido de benzoilo",
+  GLYCOLIC_ACID: "Ácido glicólico",
+  SALICYLIC_ACID: "Ácido salicílico",
+  RETINOIDS: "Retinoides",
+  ESSENTIAL_OILS: "Aceites esenciales",
+  DRYING_ALCOHOLS: "Alcoholes secantes",
+  MINERAL_OIL: "Aceite mineral",
+  SILICONES: "Siliconas",
+  FRAGRANCE_ALLERGENS: "Alérgenos de fragancia",
+  PHTHALATES: "Ftalatos",
+  FORMALDEHYDE_RELEASERS: "Liberadores de formaldehído",
+  SULFATES: "Sulfatos",
+  ECZEMA: "Eczema",
+  PARABENS: "Parabenos",
+  CHEMOTHERAPY_TREATMENT: "Tratamiento de quimioterapia",
+  AUTOIMMUNE_CONDITIONS: "Condiciones autoinmunes",
+  HORMONE_SENSITIVE: "Sensible a hormonas",
+  MELASMA: "Melasma",
+  CONTACT_DERMATITIS: "Dermatitis de contacto",
+  TEEN_PUBERTY: "Adolescencia y pubertad",
+  ELDERLY_AGING_SKIN: "Piel envejecida",
+  ACNE_PRONE: "Propenso al acné",
+  ROSACEA: "Rosácea",
+  PSORIASIS: "Psoriasis",
+  ECZEMA_DERMATITIS: "Eczema dermatitis",
+  SENSITIVE_SKIN: "Piel sensible",
+  ORGANIC_ONLY_DESCRIPTION:
+    "Preferencia por ingredientes orgánicos certificados cultivados sin pesticidas sintéticos o fertilizantes",
+  NATURAL_ONLY_DESCRIPTION:
+    "Preferencia por ingredientes derivados de fuentes naturales vegetales, minerales o biológicas",
+  CRUELTY_FREE_ONLY_DESCRIPTION:
+    "Preferencia ética por productos no probados en animales durante el desarrollo o producción",
+  PREGNANCY_SAFE_ONLY_DESCRIPTION:
+    "Requisitos especiales de seguridad durante el embarazo para evitar ingredientes dañinos para el bebé en desarrollo",
+  CARMINE_DESCRIPTION:
+    "Reacción alérgica al pigmento rojo derivado de insectos triturados, no apto para veganos",
+  BISMUTH_OXYCHLORIDE_DESCRIPTION:
+    "Sensibilidad al ingrediente de maquillaje mineral que puede causar picazón y acné quístico",
+  LATEX_DESCRIPTION:
+    "Reacción alérgica al látex de caucho natural encontrado en algunas herramientas de belleza y productos",
+  NICKEL_DESCRIPTION:
+    "Reacción alérgica al metal níquel encontrado en joyas, herramientas de maquillaje y algunos productos cosméticos",
+  LANOLIN_DESCRIPTION:
+    "Reacción alérgica al ingrediente hidratante derivado de lana encontrado en muchos productos para el cuidado de la piel",
+  BENZOYL_PEROXIDE_DESCRIPTION: "Sensibilidad al tratamiento del acné",
+  GLYCOLIC_ACID_DESCRIPTION:
+    "Sensibilidad al ácido alfa hidroxi que puede aumentar la sensibilidad al sol y causar irritación",
+  SALICYLIC_ACID_DESCRIPTION:
+    "Sensibilidad al ácido beta hidroxi que puede causar irritación o reacciones alérgicas similares a la aspirina",
+  RETINOIDS_DESCRIPTION:
+    "Evitar derivados de vitamina A debido al embarazo, sensibilidad o interacciones medicamentosas",
+  ESSENTIAL_OILS_DESCRIPTION:
+    "Sensibilidad a aceites vegetales concentrados que pueden causar reacciones alérgicas o irritación",
+  DRYING_ALCOHOLS_DESCRIPTION:
+    "Sensibilidad a alcoholes desnaturalizados que pueden secar e irritar la piel sensible",
+  MINERAL_OIL_DESCRIPTION:
+    "Sensibilidad a ingredientes derivados del petróleo que pueden obstruir los poros",
+  SILICONES_DESCRIPTION:
+    "Preferencia por evitar polímeros sintéticos que pueden acumularse en el cabello y la piel con el tiempo",
+  FRAGRANCE_ALLERGENS_DESCRIPTION:
+    "Reacción alérgica a moléculas específicas de fragancia comúnmente encontradas en perfumes y cosméticos",
+  PHTHALATES_DESCRIPTION:
+    "Sensibilidad a plastificantes que pueden alterar las hormonas",
+  FORMALDEHYDE_RELEASERS_DESCRIPTION:
+    "Sensibilidad a conservantes que liberan lentamente formaldehído, un carcinógeno conocido",
+  SULFATES_DESCRIPTION:
+    "Sensibilidad a agentes de limpieza que pueden irritar la piel",
+  ECZEMA_DESCRIPTION:
+    "Condición crónica de la piel que causa parches secos, con picazón e inflamados",
+  PARABENS_DESCRIPTION:
+    "Sensibilidad a conservantes que pueden alterar las hormonas",
+  DIABETES_DESCRIPTION:
+    "Una condición crónica donde los niveles de azúcar en sangre son demasiado altos debido a la incapacidad del cuerpo para producir o usar adecuadamente la insulina",
+  PREGNANT_NURSING_DESCRIPTION:
+    "El período cuando una mujer está llevando un bebé en desarrollo o amamantando, requiriendo consideraciones nutricionales y de seguridad especiales",
+  HEART_DISEASE_DESCRIPTION:
+    "Un grupo de condiciones que afectan el corazón y los vasos sanguíneos, incluyendo enfermedad de las arterias coronarias, insuficiencia cardíaca y arritmias",
+  ARTHRITIS_DESCRIPTION:
+    "Inflamación de una o más articulaciones que causa dolor, rigidez, hinchazón y reducción del rango de movimiento",
+  KIDNEY_DISEASE_DESCRIPTION:
+    "Una condición donde los riñones pierden gradualmente su capacidad de filtrar desechos y exceso de líquido de la sangre",
+  LIVER_DISEASE_DESCRIPTION:
+    "Cualquier condición que daña el hígado y afecta su capacidad de funcionar adecuadamente, incluyendo el procesamiento de toxinas y nutrientes",
+  OSTEOPOROSIS_DESCRIPTION:
+    "Una enfermedad ósea donde la densidad ósea disminuye, haciendo que los huesos sean débiles y más propensos a fracturas",
+  ANEMIA_DESCRIPTION:
+    "Una condición donde no tienes suficientes glóbulos rojos saludables para llevar oxígeno adecuado a los tejidos de tu cuerpo",
+  SENSITIVE_SKIN_DESCRIPTION:
+    "Una condición de la piel donde la piel reacciona fácilmente a productos o factores ambientales, causando enrojecimiento, ardor, picazón o irritación",
+  ECZEMA_DERMATITIS_DESCRIPTION:
+    "Una condición inflamatoria crónica de la piel que causa parches secos, con picazón e inflamados que pueden agrietarse, sangrar e infectarse",
+  PSORIASIS_DESCRIPTION:
+    "Una condición autoinmune de la piel que causa acumulación rápida de células cutáneas, resultando en parches gruesos, escamosos y plateados en la piel",
+  ROSACEA_DESCRIPTION:
+    "Una condición inflamatoria crónica de la piel que causa enrojecimiento facial persistente, vasos sanguíneos visibles y a veces protuberancias o pústulas",
+  ACNE_PRONE_DESCRIPTION:
+    "Piel que frecuentemente desarrolla puntos negros, puntos blancos o granos inflamados debido a poros obstruidos y exceso de producción de grasa",
+  CONTACT_DERMATITIS_DESCRIPTION:
+    "Una reacción alérgica o irritante que ocurre cuando la piel entra en contacto directo con ciertas sustancias, causando inflamación",
+  MELASMA_DESCRIPTION:
+    "Una condición de la piel que causa parches marrones o grises en la cara, a menudo desencadenado por cambios hormonales o exposición al sol",
+  HORMONE_SENSITIVE_DESCRIPTION:
+    "Una condición donde el cuerpo reacciona adversamente a químicos disruptores hormonales, a menudo afectando la salud reproductiva o endocrina",
+  AUTOIMMUNE_CONDITIONS_DESCRIPTION:
+    "Enfermedades donde el sistema inmunológico ataca erróneamente tejidos corporales saludables, como lupus, artritis reumatoide o esclerosis múltiple",
+  CHEMOTHERAPY_TREATMENT_DESCRIPTION:
+    "Tratamiento del cáncer usando medicamentos potentes que pueden hacer la piel extremadamente sensible y requerir productos suaves con ingredientes mínimos",
+  ELDERLY_AGING_SKIN_DESCRIPTION:
+    "Cambios naturales de la piel que ocurren con la edad, incluyendo adelgazamiento, sequedad, elasticidad reducida y mayor sensibilidad",
+  TEEN_PUBERTY_DESCRIPTION:
+    "El período de desarrollo cuando los cambios hormonales causan aumento en la producción de grasa, a menudo llevando a acné y sensibilidad de la piel",
   HALAL_CHECK_ONLY_MESSAGE: "Este escaneo es solo para verificación Halal",
   SELECT_LANGUAGE: "Seleccionar idioma",
   DONT_HAVE_SCANNED_PRODUCT: "Ningún producto escaneado",
