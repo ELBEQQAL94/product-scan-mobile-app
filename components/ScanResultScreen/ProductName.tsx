@@ -15,7 +15,9 @@ const ProductName: FC<ProductNameProps> = ({ name }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
-        {name !== "Chargement…" ? name : t(LanguageKey.PRODUC_NAME_NOT_FOUND)}
+        {name !== "Chargement…" && name !== ""
+          ? name
+          : t(LanguageKey.PRODUC_NAME_NOT_FOUND)}
       </Text>
     </View>
   );

@@ -77,7 +77,6 @@ export const auth_with_google = async () => {
     const is_user_exists = await check_user_exists(user.uid);
 
     if (!is_user_exists) {
-      console.log("user not exists");
       if (user.email) {
         const userData: UserSchema = {
           uid: user.uid,
@@ -263,8 +262,6 @@ export const logout = async () => {
 export const get_products = async (
   user_id: string
 ): Promise<ProductTypeFromDB[]> => {
-  console.log(`🔍 Searching for products with user_id: ${user_id}`);
-
   const user_action: UserAction = {
     action_type: ActionTypeEnum.GET_PRODUCTS,
     action_description: `User with id: ${user_id} try to get all scanned products.`,
@@ -346,7 +343,6 @@ export const save_product_in_db = async (
     // Create the product if it doesn't exist
     user_action.action_data = JSON.stringify(product_from_db);
     await firestore().collection("products").add(product_from_db);
-    console.log("Product created successfully");
     await create_log(user_action);
   } catch (error: any) {
     user_action.action_description = "Error when create new product";
@@ -400,7 +396,6 @@ export const remove_product_from_db = async (
       document_id: productDoc.id,
     });
 
-    console.log("Product removed successfully");
     await create_log(user_action);
     return true;
   } catch (error: any) {
@@ -412,7 +407,6 @@ export const remove_product_from_db = async (
       error_message: error.message,
     });
     await create_log(user_action);
-    console.log("product remove error: ", error);
     return false;
   }
 };
@@ -475,8 +469,6 @@ export const update_user_health_data = async (
 
     user_action.action_description = "User health data updated successfully";
     await create_log(user_action);
-
-    console.log(`✅ Health data updated for user: ${userId}`);
   } catch (error: any) {
     user_action.action_description = "Error updating user health data";
     user_action.action_data = JSON.stringify({

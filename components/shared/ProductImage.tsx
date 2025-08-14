@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Image, View, StyleSheet } from "react-native";
 
 interface ProductImageProps {
-  imageUri: string;
+  imageUri: string | null;
 }
 
 const ProductImage: FC<ProductImageProps> = ({ imageUri }) => {
@@ -10,7 +10,7 @@ const ProductImage: FC<ProductImageProps> = ({ imageUri }) => {
     <View style={styles.container}>
       <Image
         source={{
-          uri: imageUri,
+          uri: imageUri || "",
         }}
         resizeMode="contain"
         width={150}

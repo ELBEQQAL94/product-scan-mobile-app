@@ -43,10 +43,8 @@ const ProductList: FC = () => {
   };
 
   const removeProduct = async (code_bar: string) => {
-    console.log("codeBar: ", code_bar);
     try {
       if (user?.uid) {
-        console.log("userId: ", user?.uid);
         await remove_product_from_db(code_bar, user?.uid);
         await fetch_all_products();
       }

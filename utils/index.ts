@@ -53,7 +53,6 @@ export const save_product_by_bar_code = async (
   product: ProductScanResult
 ) => {
   try {
-    console.log(`saved product ${PRODUCT_PREFIX}${bar_code}`);
     await AsyncStorage.setItem(
       `${PRODUCT_PREFIX}${bar_code}`,
       JSON.stringify(product)

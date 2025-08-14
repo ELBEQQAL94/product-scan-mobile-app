@@ -665,7 +665,7 @@ export interface OpenStreetMapResponse {
 export interface ProductScanResult {
   status: number;
   score: number;
-  image_url: string;
+  image_url: string | null;
   recommendations: Recommendations[];
   product_name: string;
 }

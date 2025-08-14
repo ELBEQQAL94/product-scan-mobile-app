@@ -49,14 +49,9 @@ const HealthSetup: FC = () => {
 
       const healthProfile = await get_health_profile(user.uid);
 
-      console.log("healthProfile: ", healthProfile);
-
       if (healthProfile) {
         setSelectedDiseases(new Set(healthProfile.diseases || []));
         setSelectedAllergies(new Set(healthProfile.allergies || []));
-
-        console.log("selectedAllergies: ", selectedAllergies);
-        console.log("selectedDiseases: ", selectedDiseases);
       }
     } catch (error) {
       console.error("Error fetching health profile:", error);
