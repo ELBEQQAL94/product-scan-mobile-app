@@ -139,7 +139,7 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
             <Entypo name="circle" size={10} color={Colors.BLACK} />
           </View>
           <Text style={{ marginLeft: 10, ...Typography.h2 }}>
-            {score / 100}
+            {score} / 100
           </Text>
         </View>
       )}

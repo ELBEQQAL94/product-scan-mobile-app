@@ -12,6 +12,7 @@ import {
 import {
   format_date_to_custom_string,
   format_date_to_timestamp,
+  remove_product_from_cache,
 } from "@/utils";
 import { ActionTypeEnum, UserAction } from "@/enums/logs";
 import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
@@ -354,6 +355,65 @@ export const save_product_in_db = async (
       error_message: error.message,
     });
     await create_log(user_action);
+  }
+};
+
+export const remove_product_from_db = async (
+  bar_code: string,
+  user_id: string
+): Promise<boolean> => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.REMOVE_PRODUCT_FROM_DB,
+    action_description: "remove product from db",
+    action_data: null,
+    date_format: format_date_to_custom_string(),
+  };
+
+  try {
+    // Find the product by bar_code and user_id
+    const querySnapshot = await firestore()
+      .collection("products")
+      .where("bar_code", "==", bar_code)
+      .where("user_id", "==", user_id)
+      .limit(1)
+      .get();
+
+    if (querySnapshot.empty) {
+      user_action.action_description = "Product not found, nothing to remove";
+      user_action.action_data = JSON.stringify({
+        user_id,
+        bar_code,
+      });
+      await create_log(user_action);
+      return false;
+    }
+
+    // Remove the product
+    const productDoc = querySnapshot.docs[0];
+    await productDoc.ref.delete();
+    await remove_product_from_cache(bar_code);
+
+    user_action.action_description = "Product removed successfully";
+    user_action.action_data = JSON.stringify({
+      user_id,
+      bar_code,
+      document_id: productDoc.id,
+    });
+
+    console.log("Product removed successfully");
+    await create_log(user_action);
+    return true;
+  } catch (error: any) {
+    user_action.action_description = "Error when removing product";
+    user_action.action_data = JSON.stringify({
+      user_id,
+      bar_code,
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+    console.log("product remove error: ", error);
+    return false;
   }
 };
 

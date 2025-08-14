@@ -103,6 +103,20 @@ export const get_product_by_bar_code = async (
   }
 };
 
+export const remove_product_from_cache = async (
+  bar_code: string
+): Promise<boolean> => {
+  try {
+    await AsyncStorage.removeItem(`${PRODUCT_PREFIX}${bar_code}`);
+    return true;
+  } catch (error) {
+    console.error(
+      `remove product from cache: ${bar_code} got an error: ${error}`
+    );
+    return false;
+  }
+};
+
 export const format_date_to_timestamp = (): number => {
   const current_date = Date.now();
   return current_date;
@@ -583,10 +597,11 @@ export const get_score = (
   nutriscore_grade?: string,
   grade?: string
 ): number => {
-  console.log("ecoscore_score: ", ecoscore_score);
-  console.log("nutriscore_score: ", nutriscore_score);
-  console.log("grade: ", grade);
-  if (grade || nutriscore_grade) {
+  if (
+    grade ||
+    nutriscore_grade ||
+    (nutriscore_grade && ecoscore_score && isNaN(+ecoscore_score))
+  ) {
     if (grade === "a" || nutriscore_grade === "a") {
       return 100;
     }
@@ -604,7 +619,7 @@ export const get_score = (
     }
 
     if (grade === "e" || nutriscore_grade === "e") {
-      return 0;
+      return 20;
     }
   }
 

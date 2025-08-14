@@ -8,16 +8,20 @@ import { ProductTypeFromDB } from "@/types/products";
 import { useRouter } from "expo-router";
 import { FC } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 interface ProductProps {
   product: ProductTypeFromDB;
+  onProductRemoved: (codeBar: string) => void; // Callback to notify parent component
 }
 
-const Product: FC<ProductProps> = ({ product }) => {
+const Product: FC<ProductProps> = ({ product, onProductRemoved }) => {
   // Hooks
   const router = useRouter();
   const { user } = useAuth();
   const { t } = useTranslation();
+
+  // State
 
   const get_score_color = (score: number) => {
     if (score === 0) return Colors.WHITE;
@@ -25,13 +29,18 @@ const Product: FC<ProductProps> = ({ product }) => {
     else if (score === 50) return Colors.YELLOW;
     else return Colors.LIGHT_GREEN;
   };
+
   const redirect_to_scan_result = () =>
     router.push(
       `${Screens.SCAN_RESULT_SCREEN}?bar_code=${product.bar_code}&user_id=${user?.uid}`
     );
+
   return (
-    <TouchableOpacity onPress={redirect_to_scan_result}>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <TouchableOpacity
+        onPress={redirect_to_scan_result}
+        style={styles.product_content}
+      >
         <Image
           src={product.product_scan_result.image_url}
           style={styles.image}
@@ -40,13 +49,7 @@ const Product: FC<ProductProps> = ({ product }) => {
           <Text style={styles.product_name}>
             {product.product_scan_result.product_name}
           </Text>
-          <View
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
+          <View style={styles.score_container}>
             <Text
               style={[
                 styles.score,
@@ -62,8 +65,15 @@ const Product: FC<ProductProps> = ({ product }) => {
             </Text>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => onProductRemoved(product.bar_code)}
+        style={styles.remove_button}
+      >
+        <Ionicons name={"trash-outline"} size={24} color={Colors.RED} />
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -76,6 +86,12 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     borderBottomWidth: 2,
     borderBottomColor: Colors.LIGHT_GRAY,
+  },
+  product_content: {
+    flexDirection: "row",
+    flex: 1,
+    height: "100%",
+    alignItems: "center",
   },
   image: {
     width: "30%",
@@ -92,11 +108,26 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     ...Typography.bodyLarge,
   },
+  score_container: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
   score: {
     color: Colors.DARK_GRAY,
     fontWeight: "bold",
     marginRight: 5,
     ...Typography.bodyLarge,
+  },
+  remove_button: {
+    padding: 10,
+    borderRadius: 25,
+    backgroundColor: Colors.LIGHT_GRAY,
+    marginLeft: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    width: 44,
+    height: 44,
   },
 });
 

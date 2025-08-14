@@ -2,7 +2,10 @@ import Products from "@/components/ProductListScreen/Products";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import { LanguageKey } from "@/constants/keys";
-import { get_products } from "@/external-services/firebase-config";
+import {
+  get_products,
+  remove_product_from_db,
+} from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Typography } from "@/themes/typography";
@@ -38,6 +41,19 @@ const ProductList: FC = () => {
     }
   };
 
+  const removeProduct = async (code_bar: string) => {
+    console.log("codeBar: ", code_bar);
+    try {
+      if (user?.uid) {
+        console.log("userId: ", user?.uid);
+        await remove_product_from_db(code_bar, user?.uid);
+        await fetch_all_products();
+      }
+    } catch (error) {
+      console.log("remove product get an error: ", error);
+    }
+  };
+
   useEffect(() => {
     fetch_all_products();
   }, [user]);
@@ -62,7 +78,7 @@ const ProductList: FC = () => {
         ) : (
           <>
             <ScreenTitle title={t(LanguageKey.SCANNED_PRODUCTS)} />
-            <Products products={products} />
+            <Products products={products} removeProduct={removeProduct} />
           </>
         )}
       </View>

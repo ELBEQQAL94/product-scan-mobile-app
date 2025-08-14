@@ -86,17 +86,7 @@ const ScanResultScreen: FC = () => {
             nutriscore_grade,
             grade
           );
-          // const score =
-          //   response.product.ecoscore_score ||
-          //   response.product.ecoscore_grade ||
-          //   response.product.nutriscore_score ||
-          //   (response.product.grade === "a" && 100) ||
-          //   (response.product.grade === "b" && 70) ||
-          //   (response.product.grade === "c" && 50) ||
-          //   (response.product.grade === "d" && 30) ||
-          //   (response.product.grade === "e" && 0);
-          console.log(`code bar: ${bar_code}`);
-          console.log(`score: ${score}`);
+
           if (!userLoading) {
             const content = ai_product_scan_prompt(response, user, language);
             const ai_scan_result = (await ai_scan(
