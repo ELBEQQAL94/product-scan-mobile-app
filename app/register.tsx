@@ -115,7 +115,8 @@ const RegisterScreen: FC = () => {
     }
   };
 
-  const redirect_to_login = () => redirect_to(Screens.HOME_SCREEN);
+  const redirect_to_health_setup_profile = () =>
+    redirect_to(Screens.HEALTH_SETUP_SCREEN);
 
   const canProceed =
     step === AuthSteps.EMAIL
@@ -287,7 +288,7 @@ const RegisterScreen: FC = () => {
           <AuthFooter
             label={t(LanguageKey.ALREADY_HAVE_AN_ACCOUNT)}
             link={t(LanguageKey.LOG_IN)}
-            redirectTo={redirect_to_login}
+            redirectTo={redirect_to_health_setup_profile}
             isArabic={is_arabic}
           />
         </View>
