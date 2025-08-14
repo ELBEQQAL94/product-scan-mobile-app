@@ -28,7 +28,9 @@ const ProfileItem: FC<ProfileItemProps> = ({
 
   const displayValue =
     Array.isArray(value) && value.length > 0
-      ? value.join(", ")
+      ? value
+          .map((word: string) => t(LanguageKey[word.toUpperCase()]))
+          .join(", ")
       : t(LanguageKey.NOT_SET);
 
   return (

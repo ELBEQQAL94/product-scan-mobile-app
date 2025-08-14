@@ -12,11 +12,8 @@ import { Screens } from "@/constants/screens";
 import { LanguageProvider } from "@/context/LanguageProvider";
 import { LanguageKey } from "@/constants/keys";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
-import { useCustomRouter } from "@/hooks/useCustomRouter";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -24,7 +21,6 @@ SplashScreen.preventAutoHideAsync();
 export default function Layout() {
   // Hooks
   const colorScheme = useColorScheme();
-  const router = useRouter();
   const { t } = useTranslation();
 
   // Add this useEffect to hide splash screen
