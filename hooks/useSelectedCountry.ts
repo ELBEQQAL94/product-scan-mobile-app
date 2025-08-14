@@ -14,7 +14,6 @@ export const useSelectedCountry = () => {
     const last_update = await AsyncStorage.getItem(
       AsyncStorageKey.LOCATION_TIMESTAMP
     );
-    console.log("last_update", last_update);
     const REFRESH_TIME_INTERVAL =
       process.env.EXPO_PUBLIC_REFRESH_USER_LOCATION_INTERVALS;
     const now = Date.now();
@@ -28,15 +27,11 @@ export const useSelectedCountry = () => {
   const refresh_location = async (location: Location.LocationObject) => {
     try {
       const lat = location?.coords.latitude;
-      console.log("lat: ", lat);
       const long = location?.coords.longitude;
-      console.log("long: ", long);
       const now = Date.now();
       if (lat && long) {
         const response = await get_country(lat, long);
-        console.log("response: ", response);
         const country_code = response?.address.country_code;
-        console.log("country: ", country_code);
         if (country_code) {
           await AsyncStorage.setItem(
             AsyncStorageKey.LOCATION_TIMESTAMP,
@@ -56,7 +51,6 @@ export const useSelectedCountry = () => {
 
   const getCurrentLocation = async () => {
     const is_refresh = await should_refresh_location();
-    console.log("is_refresh: ", is_refresh);
 
     if (!is_refresh) return;
 
@@ -70,7 +64,6 @@ export const useSelectedCountry = () => {
     const location = await Location.getCurrentPositionAsync({
       accuracy: Location.Accuracy.Low, // Faster, less battery
     });
-    console.log("location: ", location);
     await refresh_location(location);
   };
 

@@ -42,12 +42,13 @@ const Product: FC<ProductProps> = ({ product, onProductRemoved }) => {
         style={styles.product_content}
       >
         <Image
-          src={product.product_scan_result.image_url}
+          src={product.product_scan_result.image_url || ""}
           style={styles.image}
         />
         <View style={styles.text_container}>
           <Text style={styles.product_name}>
-            {product.product_scan_result.product_name !== "Chargement…"
+            {product.product_scan_result.product_name !== "Chargement…" &&
+            product.product_scan_result.product_name !== ""
               ? product.product_scan_result.product_name
               : t(LanguageKey.PRODUC_NAME_NOT_FOUND)}
           </Text>

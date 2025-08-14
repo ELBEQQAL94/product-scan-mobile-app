@@ -25,6 +25,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { UserSchema } from "@/types/auth";
 import { useLanguage } from "@/context/LanguageProvider";
 import { ScanResultResponse } from "@/types/scan-result";
+import { LanguageKey } from "@/constants/keys";
 
 const ScanResultScreen: FC = () => {
   // Hooks
@@ -98,14 +99,16 @@ const ScanResultScreen: FC = () => {
               console.log(`ai_scan_result: ${ai_scan_result}`);
               product = {
                 status: response.status,
-                image_url: response.product.image_url,
+                image_url: response.product.image_url || null,
                 recommendations: ai_scan_result.recommendations,
                 product_name:
                   response.product.product_name ||
-                  response.product.product_name_en,
+                  response.product.product_name_en ||
+                  "",
                 score,
               };
               const product_db = map_to_product_db(user_id, bar_code, product);
+              console.log("product_db: ", JSON.stringify(product_db));
               await save_product_in_db(product_db);
               await save_product_by_bar_code(bar_code, product);
             }
