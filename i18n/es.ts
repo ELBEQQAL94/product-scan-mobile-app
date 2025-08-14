@@ -1,4 +1,5 @@
 export const es = {
+  PRODUC_NAME_NOT_FOUND: "Nombre del producto no encontrado",
   SCORE_NOT_AVAILABLE: "Puntuación no disponible para este producto",
   ORGANIC_ONLY: "Solo orgánico",
   NATURAL_ONLY: "Solo natural",

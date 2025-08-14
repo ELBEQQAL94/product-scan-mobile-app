@@ -61,7 +61,7 @@ const ProductList: FC = () => {
   if (loading) {
     return (
       <View style={styles.loading_container}>
-        <Text>{t(LanguageKey.LOADING)}</Text>
+        <Text style={styles.loading_text}>{t(LanguageKey.LOADING)}</Text>
       </View>
     );
   }
@@ -96,12 +96,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  loading_text: {
+    fontWeight: "bold",
+    ...Typography.bodyMedium,
+  },
   no_product_found_container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  no_product_found_container_text: { ...Typography.h1 },
+  no_product_found_container_text: {
+    fontWeight: "bold",
+    ...Typography.h3,
+  },
 });
 
 export default ProductList;

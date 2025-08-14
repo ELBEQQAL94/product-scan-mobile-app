@@ -1,4 +1,5 @@
 export const fr = {
+  PRODUC_NAME_NOT_FOUND: "Nom du produit introuvable",
   SCORE_NOT_AVAILABLE: "Score non disponible pour ce produit",
   ORGANIC_ONLY: "Bio seulement",
   NATURAL_ONLY: "Naturel seulement",

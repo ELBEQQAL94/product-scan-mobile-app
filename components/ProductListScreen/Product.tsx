@@ -47,7 +47,9 @@ const Product: FC<ProductProps> = ({ product, onProductRemoved }) => {
         />
         <View style={styles.text_container}>
           <Text style={styles.product_name}>
-            {product.product_scan_result.product_name}
+            {product.product_scan_result.product_name !== "Chargement…"
+              ? product.product_scan_result.product_name
+              : t(LanguageKey.PRODUC_NAME_NOT_FOUND)}
           </Text>
           <View style={styles.score_container}>
             <Text

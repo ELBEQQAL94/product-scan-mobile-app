@@ -1,4 +1,5 @@
 export const de = {
+  PRODUC_NAME_NOT_FOUND: "Produktname nicht gefunden",
   SCORE_NOT_AVAILABLE: "Bewertung für dieses Produkt nicht verfügbar",
   ORGANIC_ONLY: "Nur bio",
   NATURAL_ONLY: "Nur natürlich",

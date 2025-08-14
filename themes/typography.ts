@@ -33,19 +33,16 @@ export const Typography = {
     fontFamily: FontFamily.bold,
     fontSize: 28,
     lineHeight: 34,
-    letterSpacing: -0.5,
   },
   h2: {
     fontFamily: FontFamily.bold,
     fontSize: 24,
     lineHeight: 30,
-    letterSpacing: -0.3,
   },
   h3: {
     fontFamily: FontFamily.semiBold,
     fontSize: 20,
     lineHeight: 26,
-    letterSpacing: -0.2,
   },
 
   // Body text
@@ -53,19 +50,16 @@ export const Typography = {
     fontFamily: FontFamily.regular,
     fontSize: 16,
     lineHeight: 24,
-    letterSpacing: 0,
   },
   bodyMedium: {
     fontFamily: FontFamily.regular,
     fontSize: 14,
     lineHeight: 20,
-    letterSpacing: 0.1,
   },
   bodySmall: {
     fontFamily: FontFamily.regular,
     fontSize: 12,
     lineHeight: 16,
-    letterSpacing: 0.2,
   },
 
   // UI Elements
@@ -73,19 +67,16 @@ export const Typography = {
     fontFamily: FontFamily.semiBold,
     fontSize: 16,
     lineHeight: 20,
-    letterSpacing: 0.1,
   },
   caption: {
     fontFamily: FontFamily.medium,
     fontSize: 12,
     lineHeight: 16,
-    letterSpacing: 0.3,
   },
   label: {
     fontFamily: FontFamily.medium,
     fontSize: 14,
     lineHeight: 18,
-    letterSpacing: 0.1,
   },
 
   // Cards
@@ -93,12 +84,10 @@ export const Typography = {
     fontFamily: FontFamily.semiBold,
     fontSize: 14,
     lineHeight: 18,
-    letterSpacing: 0.1,
   },
   cardSubtitle: {
     fontFamily: FontFamily.regular,
     fontSize: 12,
     lineHeight: 16,
-    letterSpacing: 0.2,
   },
 };

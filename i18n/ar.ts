@@ -1,4 +1,5 @@
 export const ar = {
+  PRODUC_NAME_NOT_FOUND: "اسم المنتج غير موجود",
   SCORE_NOT_AVAILABLE: "النتيجة غير متوفرة لهذا المنتج",
   ORGANIC_ONLY: "عضوي فقط",
   NATURAL_ONLY: "طبيعي فقط",
