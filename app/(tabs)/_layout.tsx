@@ -124,28 +124,6 @@ export default function TabLayout() {
           },
         }}
       />
-      <Tabs.Screen
-        name={Screens.HEALTH_SETUP_SCREEN}
-        options={{
-          href: null, // Hide from tab bar
-          title: t(LanguageKey.HEALTH_PROFILE_SETUP),
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => router.back()}
-              style={{ marginLeft: 10, padding: 8 }}
-            >
-              <Ionicons name="chevron-back" size={24} color={Colors.WHITE} />
-            </TouchableOpacity>
-          ),
-          headerStyle: {
-            backgroundColor: Colors.GLOVO_GREEN,
-            ...Typography.h1,
-          },
-          headerTitleStyle: {
-            color: Colors.WHITE,
-          },
-        }}
-      />
     </Tabs>
   );
 }
