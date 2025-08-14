@@ -1,4 +1,6 @@
 export const fr = {
+  SELECT_ALLERGIES: "Sélectionnez vos allergies",
+  SELECT_DESEASES: "Sélectionnez les conditions de santé",
   PRODUC_NAME_NOT_FOUND: "Nom du produit introuvable",
   SCORE_NOT_AVAILABLE: "Score non disponible pour ce produit",
   ORGANIC_ONLY: "Bio seulement",

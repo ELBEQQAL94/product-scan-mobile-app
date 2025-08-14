@@ -13,12 +13,16 @@ import { update_user_health_data } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useLanguage } from "@/context/LanguageProvider";
+import ScreenTitle from "@/components/shared/ScreenTitle";
+import { useTranslation } from "@/hooks/useTranslation";
+import { Colors } from "@/themes/colors";
 
 const HealthSetup: FC = () => {
   // Hooks
   const router = useRouter();
   const { user } = useAuth();
   const { is_arabic } = useLanguage();
+  const { t } = useTranslation();
 
   // States
   const [currentStep, setCurrentStep] = useState<Step>(Step.DISEASES);
@@ -94,12 +98,19 @@ const HealthSetup: FC = () => {
   return (
     <ProtectedRoute>
       <View style={styles.container}>
+        <ScreenTitle
+          title={
+            currentStep === Step.DISEASES
+              ? t(LanguageKey.SELECT_DESEASES)
+              : t(LanguageKey.SELECT_ALLERGIES)
+          }
+        />
         <ScrollView
           contentContainerStyle={styles.scrollview_container}
           bounces={true}
           scrollEventThrottle={16}
         >
-          {currentData.slice(0, 7).map((disease) => (
+          {currentData.map((disease) => (
             <HealthSetupCard
               key={disease.id}
               item={disease}
@@ -134,6 +145,7 @@ const HealthSetup: FC = () => {
             }}
             onPress={handleNext}
             isArabic={is_arabic}
+            buttonStyles={{ backgroundColor: Colors.GLOVO_GREEN }}
             containerStyles={
               isAllergiesStep ? styles.nextButtonWithBack : styles.nextButton
             }
@@ -150,15 +162,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollview_container: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    gap: 2,
+    paddingBottom: 10,
   },
   buttonContainer: {
     flexDirection: "row",
     gap: 10,
-    marginTop: 20,
   },
   backButton: {
     flex: 1,

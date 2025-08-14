@@ -15,7 +15,6 @@ import { useCustomRouter } from "@/hooks/useCustomRouter";
 import { Colors } from "@/themes/colors";
 import { is_email_valid } from "@/utils";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { FC, useState } from "react";
 import {
   View,
@@ -47,7 +46,6 @@ const RegisterScreen: FC = () => {
   const [googleLoading, setGoogleLoading] = useState<boolean>(false);
 
   // Hooks
-  const router = useRouter();
   const { is_arabic } = useLanguage();
   const { redirect_to } = useCustomRouter();
   const { t } = useTranslation();
@@ -87,7 +85,7 @@ const RegisterScreen: FC = () => {
       setLoading(false);
       setErrorMessage(null);
       show_toast();
-      router.push(Screens.LOGIN_SCREEN);
+      redirect_to(Screens.HEALTH_SETUP_SCREEN);
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message === FirebaseErrorMessages.EMAIL_ALREADY_IN_USE) {
@@ -109,7 +107,7 @@ const RegisterScreen: FC = () => {
       setGoogleLoading(true);
       await auth_with_google();
       show_toast();
-      redirect_to(Screens.HOME_SCREEN);
+      redirect_to(Screens.HEALTH_SETUP_SCREEN);
     } catch (error: unknown) {
       Alert.alert("Error", t(LanguageKey.FAILED_GOOGLE_SIGN_IN));
     } finally {

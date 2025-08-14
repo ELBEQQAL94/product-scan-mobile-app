@@ -1,4 +1,6 @@
 export const ar = {
+  SELECT_ALLERGIES: "اختر حساسيتك",
+  SELECT_DESEASES: "اختر الحالات الصحية",
   PRODUC_NAME_NOT_FOUND: "اسم المنتج غير موجود",
   SCORE_NOT_AVAILABLE: "النتيجة غير متوفرة لهذا المنتج",
   ORGANIC_ONLY: "عضوي فقط",
