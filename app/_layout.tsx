@@ -16,6 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
+import { useCustomRouter } from "@/hooks/useCustomRouter";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -74,18 +75,6 @@ export default function Layout() {
             name={Screens.HEALTH_SETUP_SCREEN}
             options={{
               title: t(LanguageKey.HEALTH_PROFILE_SETUP),
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => router.back()}
-                  style={{ marginLeft: 10, padding: 8 }}
-                >
-                  <Ionicons
-                    name="chevron-back"
-                    size={24}
-                    color={Colors.WHITE}
-                  />
-                </TouchableOpacity>
-              ),
               headerStyle: {
                 backgroundColor: Colors.GLOVO_GREEN,
                 ...Typography.h1,
