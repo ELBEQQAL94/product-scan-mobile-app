@@ -1,4 +1,4 @@
-export const LanguageKey = {
+export const LanguageKey: Record<string, string> = {
   SELECT_DESEASES: "SELECT_DESEASES",
   SELECT_ALLERGIES: "SELECT_ALLERGIES",
   PRODUC_NAME_NOT_FOUND: "PRODUC_NAME_NOT_FOUND",

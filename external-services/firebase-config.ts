@@ -490,5 +490,58 @@ export const update_user_health_data = async (
   }
 };
 
+export const get_health_profile = async (
+  user_id: string
+): Promise<{
+  diseases?: string[];
+  allergies?: string[];
+} | null> => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.GET_HEALTH_PROFILE,
+    action_description: `User with id: ${user_id} try to get health conditions.`,
+    action_data: null,
+    date_format: format_date_to_custom_string(),
+  };
+
+  try {
+    // Get single document by user_id
+    const querySnapshot = await firestore()
+      .collection("users")
+      .where("uid", "==", user_id)
+      .limit(1)
+      .get();
+
+    if (!querySnapshot.empty) {
+      // Get the first (and only) document
+      const userDoc = querySnapshot.docs[0];
+      const userData = userDoc.data() as UserSchema;
+
+      const health = {
+        diseases: userData.selected_diseases || [],
+        allergies: userData.selected_allergies || [],
+      };
+
+      user_action.action_data = JSON.stringify(health);
+      await create_log(user_action);
+      return health;
+    }
+
+    // No user found
+    user_action.action_description = `No health profile found for user: ${user_id}`;
+    await create_log(user_action);
+    return null;
+  } catch (error: any) {
+    console.error(`🚨 Error in get_health_profile:`, error);
+    user_action.action_description =
+      "User try to get health profile get an error";
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+    return null;
+  }
+};
+
 // Export auth and storage instances for use in other parts of the app
 export { auth, firestore };

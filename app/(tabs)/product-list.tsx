@@ -1,5 +1,6 @@
 import Products from "@/components/ProductListScreen/Products";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import Loading from "@/components/shared/Loading";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import { LanguageKey } from "@/constants/keys";
 import {
@@ -59,11 +60,7 @@ const ProductList: FC = () => {
   }, [user]);
 
   if (loading) {
-    return (
-      <View style={styles.loading_container}>
-        <Text style={styles.loading_text}>{t(LanguageKey.LOADING)}</Text>
-      </View>
-    );
+    return <Loading />;
   }
 
   return (
@@ -90,15 +87,6 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 15,
     flex: 1,
-  },
-  loading_container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loading_text: {
-    fontWeight: "bold",
-    ...Typography.bodyMedium,
   },
   no_product_found_container: {
     flex: 1,

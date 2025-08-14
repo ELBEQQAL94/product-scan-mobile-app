@@ -1,21 +1,25 @@
 import HealthSetupCard from "@/components/HealthSetupScreen/HealthSetupCard";
-import { FC, useState, useCallback, useMemo } from "react";
+import { FC, useState, useCallback, useMemo, useEffect } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import diseases from "@/data/diseases.json";
 import allergies from "@/data/allergies.json";
 import ActionButton from "@/components/shared/ActionButton";
-import { Href, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
 import { Step } from "@/enums/step";
 import { LanguageKey } from "@/constants/keys";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { update_user_health_data } from "@/external-services/firebase-config";
+import {
+  get_health_profile,
+  update_user_health_data,
+} from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useLanguage } from "@/context/LanguageProvider";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/themes/colors";
+import Loading from "@/components/shared/Loading";
 
 const HealthSetup: FC = () => {
   // Hooks
@@ -32,6 +36,39 @@ const HealthSetup: FC = () => {
   const [selectedAllergies, setSelectedAllergies] = useState<Set<string>>(
     new Set()
   );
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const fetchHealthData = useCallback(async () => {
+    if (!user?.uid) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const healthProfile = await get_health_profile(user.uid);
+
+      console.log("healthProfile: ", healthProfile);
+
+      if (healthProfile) {
+        setSelectedDiseases(new Set(healthProfile.diseases || []));
+        setSelectedAllergies(new Set(healthProfile.allergies || []));
+
+        console.log("selectedAllergies: ", selectedAllergies);
+        console.log("selectedDiseases: ", selectedDiseases);
+      }
+    } catch (error) {
+      console.error("Error fetching health profile:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.uid]);
+
+  // Fetch data when component mounts or user changes
+  useEffect(() => {
+    fetchHealthData();
+  }, [fetchHealthData]);
 
   const handleNext = useCallback(async () => {
     if (currentStep === Step.DISEASES) {
@@ -45,7 +82,7 @@ const HealthSetup: FC = () => {
           selectedDiseases,
           selectedAllergies
         );
-      router.push(Screens.HOME_SCREEN as Href);
+      router.push(Screens.POFILE_SCREEN);
     }
   }, [currentStep, router, selectedAllergies, selectedDiseases, user?.uid]);
 
@@ -95,6 +132,14 @@ const HealthSetup: FC = () => {
 
   const isAllergiesStep = currentStep === Step.ALERGIES;
 
+  useEffect(() => {
+    fetchHealthData();
+  }, [fetchHealthData]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <ProtectedRoute>
       <View style={styles.container}>
@@ -112,7 +157,7 @@ const HealthSetup: FC = () => {
         >
           {currentData.map((disease) => (
             <HealthSetupCard
-              key={disease.id}
+              key={disease.name}
               item={disease}
               onPress={toggleSelection}
             />

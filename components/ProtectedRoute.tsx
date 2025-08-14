@@ -43,8 +43,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     );
   }
 
-  console.log("user protected route: ", user);
-
   if (!user) {
     return null; // Return null while redirecting
   }
