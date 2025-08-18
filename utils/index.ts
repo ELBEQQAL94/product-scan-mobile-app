@@ -594,36 +594,47 @@ export const get_score = (
   ecoscore_score?: string | number,
   nutriscore_score?: number,
   nutriscore_grade?: string,
+  ecoscore_grade?: string,
   grade?: string
 ): number => {
   if (
     grade ||
     nutriscore_grade ||
+    ecoscore_grade ||
     (nutriscore_grade && ecoscore_score && isNaN(+ecoscore_score))
   ) {
-    if (grade === "a" || nutriscore_grade === "a") {
+    if (grade === "a" || nutriscore_grade === "a" || ecoscore_grade === "a") {
       return 100;
     }
 
-    if (grade === "b" || nutriscore_grade === "b") {
+    if (grade === "b" || nutriscore_grade === "b" || ecoscore_grade === "b") {
       return 70;
     }
 
-    if (grade === "c" || nutriscore_grade === "c") {
+    if (grade === "c" || nutriscore_grade === "c" || ecoscore_grade === "c") {
       return 50;
     }
 
-    if (grade === "d" || nutriscore_grade === "d") {
+    if (grade === "d" || nutriscore_grade === "d" || ecoscore_grade === "d") {
       return 30;
     }
 
-    if (grade === "e" || nutriscore_grade === "e") {
+    if (
+      grade === "e" ||
+      "f" ||
+      nutriscore_grade === "e" ||
+      "f" ||
+      ecoscore_grade === "e" ||
+      "f"
+    ) {
       return 20;
     }
   }
 
-  if (ecoscore_score && !isNaN(+ecoscore_score)) return +ecoscore_score;
-  if (nutriscore_score && !isNaN(+nutriscore_score)) return +nutriscore_score;
+  if (ecoscore_score && !isNaN(+ecoscore_score) && +ecoscore_score > 0)
+    return +ecoscore_score;
+  if (nutriscore_score && !isNaN(+nutriscore_score) && +nutriscore_score > 0)
+    return +nutriscore_score;
 
   return 0;
 };

@@ -6,13 +6,6 @@ import { Href, useLocalSearchParams, useRouter } from "expo-router";
 import { FC, useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 import ConnectionError from "@/components/ProductDetailsScreen/ConnectionError";
-import {
-  calculate_enhanced_health_score,
-  get_product_by_bar_code,
-  get_score,
-  map_to_product_db,
-  save_product_by_bar_code,
-} from "@/utils";
 import ScanResult from "@/components/ScanResultScreen";
 import { ai_product_scan_prompt } from "@/prompt";
 import ScanningLoader from "@/components/shared/ScanningLoader";
@@ -25,7 +18,12 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { UserSchema } from "@/types/auth";
 import { useLanguage } from "@/context/LanguageProvider";
 import { ScanResultResponse } from "@/types/scan-result";
-import { LanguageKey } from "@/constants/keys";
+import {
+  get_product_by_bar_code,
+  get_score,
+  map_to_product_db,
+  save_product_by_bar_code,
+} from "@/utils";
 
 const ScanResultScreen: FC = () => {
   // Hooks
@@ -80,11 +78,13 @@ const ScanResultScreen: FC = () => {
           const nutriscore_grade = response.product.nutriscore_grade;
           const ecoscore_score = response.product.ecoscore_score;
           const nutriscore_score = response.product.nutriscore_score;
+          const ecoscore_grade = response.product.ecoscore_grade;
 
           const score = get_score(
             ecoscore_score,
             nutriscore_score,
             nutriscore_grade,
+            ecoscore_grade,
             grade
           );
 
