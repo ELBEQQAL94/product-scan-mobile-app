@@ -12,7 +12,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Typography } from "@/themes/typography";
 import { ProductTypeFromDB } from "@/types/products";
 import { FC, useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 
 const ProductList: FC = () => {
   // Hooks
@@ -43,14 +43,30 @@ const ProductList: FC = () => {
   };
 
   const removeProduct = async (code_bar: string) => {
-    try {
-      if (user?.uid) {
-        await remove_product_from_db(code_bar, user?.uid);
-        await fetch_all_products();
-      }
-    } catch (error) {
-      console.log("remove product get an error: ", error);
-    }
+    Alert.alert(
+      t(LanguageKey.CONFIRM_ACTION),
+      t(LanguageKey.WANT_TO_PROCEED),
+      [
+        {
+          text: t(LanguageKey.CANCEL),
+          style: "cancel",
+        },
+        {
+          text: t(LanguageKey.OK),
+          onPress: async () => {
+            try {
+              if (user?.uid) {
+                await remove_product_from_db(code_bar, user?.uid);
+                await fetch_all_products();
+              }
+            } catch (error) {
+              console.log("remove product get an error: ", error);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   useEffect(() => {

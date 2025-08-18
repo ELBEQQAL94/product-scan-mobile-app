@@ -1,4 +1,7 @@
 export const ar = {
+  OK: "حسناً",
+  WANT_TO_PROCEED: "هل أنت متأكد من أنك تريد المتابعة؟",
+  CONFIRM_ACTION: "تأكيد العملية",
   SELECT_ALLERGIES: "اختر حساسيتك",
   SELECT_DESEASES: "اختر الحالات الصحية",
   PRODUC_NAME_NOT_FOUND: "اسم المنتج غير موجود",

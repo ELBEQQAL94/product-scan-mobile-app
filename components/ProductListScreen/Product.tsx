@@ -8,7 +8,7 @@ import { ProductTypeFromDB } from "@/types/products";
 import { useRouter } from "expo-router";
 import { FC } from "react";
 import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 
 interface ProductProps {
   product: ProductTypeFromDB;
@@ -41,10 +41,14 @@ const Product: FC<ProductProps> = ({ product, onProductRemoved }) => {
         onPress={redirect_to_scan_result}
         style={styles.product_content}
       >
-        <Image
-          src={product.product_scan_result.image_url || ""}
-          style={styles.image}
-        />
+        {product.product_scan_result.image_url ? (
+          <Image
+            src={product.product_scan_result.image_url || ""}
+            style={styles.image}
+          />
+        ) : (
+          <Entypo name="image" size={60} color={Colors.BLACK} />
+        )}
         <View style={styles.text_container}>
           <Text style={styles.product_name}>
             {product.product_scan_result.product_name !== "Chargement…" &&
@@ -53,14 +57,16 @@ const Product: FC<ProductProps> = ({ product, onProductRemoved }) => {
               : t(LanguageKey.PRODUC_NAME_NOT_FOUND)}
           </Text>
           <View style={styles.score_container}>
-            <Text
-              style={[
-                styles.score,
-                { color: get_score_color(product.product_scan_result.score) },
-              ]}
-            >
-              {product.product_scan_result.score}
-            </Text>
+            {product.product_scan_result.score > 0 && (
+              <Text
+                style={[
+                  styles.score,
+                  { color: get_score_color(product.product_scan_result.score) },
+                ]}
+              >
+                {product.product_scan_result.score}
+              </Text>
+            )}
             <Text style={styles.score}>
               {product.product_scan_result.score > 0
                 ? "/100"

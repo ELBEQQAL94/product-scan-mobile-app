@@ -1,4 +1,7 @@
 export const es = {
+  OK: "De acuerdo",
+  WANT_TO_PROCEED: "¿Está seguro de que desea continuar?",
+  CONFIRM_ACTION: "Confirmar acción",
   SELECT_ALLERGIES: "Selecciona tus alergias",
   SELECT_DESEASES: "Selecciona condiciones de salud",
   PRODUC_NAME_NOT_FOUND: "Nombre del producto no encontrado",
