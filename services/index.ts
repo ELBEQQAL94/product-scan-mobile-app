@@ -49,7 +49,6 @@ export const product_details = async (
       const response = await axios.get(BASE_FOOD_URL);
       return response.data as OpenFoodResponseAPI;
     } catch {
-      console.log("Food facts failed, trying beauty facts");
       const base_beauty_url = `https://world.openbeautyfacts.org/api/v0/product/${bar_code}.json`;
       const beautyResponse = await axios.get(base_beauty_url);
       return beautyResponse.data as OpenFoodResponseAPI;

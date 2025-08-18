@@ -1,4 +1,7 @@
 export const en = {
+  OK: "Ok",
+  WANT_TO_PROCEED: "Are you sure you want to proceed?",
+  CONFIRM_ACTION: "Confirm action",
   SELECT_ALLERGIES: "Select your allergies",
   SELECT_DESEASES: "Select health conditions",
   PRODUC_NAME_NOT_FOUND: "Product name not found",
