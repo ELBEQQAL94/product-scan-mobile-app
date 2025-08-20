@@ -1,4 +1,9 @@
 export const ar = {
+  LATER: "لاحقاً",
+  UPDATE: "تحديث",
+  UPDATE_AVAILABLE: "يتوفر تحديث",
+  NEW_VERSION_MESSAGE:
+    "يتوفر إصدار جديد من التطبيق. يرجى التحديث للحصول على أحدث الميزات والتحسينات.",
   OK: "حسناً",
   WANT_TO_PROCEED: "هل أنت متأكد من أنك تريد المتابعة؟",
   CONFIRM_ACTION: "تأكيد العملية",

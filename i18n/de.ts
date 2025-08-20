@@ -1,4 +1,9 @@
 export const de = {
+  LATER: "Später",
+  UPDATE: "Aktualisieren",
+  UPDATE_AVAILABLE: "Update verfügbar",
+  NEW_VERSION_MESSAGE:
+    "Eine neue Version der App ist verfügbar. Bitte aktualisieren Sie, um die neuesten Funktionen und Verbesserungen zu erhalten.",
   OK: "OK",
   WANT_TO_PROCEED: "Sind Sie sicher, dass Sie fortfahren möchten?",
   CONFIRM_ACTION: "Aktion bestätigen",
