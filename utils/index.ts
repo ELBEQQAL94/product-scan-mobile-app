@@ -2,6 +2,7 @@ import { AsyncStorageKey } from "@/constants/keys";
 import { OpenFoodResponseAPI, ProductScanResult } from "@/constants/responses";
 import { ProductTypeFromDB } from "@/types/products";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
 
 export const checkOnboardingStatus = async () => {
   const hasCompletedOnboarding = await AsyncStorage.getItem(
@@ -637,4 +638,9 @@ export const get_score = (
     return +nutriscore_score;
 
   return 0;
+};
+
+export const get_current_version = () => {
+  const version = Constants.expoConfig?.version || "1.0.0";
+  return version;
 };

@@ -3,7 +3,7 @@ import {
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { Stack, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -14,6 +14,13 @@ import { LanguageKey } from "@/constants/keys";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
+import { get_current_version } from "@/utils";
+import {
+  create_latest_app_version,
+  get_latest_app_version,
+  update_latest_app_version,
+} from "@/external-services/firebase-config";
+import { Alert, Linking, Platform } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -23,8 +30,68 @@ export default function Layout() {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
 
-  // Add this useEffect to hide splash screen
+  const update_version = async () => {
+    const LATEST_VERSION = get_current_version();
+
+    const CURRENT_VERSION = await get_latest_app_version();
+
+    if (!CURRENT_VERSION) {
+      await create_latest_app_version(LATEST_VERSION);
+    }
+
+    if (CURRENT_VERSION && LATEST_VERSION > CURRENT_VERSION) {
+      await update_latest_app_version(LATEST_VERSION);
+      redirectToStore();
+    }
+  };
+
+  const check_version = async () => {
+    const LATEST_VERSION = get_current_version();
+    const CURRENT_VERSION = await get_latest_app_version();
+
+    if (CURRENT_VERSION && LATEST_VERSION !== CURRENT_VERSION) {
+      showUpdateAlert();
+    }
+  };
+
+  const showUpdateAlert = () => {
+    Alert.alert(
+      t(LanguageKey.UPDATE_AVAILABLE),
+      t(LanguageKey.NEW_VERSION_MESSAGE),
+      [
+        {
+          text: t(LanguageKey.LATER),
+          style: "cancel",
+        },
+        {
+          text: t(LanguageKey.UPDATE),
+          onPress: () => update_version(),
+        },
+      ]
+    );
+  };
+
+  const redirectToStore = () => {
+    const storeUrl = Platform.select({
+      android:
+        "https://play.google.com/store/apps/details?id=com.myscan.appmyscan",
+    });
+
+    if (storeUrl) {
+      Linking.openURL(storeUrl).catch((err) => {
+        console.error("Failed to open store URL:", err);
+        Alert.alert(
+          t(LanguageKey.ERROR) || "Error",
+          t(LanguageKey.STORE_REDIRECT_ERROR) ||
+            "Unable to open the app store. Please update the app manually."
+        );
+      });
+    }
+  };
+
+  // Initialize app and check for updates
   useEffect(() => {
+    check_version();
     SplashScreen.hideAsync();
   }, []);
 

@@ -1,4 +1,9 @@
 export const en = {
+  LATER: "Later",
+  UPDATE: "Update",
+  UPDATE_AVAILABLE: "Update Available",
+  NEW_VERSION_MESSAGE:
+    "A new version of the app is available. Please update to get the latest features and improvements.",
   OK: "Ok",
   WANT_TO_PROCEED: "Are you sure you want to proceed?",
   CONFIRM_ACTION: "Confirm action",

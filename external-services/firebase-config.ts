@@ -535,5 +535,99 @@ export const get_health_profile = async (
   }
 };
 
+export const update_latest_app_version = async (
+  version: string
+): Promise<void> => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.UPDATE_APP_VERSION,
+    action_description: `update app version ${version}`,
+    date_format: NOW_DATE,
+    action_data: null,
+  };
+
+  try {
+    // Find the user document by uid
+    const querySnapshot = await firestore()
+      .collection("versions")
+      .where("uid", "==", "version")
+      .get();
+
+    if (querySnapshot.empty) {
+      throw new Error(`App with version ${version} not found`);
+    }
+
+    const versionDoc = querySnapshot.docs[0];
+    const versionDocRef = versionDoc.ref;
+
+    await versionDocRef.update({ version });
+
+    user_action.action_description = "App version updated successfully";
+    await create_log(user_action);
+  } catch (error: any) {
+    user_action.action_description = "Error updating app version";
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+  }
+};
+
+export const create_latest_app_version = async (
+  version: string
+): Promise<void> => {
+  try {
+    await addDoc(collection(firestore(), "versions"), {
+      version,
+      uid: "version",
+    });
+  } catch (error: unknown) {
+    console.log(
+      "create new log get an error from config firebase test: ",
+      error
+    );
+  }
+};
+
+export const get_latest_app_version = async (): Promise<string | null> => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.GET_LATEST_APP_VERSION,
+    action_description: `App try to get latest version`,
+    action_data: null,
+    date_format: format_date_to_custom_string(),
+  };
+
+  try {
+    // Get single document by user_id
+    const querySnapshot = await firestore()
+      .collection("versions")
+      .limit(1)
+      .get();
+
+    if (!querySnapshot.empty) {
+      // Get the first (and only) document
+      const versionDoc = querySnapshot.docs[0];
+      const versionData = versionDoc.data() as { version: string };
+
+      user_action.action_data = JSON.stringify(versionData);
+      await create_log(user_action);
+      return versionData.version;
+    }
+
+    user_action.action_description = "no version found";
+    await create_log(user_action);
+    return null;
+  } catch (error: any) {
+    console.error(`🚨 Get latest version error`, error);
+    user_action.action_description = "Get latest version error";
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+    return null;
+  }
+};
+
 // Export auth and storage instances for use in other parts of the app
 export { auth, firestore };

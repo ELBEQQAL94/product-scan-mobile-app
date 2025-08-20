@@ -6,21 +6,17 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import { Tabs, useRouter } from "expo-router";
+import { Tabs } from "expo-router";
 import "react-native-reanimated";
 import { Colors } from "@/themes/colors";
 import CustomScanTabButton from "@/components/ScanScreen/CustomScanTabButton";
 import { LanguageKey } from "@/constants/keys";
-import { Typography } from "@/themes/typography";
-import { TouchableOpacity } from "react-native";
-import { Screens } from "@/constants/screens";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useLanguage } from "@/context/LanguageProvider";
 
 export default function TabLayout() {
   // Hooks
   const { is_arabic } = useLanguage();
-  const router = useRouter();
   const { t } = useTranslation();
 
   return (
