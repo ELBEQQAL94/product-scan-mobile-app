@@ -29,7 +29,7 @@ const HealthSetup: FC = () => {
   const { t } = useTranslation();
   const local = useLocalSearchParams();
 
-  const DEFAULT_STEP = local.default_step as Step.DISEASES;
+  const DEFAULT_STEP = (local.default_step as Step) || Step.DISEASES;
 
   // States
   const [currentStep, setCurrentStep] = useState<Step>(DEFAULT_STEP);
@@ -80,7 +80,7 @@ const HealthSetup: FC = () => {
           selectedDiseases,
           selectedAllergies
         );
-      router.push(Screens.POFILE_SCREEN);
+      router.push(Screens.HOME_SCREEN);
     }
   }, [currentStep, router, selectedAllergies, selectedDiseases, user?.uid]);
 
