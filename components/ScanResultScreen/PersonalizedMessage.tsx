@@ -6,6 +6,7 @@ import { LanguageKey } from "@/constants/keys";
 import PriorityIssues from "./PriorityIssues";
 import OverallAssessment from "./OverallAssessment";
 import { useTranslation } from "@/hooks/useTranslation";
+import { Colors } from "@/themes/colors";
 
 interface PersonalizedMessageProps {
   score: number;
@@ -65,16 +66,19 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
   const getOverallAssessment = () => {
     if (score < 50) {
       return {
+        color: Colors.RED,
         title: t(LanguageKey.NOT_GOOD_FOR_YOU),
         subtitle: t(LanguageKey.THIS_PRODUCT_HAS_NEGATIVE_HEALTH_ASPECTS),
       };
     } else if (score <= 50) {
       return {
+        color: Colors.ORANGE,
         title: t(LanguageKey.CONSIDER_CAREFULLY),
         subtitle: t(LanguageKey.SOME_POINTS_TOCONSIDER),
       };
     } else {
       return {
+        color: Colors.LIGHT_GREEN,
         title: t(LanguageKey.PERFECT_FOR_YOU),
         subtitle: t(LanguageKey.THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS),
       };
