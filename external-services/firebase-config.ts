@@ -629,5 +629,57 @@ export const get_latest_app_version = async (): Promise<string | null> => {
   }
 };
 
+export const save_new_product_in_db = async (
+  product_from_db: ProductTypeFromDB
+) => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.SAVE_PRODUCT_IN_UNIQUE_PRODUCT_DB,
+    action_description: "create product in unique_products",
+    action_data: null,
+    date_format: format_date_to_custom_string(),
+  };
+
+  try {
+    // Check if product already exists by bar_code
+    if (product_from_db.bar_code) {
+      const querySnapshot = await firestore()
+        .collection("unique_products")
+        .where("bar_code", "==", product_from_db.bar_code)
+        .limit(1)
+        .get();
+
+      if (!querySnapshot.empty) {
+        user_action.action_description =
+          "Product already exists, skipped creation";
+        user_action.action_data = JSON.stringify({
+          bar_code: product_from_db.bar_code,
+        });
+        await create_log(user_action);
+        return;
+      }
+    } else {
+      user_action.action_description =
+        "Warning: Product created without bar_code duplicate check";
+    }
+
+    // Create the product if it doesn't exist
+    user_action.action_data = JSON.stringify(product_from_db);
+    const unique_product = {
+      product_scan_result: product_from_db.product_scan_result,
+      bar_code: product_from_db.bar_code,
+      created_at: product_from_db.created_at,
+    };
+    await firestore().collection("unique_products").add(unique_product);
+    await create_log(user_action);
+  } catch (error: any) {
+    user_action.action_description = "Error when create new product";
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+  }
+};
+
 // Export auth and storage instances for use in other parts of the app
 export { auth, firestore };

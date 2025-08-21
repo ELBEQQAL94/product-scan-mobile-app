@@ -55,9 +55,12 @@ const HalalScanResultScreen: FC = () => {
           product_status: response.status,
           status: ai_scan_result.status,
           summary: ai_scan_result.summary,
-          image_url: response.product.image_url,
+          image_url: response.product.image_url || null,
+
           product_name:
-            response.product.product_name || response.product.product_name_en,
+            response.product.product_name ||
+            response.product.product_name_en ||
+            "",
           score,
         };
         setHalalResult(result);

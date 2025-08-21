@@ -674,7 +674,7 @@ export interface IHalalScanResult {
   product_status: number;
   status: HalalCheckStatus;
   summary: string;
-  image_url: string;
+  image_url: string | null;
   product_name: string;
   score: number;
 }
