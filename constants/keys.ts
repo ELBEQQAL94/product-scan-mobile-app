@@ -1,4 +1,5 @@
 export const LanguageKey: Record<string, string> = {
+  SEARCH_PRODUCT: "SEARCH_PRODUCT",
   LATER: "LATER",
   UPDATE: "UPDATE",
   UPDATE_AVAILABLE: "UPDATE_AVAILABLE",

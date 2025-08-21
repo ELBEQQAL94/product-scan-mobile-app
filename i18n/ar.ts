@@ -1,4 +1,5 @@
 export const ar = {
+  SEARCH_PRODUCT: "البحث عن منتج",
   LATER: "لاحقاً",
   UPDATE: "تحديث",
   UPDATE_AVAILABLE: "يتوفر تحديث",
