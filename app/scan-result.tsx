@@ -12,6 +12,7 @@ import ScanningLoader from "@/components/shared/ScanningLoader";
 import { useCustomRouter } from "@/hooks/useCustomRouter";
 import {
   check_user_exists,
+  save_new_product_in_db,
   save_product_in_db,
 } from "@/external-services/firebase-config";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -70,7 +71,6 @@ const ScanResultScreen: FC = () => {
     setLoading(true);
     try {
       let product = await get_product_by_bar_code(bar_code);
-      console.log("found product: ", JSON.stringify(product));
       if (!product) {
         console.log("new product: ");
         const response = await product_details(bar_code);
@@ -109,8 +109,8 @@ const ScanResultScreen: FC = () => {
                 score,
               };
               const product_db = map_to_product_db(user_id, bar_code, product);
-              console.log("product_db: ", JSON.stringify(product_db));
               await save_product_in_db(product_db);
+              await save_new_product_in_db(product_db);
               await save_product_by_bar_code(bar_code, product);
             }
           }
