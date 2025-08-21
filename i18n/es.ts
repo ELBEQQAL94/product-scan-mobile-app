@@ -1,4 +1,5 @@
 export const es = {
+  SEARCH_YOUR_PRODUCT: "Busca un producto que escaneaste antes",
   SEARCH_PRODUCT: "Buscar producto",
   LATER: "Más tarde",
   UPDATE: "Actualizar",
