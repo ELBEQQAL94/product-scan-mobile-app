@@ -70,6 +70,7 @@ const ScanResultScreen: FC = () => {
     setLoading(true);
     try {
       let product = await get_product_by_bar_code(bar_code);
+      console.log("found product: ", JSON.stringify(product));
       if (!product) {
         console.log("new product: ");
         const response = await product_details(bar_code);

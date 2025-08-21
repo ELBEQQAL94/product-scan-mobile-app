@@ -13,6 +13,12 @@ interface PersonalizedMessageProps {
   recommendations: Recommendations[];
 }
 
+interface Assessment {
+  color: string;
+  title: string;
+  subtitle: string;
+}
+
 const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
   score,
   recommendations = [],
@@ -63,7 +69,7 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
   }
 
   // Helper function to determine overall assessment
-  const getOverallAssessment = () => {
+  const getOverallAssessment = (): Assessment | undefined => {
     if (score < 50) {
       return {
         color: Colors.RED,
@@ -76,13 +82,14 @@ const PersonalizedMessage: FC<PersonalizedMessageProps> = ({
         title: t(LanguageKey.CONSIDER_CAREFULLY),
         subtitle: t(LanguageKey.SOME_POINTS_TOCONSIDER),
       };
-    } else {
+    } else if (score >= 50) {
       return {
         color: Colors.LIGHT_GREEN,
         title: t(LanguageKey.PERFECT_FOR_YOU),
         subtitle: t(LanguageKey.THIS_PRODUCT_HAS_POSITIVE_HEALTH_ASPECTS),
       };
     }
+    return;
   };
 
   const assessment = getOverallAssessment();

@@ -4,7 +4,7 @@ import { FC } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 interface OverallAssessmentProps {
-  assessment: {
+  assessment?: {
     color: string;
     title: string;
     subtitle: string;
@@ -12,6 +12,7 @@ interface OverallAssessmentProps {
 }
 
 const OverallAssessment: FC<OverallAssessmentProps> = ({ assessment }) => {
+  if (!assessment) return;
   return (
     <View style={styles.container}>
       <Text style={[styles.assessment_title, { color: assessment.color }]}>
