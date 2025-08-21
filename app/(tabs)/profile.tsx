@@ -26,6 +26,7 @@ import ProfileScreenLoading from "@/components/ProfileScreen/ProfileScreenLoadin
 import { format_date } from "@/utils";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useLanguage } from "@/context/LanguageProvider";
+import { Step } from "@/enums/step";
 
 const Profile: FC = () => {
   // States
@@ -58,8 +59,8 @@ const Profile: FC = () => {
     }
   };
 
-  const handle_edit = () => {
-    router.push(Screens.HEALTH_SETUP_SCREEN);
+  const handle_edit = (step: Step) => {
+    router.push(`${Screens.HEALTH_SETUP_SCREEN}?default_step=${step}`);
   };
 
   const on_logout = async () => {
@@ -129,7 +130,7 @@ const Profile: FC = () => {
             }
             label={t(LanguageKey.DISEASES)}
             value={userData?.selected_diseases || []}
-            onEdit={handle_edit}
+            onEdit={() => handle_edit(Step.DISEASES)}
             isArabic={is_arabic}
             isEdit={true}
           />
@@ -144,7 +145,7 @@ const Profile: FC = () => {
             }
             label={t(LanguageKey.ALLERGIES)}
             value={userData?.selected_allergies || []}
-            onEdit={handle_edit}
+            onEdit={() => handle_edit(Step.ALERGIES)}
             isArabic={is_arabic}
             isEdit={true}
           />
@@ -248,7 +249,7 @@ const Profile: FC = () => {
           <View style={styles.healthStatusContainer}>
             <MaterialCommunityIcons
               name={
-                userData?.is_profile_health_created
+                !userData?.is_profile_health_created
                   ? "check-circle"
                   : "alert-circle"
               }
@@ -265,14 +266,14 @@ const Profile: FC = () => {
                 { textAlign: is_arabic ? "right" : "left" },
               ]}
             >
-              {userData?.is_profile_health_created
+              {!userData?.is_profile_health_created
                 ? t(LanguageKey.HEALTH_PROFILE_COMPLETED)
                 : t(LanguageKey.HEALTH_PROFILE_INCOMPLETE)}
             </Text>
-            {!userData?.is_profile_health_created && (
+            {userData?.is_profile_health_created && (
               <TouchableOpacity
                 style={styles.completeButton}
-                onPress={handle_edit}
+                onPress={() => handle_edit(Step.DISEASES)}
               >
                 <Text style={styles.completeButtonText}>
                   {t(LanguageKey.COMPLETE_NOW)}

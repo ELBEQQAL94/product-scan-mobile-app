@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import diseases from "@/data/diseases.json";
 import allergies from "@/data/allergies.json";
 import ActionButton from "@/components/shared/ActionButton";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
 import { Step } from "@/enums/step";
 import { LanguageKey } from "@/constants/keys";
@@ -27,9 +27,12 @@ const HealthSetup: FC = () => {
   const { user } = useAuth();
   const { is_arabic } = useLanguage();
   const { t } = useTranslation();
+  const local = useLocalSearchParams();
+
+  const DEFAULT_STEP = local.default_step as Step.DISEASES;
 
   // States
-  const [currentStep, setCurrentStep] = useState<Step>(Step.DISEASES);
+  const [currentStep, setCurrentStep] = useState<Step>(DEFAULT_STEP);
   const [selectedDiseases, setSelectedDiseases] = useState<Set<string>>(
     new Set()
   );
