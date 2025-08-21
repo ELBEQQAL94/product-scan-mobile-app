@@ -138,7 +138,7 @@ const HealthSetupCard: FC<HealthSetupCardProps> = ({ item, onPress }) => {
         {
           backgroundColor: item.isSelected
             ? Colors.GLOVO_GREEN
-            : Colors.LIGHT_GREEN,
+            : Colors.SOFT_GREEN,
           transform: [{ scale: scaleAnim }],
         },
       ]}

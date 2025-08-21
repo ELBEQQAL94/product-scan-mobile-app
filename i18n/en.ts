@@ -1,4 +1,5 @@
 export const en = {
+  LIVER_DISEASE: "Liver disease",
   LATER: "Later",
   UPDATE: "Update",
   UPDATE_AVAILABLE: "Update Available",

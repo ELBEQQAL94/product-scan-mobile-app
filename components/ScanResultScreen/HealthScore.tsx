@@ -2,7 +2,7 @@ import { LanguageKey } from "@/constants/keys";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
-import { Entypo, FontAwesome } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { FC, useEffect, useRef } from "react";
 import { View, Text, Animated } from "react-native";
 
@@ -21,13 +21,15 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
     new Animated.Value(0),
     new Animated.Value(0),
     new Animated.Value(0),
+    new Animated.Value(0),
+    new Animated.Value(0),
   ]).current;
 
   // Determine how many circles to fill based on score
   const get_circles_to_fill = (): number => {
     if (score < 50) return 2; // Red: fill 2 circles
-    if (score === 50) return 4; // Yellow: fill 4 circles
-    return 6; // Green: fill all 6 circles
+    if (score === 50) return 5; // Yellow: fill 4 circles
+    return 8; // Green: fill all 6 circles
   };
 
   // Create sequential fill animation
@@ -108,7 +110,7 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
               flexDirection: "row",
             }}
           >
-            {[...Array(6)].map((_, index: number) => (
+            {[...Array(8)].map((_, index: number) => (
               <Animated.View
                 key={index}
                 style={{
@@ -118,29 +120,29 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
                   backgroundColor: get_interpolated_color(colorValues[index]),
                   borderWidth: 1,
                   borderColor: Colors.BLACK,
-                  marginRight: index < 5 ? 2 : 0,
+                  marginRight: index < 7 ? 2 : 0,
                 }}
               />
             ))}
-
-            {/* Static black circles */}
-            <Entypo
-              name="circle"
-              size={10}
-              color={Colors.BLACK}
-              style={{
-                marginLeft: 2,
-                width: 10,
-                height: 10,
-                borderRadius: 5,
-                marginRight: 2,
-              }}
-            />
-            <Entypo name="circle" size={10} color={Colors.BLACK} />
           </View>
-          <Text style={{ marginLeft: 10, ...Typography.h2 }}>
-            {score} / 100
-          </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+            }}
+          >
+            <Text
+              style={{
+                marginRight: 10,
+                marginLeft: 10,
+                color: process_color_by_score(),
+                ...Typography.h2,
+              }}
+            >
+              {score}
+            </Text>
+            <Text style={{ ...Typography.h2 }}>/ 100</Text>
+          </View>
         </View>
       )}
 
@@ -149,7 +151,14 @@ const HealthScore: FC<HealthScoreProps> = ({ score }) => {
       >
         {/* Static large green circle */}
         <FontAwesome name="circle" size={24} color={process_color_by_score()} />
-        <Text style={{ flex: 1, marginLeft: 10, ...Typography.h3 }}>
+        <Text
+          style={{
+            flex: 1,
+            marginLeft: 10,
+            color: process_color_by_score(),
+            ...Typography.h3,
+          }}
+        >
           {process_text_by_score()}
         </Text>
       </View>

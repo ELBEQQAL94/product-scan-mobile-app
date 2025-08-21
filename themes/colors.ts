@@ -1,5 +1,6 @@
 export const Colors = {
   // Green
+  SOFT_GREEN: "#6cf206ff",
   LIGHT_GREEN: "#58CC02",
   DARK_GREEN: "#46A302",
   GLOVO_GREEN: "#00A082",
