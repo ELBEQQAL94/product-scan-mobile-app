@@ -1,4 +1,5 @@
 export const en = {
+  SEARCH_YOUR_PRODUCT: "Search for a product you scanned before",
   SEARCH_PRODUCT: "Search product",
   LIVER_DISEASE: "Liver disease",
   LATER: "Later",
