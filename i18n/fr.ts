@@ -1,4 +1,5 @@
 export const fr = {
+  SEARCH_PRODUCT: "Rechercher un produit",
   LATER: "Plus tard",
   UPDATE: "Mettre à jour",
   UPDATE_AVAILABLE: "Mise à jour disponible",

@@ -9,10 +9,12 @@ import {
 } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
 import { useTranslation } from "@/hooks/useTranslation";
+import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import { ProductTypeFromDB } from "@/types/products";
+import { EvilIcons } from "@expo/vector-icons";
 import { FC, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, TextInput } from "react-native";
 
 const ProductList: FC = () => {
   // Hooks
@@ -22,6 +24,7 @@ const ProductList: FC = () => {
   // States
   const [products, setProducts] = useState<ProductTypeFromDB[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const fetch_all_products = async () => {
     try {
@@ -69,6 +72,12 @@ const ProductList: FC = () => {
     );
   };
 
+  const filteredProducts = products.filter((product) =>
+    product.product_scan_result.product_name
+      ?.toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
+
   useEffect(() => {
     fetch_all_products();
   }, [user]);
@@ -89,7 +98,44 @@ const ProductList: FC = () => {
         ) : (
           <>
             <ScreenTitle title={t(LanguageKey.SCANNED_PRODUCTS)} />
-            <Products products={products} removeProduct={removeProduct} />
+            <View
+              style={{
+                padding: 12,
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: Colors.LIGHT_GRAY,
+                  height: 40,
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  paddingLeft: 10,
+                  paddingRight: 10,
+                  borderRadius: 5,
+                }}
+              >
+                <TextInput
+                  style={styles.searchInput}
+                  placeholder={t(LanguageKey.SEARCH_PRODUCT)}
+                  value={searchQuery}
+                  onChangeText={setSearchQuery}
+                />
+                <EvilIcons name="search" size={24} color={Colors.LIGHT_GREEN} />
+              </View>
+            </View>
+            {filteredProducts.length === 0 ? (
+              <View style={styles.no_product_found_container}>
+                <Text style={styles.no_product_found_container_text}>
+                  {t(LanguageKey.DONT_HAVE_SCANNED_PRODUCT)}
+                </Text>
+              </View>
+            ) : (
+              <Products
+                products={filteredProducts}
+                removeProduct={removeProduct}
+              />
+            )}
           </>
         )}
       </View>
@@ -110,6 +156,9 @@ const styles = StyleSheet.create({
   no_product_found_container_text: {
     fontWeight: "bold",
     ...Typography.h3,
+  },
+  searchInput: {
+    flex: 1,
   },
 });
 
