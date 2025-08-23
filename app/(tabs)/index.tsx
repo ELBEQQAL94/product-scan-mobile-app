@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BarcodeScanningResult } from "expo-camera";
 import { useRouter } from "expo-router";
 import { Screens } from "@/constants/screens";
