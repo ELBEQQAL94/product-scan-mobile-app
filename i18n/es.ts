@@ -1,4 +1,5 @@
 export const es = {
+  START_SCANNING: "Comenzar escaneo",
   EXCELLENT: "Excelente",
   GOOD: "Bueno",
   FAIR: "Regular",

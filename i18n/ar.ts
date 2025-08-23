@@ -1,4 +1,5 @@
 export const ar = {
+  START_SCANNING: "ابدأ المسح",
   EXCELLENT: "ممتاز",
   GOOD: "جيد",
   FAIR: "مقبول",
