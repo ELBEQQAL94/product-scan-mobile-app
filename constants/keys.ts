@@ -1,4 +1,10 @@
 export const LanguageKey: Record<string, string> = {
+  EXCELLENT: "EXCELLENT",
+  GOOD: "GOOD",
+  FAIR: "FAIR",
+  POOR: "POOR",
+  SEARCH: "SEARCH",
+  SEARCH_YOUR_PRODUCT: "SEARCH_YOUR_PRODUCT",
   SEARCH_PRODUCT: "SEARCH_PRODUCT",
   LATER: "LATER",
   UPDATE: "UPDATE",

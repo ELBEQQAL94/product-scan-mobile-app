@@ -27,6 +27,7 @@ import { format_date } from "@/utils";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useLanguage } from "@/context/LanguageProvider";
 import { Step } from "@/enums/step";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 const Profile: FC = () => {
   // States
@@ -35,8 +36,9 @@ const Profile: FC = () => {
 
   // Hooks
   const router = useRouter();
-  const { is_arabic } = useLanguage();
   const { user } = useAuth();
+  const { language, setLanguage, modalVisible, setModalVisible, is_arabic } =
+    useLanguage();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -88,6 +90,12 @@ const Profile: FC = () => {
 
   return (
     <ProtectedRoute>
+      <LanguageSwitcher
+        modalVisible={modalVisible}
+        currentLanguage={language}
+        setModalVisible={setModalVisible}
+        changeLanguage={setLanguage}
+      />
       <ScreenTitle title={t(LanguageKey.MY_PROFILE)} />
       <ScrollView style={styles.container}>
         <View style={styles.section}>

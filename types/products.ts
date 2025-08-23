@@ -7,6 +7,12 @@ export interface ProductTypeFromDB {
   created_at: string;
 }
 
+export interface UniqueProduct {
+  product_scan_result: ProductScanResult;
+  bar_code: string;
+  created_at: string;
+}
+
 export interface ScanedProduct {
   user_id: string;
 }

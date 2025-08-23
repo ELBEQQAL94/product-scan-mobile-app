@@ -1,4 +1,9 @@
 export const de = {
+  EXCELLENT: "Ausgezeichnet",
+  GOOD: "Gut",
+  FAIR: "Ausreichend",
+  POOR: "Schlecht",
+  SEARCH: "Suchen",
   SEARCH_YOUR_PRODUCT: "Suche nach einem Produkt, das du zuvor gescannt hast",
   SEARCH_PRODUCT: "Produkt suchen",
   LATER: "Später",

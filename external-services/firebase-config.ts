@@ -2,6 +2,7 @@ import auth from "@react-native-firebase/auth";
 import firestore, {
   addDoc,
   collection,
+  orderBy,
 } from "@react-native-firebase/firestore";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import {
@@ -16,8 +17,9 @@ import {
 } from "@/utils";
 import { ActionTypeEnum, UserAction } from "@/enums/logs";
 import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
-import { ProductTypeFromDB } from "@/types/products";
+import { ProductTypeFromDB, UniqueProduct } from "@/types/products";
 import { NOW_DATE, NOW_DATE_TIMESTAMP } from "@/constants/constants";
+import ProductName from "@/components/ScanResultScreen/ProductName";
 
 // const db = firestore();
 
@@ -678,6 +680,62 @@ export const save_new_product_in_db = async (
       error_message: error.message,
     });
     await create_log(user_action);
+  }
+};
+
+export const get_unique_products = async (
+  product_name: string
+): Promise<UniqueProduct[] | []> => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.GET_UNIQUE_PRODUCTS,
+    action_description: `Get unique products that match ${product_name}`,
+    action_data: null,
+    date_format: format_date_to_custom_string(),
+  };
+
+  try {
+    // Get all documents that match the product name
+    const querySnapshot = await firestore()
+      .collection("unique_products")
+      .where("product_scan_result.product_name", ">=", product_name)
+      .where("product_scan_result.product_name", "<=", product_name + "\uf8ff")
+      .get();
+
+    if (!querySnapshot.empty) {
+      // Collect all products from all matching documents
+      const allProducts: UniqueProduct[] = [];
+
+      querySnapshot.docs.forEach((doc) => {
+        const productsData = doc.data() as UniqueProduct | UniqueProduct[];
+
+        // Handle both single product and array of products
+        if (Array.isArray(productsData)) {
+          allProducts.push(...productsData);
+        } else {
+          allProducts.push(productsData);
+        }
+      });
+
+      user_action.action_data = JSON.stringify(allProducts);
+      user_action.action_description = `Found ${allProducts.length} unique products matching: ${product_name}`;
+      await create_log(user_action);
+      return allProducts;
+    }
+
+    // No products found
+    user_action.action_description = `No unique products found for: ${product_name}`;
+    await create_log(user_action);
+    return [];
+  } catch (error: any) {
+    console.error(`🚨 Error in get_unique_products:`, error);
+    user_action.action_description =
+      "Error occurred while fetching unique products";
+    user_action.action_data = JSON.stringify({
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+    return [];
   }
 };
 

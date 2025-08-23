@@ -1,4 +1,5 @@
 import {
+  AntDesign,
   Feather,
   FontAwesome,
   FontAwesome5,
@@ -105,16 +106,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="search"
         options={{
           headerShown: false,
-          title: t(LanguageKey.PROFILE),
-          tabBarIcon: ({ focused }) =>
-            focused ? (
-              <Ionicons name="settings" size={24} color={Colors.GLOVO_GREEN} />
-            ) : (
-              <Feather name="settings" size={24} color={Colors.GLOVO_GREEN} />
-            ),
+          title: t(LanguageKey.SEARCH),
+          tabBarIcon: ({ focused }) => (
+            <AntDesign name="search1" size={24} color={Colors.GLOVO_GREEN} />
+          ),
           tabBarLabelStyle: {
             fontSize: is_arabic ? 10 : 12,
           },

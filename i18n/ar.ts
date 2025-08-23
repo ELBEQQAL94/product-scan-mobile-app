@@ -1,4 +1,9 @@
 export const ar = {
+  EXCELLENT: "ممتاز",
+  GOOD: "جيد",
+  FAIR: "مقبول",
+  POOR: "ضعيف",
+  SEARCH: "بحث",
   SEARCH_YOUR_PRODUCT: "ابحث عن منتج قمت بمسحه من قبل",
   SEARCH_PRODUCT: "البحث عن منتج",
   LATER: "لاحقاً",
