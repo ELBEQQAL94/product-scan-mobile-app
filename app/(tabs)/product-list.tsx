@@ -1,14 +1,18 @@
 import Products from "@/components/ProductListScreen/Products";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import ActionButton from "@/components/shared/ActionButton";
 import SearchInput from "@/components/shared/form/SearchInput";
 import Loading from "@/components/shared/Loading";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import { LanguageKey } from "@/constants/keys";
+import { Screens } from "@/constants/screens";
+import { useLanguage } from "@/context/LanguageProvider";
 import {
   get_products,
   remove_product_from_db,
 } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
+import { useCustomRouter } from "@/hooks/useCustomRouter";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
@@ -20,7 +24,9 @@ import { View, Text, StyleSheet, Alert, TextInput } from "react-native";
 const ProductList: FC = () => {
   // Hooks
   const { user } = useAuth();
+  const { is_arabic } = useLanguage();
   const { t } = useTranslation();
+  const { redirect_to } = useCustomRouter();
 
   // States
   const [products, setProducts] = useState<ProductTypeFromDB[]>([]);
@@ -79,6 +85,8 @@ const ProductList: FC = () => {
       .includes(searchQuery.toLowerCase())
   );
 
+  const redirect = () => redirect_to(Screens.HOME_SCREEN);
+
   useEffect(() => {
     fetch_all_products();
   }, [user]);
@@ -95,6 +103,12 @@ const ProductList: FC = () => {
             <Text style={styles.no_product_found_container_text}>
               {t(LanguageKey.DONT_HAVE_SCANNED_PRODUCT)}
             </Text>
+            <ActionButton
+              label={LanguageKey.START_SCANNING}
+              onPress={redirect}
+              isArabic={is_arabic}
+              buttonStyles={{ backgroundColor: Colors.GLOVO_GREEN }}
+            />
           </View>
         ) : (
           <>

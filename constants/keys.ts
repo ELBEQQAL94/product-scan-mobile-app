@@ -1,4 +1,5 @@
 export const LanguageKey: Record<string, string> = {
+  START_SCANNING: "START_SCANNING",
   EXCELLENT: "EXCELLENT",
   GOOD: "GOOD",
   FAIR: "FAIR",
