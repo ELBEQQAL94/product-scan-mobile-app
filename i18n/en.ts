@@ -1,4 +1,9 @@
 export const en = {
+  EXCELLENT: "Excellent",
+  GOOD: "Good",
+  FAIR: "Fair",
+  POOR: "Poor",
+  SEARCH: "Search",
   SEARCH_YOUR_PRODUCT: "Search for a product you scanned before",
   SEARCH_PRODUCT: "Search product",
   LIVER_DISEASE: "Liver disease",

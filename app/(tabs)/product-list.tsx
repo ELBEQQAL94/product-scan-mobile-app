@@ -1,5 +1,6 @@
 import Products from "@/components/ProductListScreen/Products";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import SearchInput from "@/components/shared/form/SearchInput";
 import Loading from "@/components/shared/Loading";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import { LanguageKey } from "@/constants/keys";
@@ -98,32 +99,11 @@ const ProductList: FC = () => {
         ) : (
           <>
             <ScreenTitle title={t(LanguageKey.SCANNED_PRODUCTS)} />
-            <View
-              style={{
-                padding: 12,
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: Colors.LIGHT_GRAY,
-                  height: 40,
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingLeft: 10,
-                  paddingRight: 10,
-                  borderRadius: 5,
-                }}
-              >
-                <TextInput
-                  style={styles.searchInput}
-                  placeholder={t(LanguageKey.SEARCH_PRODUCT)}
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
-                />
-                <EvilIcons name="search" size={24} color={Colors.LIGHT_GREEN} />
-              </View>
-            </View>
+            <SearchInput
+              value={searchQuery}
+              setValue={setSearchQuery}
+              label={t(LanguageKey.SEARCH_YOUR_PRODUCT)}
+            />
             {filteredProducts.length === 0 ? (
               <View style={styles.no_product_found_container}>
                 <Text style={styles.no_product_found_container_text}>
