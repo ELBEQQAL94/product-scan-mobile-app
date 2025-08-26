@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  Button,
 } from "react-native";
 import {
   FontAwesome,
@@ -290,6 +291,8 @@ const Profile: FC = () => {
             )}
           </View>
         </View>
+
+        <Button title="test subscription" onPress={() => router.push("paid")} />
 
         {/* Logout Section */}
         <View style={styles.section}>
