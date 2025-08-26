@@ -5,15 +5,6 @@ export default {
     icon: "./assets/images/icon.png",
     version: "1.0.3",
     plugins: [
-      "expo-iap",
-      [
-        "expo-build-properties",
-        {
-          android: {
-            kotlinVersion: "2.0.21",
-          },
-        },
-      ],
       [
         "@react-native-google-signin/google-signin",
         {
