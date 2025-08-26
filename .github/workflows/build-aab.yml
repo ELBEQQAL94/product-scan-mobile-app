@@ -6,10 +6,6 @@ on:
     branches: 
       - main
       - master
-  pull_request:
-    branches: 
-      - main
-      - master
 
 jobs:
   build-android:
@@ -34,19 +30,22 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
       
+      - name: Create google-services.json
+        run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > google-services.json
+      
       - name: Install dependencies
         run: npm ci
-      
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
       
       - name: Generate Android project
         run: npx expo prebuild --platform android --clean
       
-      - name: Build AAB with EAS
-        run: eas build --platform android --local --non-interactive --profile production
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+      
+      - name: Build AAB
+        run: |
+          cd android
+          ./gradlew bundleRelease
       
       - name: Upload AAB as artifact
         uses: actions/upload-artifact@v4
