@@ -38,7 +38,7 @@ jobs:
         run: npm ci
       
       - name: Install EAS CLI
-        run: npm install -g @expo/eas-cli
+        run: npm install -g eas-cli
       
       - name: Generate Android project
         run: npx expo prebuild --platform android --clean
