@@ -118,8 +118,9 @@ jobs:
           echo ""
           echo "=== Secret length ==="
           echo '${{ secrets.KEYSTORE_FILE }}' | wc -c
-          echo "=== Decoding keystore ==="
-          echo '${{ secrets.KEYSTORE_FILE }}' | base64 -d > android/app/keystore.jks
+          echo "=== Cleaning and decoding keystore ==="
+          # Remove any whitespace/newlines and decode
+          echo '${{ secrets.KEYSTORE_FILE }}' | tr -d '[:space:]' | base64 -d > android/app/keystore.jks
           echo "=== Keystore file created ==="
           ls -la android/app/keystore.jks
           file android/app/keystore.jks
