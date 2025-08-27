@@ -112,31 +112,38 @@ jobs:
       
       - name: Setup release keystore
         run: |
+          mkdir -p android/app
           echo '${{ secrets.KEYSTORE_FILE }}' | base64 -d > android/app/keystore.jks
+          echo "=== Keystore file created ==="
+          ls -la android/app/keystore.jks
+          file android/app/keystore.jks
           
       - name: Create keystore.properties
         run: |
-          echo "storeFile=keystore.jks" >> android/keystore.properties
-          echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> android/keystore.properties
-          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/keystore.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/keystore.properties
+          cat > android/keystore.properties << EOF
+          storeFile=keystore.jks
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          EOF
+          echo "=== keystore.properties created ==="
+          cat android/keystore.properties
       
-      - name: Modify build.gradle for signing
+      - name: Verify keystore
         run: |
-          # First, let's see the current build.gradle structure
-          echo "=== Current build.gradle ==="
-          cat android/app/build.gradle
-          echo "=========================="
+          cd android
+          keytool -list -keystore app/keystore.jks -storepass '${{ secrets.KEYSTORE_PASSWORD }}' -alias '${{ secrets.KEY_ALIAS }}' -v
+      
+      - name: Completely replace build.gradle signing configuration
+        run: |
+          cd android/app
           
-          # Create a Python script to properly modify the build.gradle
-          cat > modify_gradle.py << 'EOF'
-          import re
+          # Create backup
+          cp build.gradle build.gradle.backup
           
-          with open('android/app/build.gradle', 'r') as f:
-              content = f.read()
+          # Use sed to replace the buildTypes section entirely
+          cat > signing_replacement.gradle << 'EOF'
           
-          # Add signingConfigs section after android {
-          signing_config = '''
               signingConfigs {
                   release {
                       def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -151,28 +158,44 @@ jobs:
                       }
                   }
               }
-          '''
           
-          # Insert signingConfigs after 'android {'
-          content = re.sub(r'(android\s*{)', r'\1' + signing_config, content)
-          
-          # Modify buildTypes release section to use signing config
-          content = re.sub(
-              r'(buildTypes\s*{[^}]*release\s*{[^}]*)',
-              r'\1\n            signingConfig signingConfigs.release',
-              content,
-              flags=re.DOTALL
-          )
-          
-          with open('android/app/build.gradle', 'w') as f:
-              f.write(content)
-          
-          print("Modified build.gradle:")
-          with open('android/app/build.gradle', 'r') as f:
-              print(f.read())
+              buildTypes {
+                  debug {
+                      signingConfig signingConfigs.debug
+                      applicationIdSuffix ".debug"
+                      debuggable true
+                  }
+                  release {
+                      signingConfig signingConfigs.release
+                      minifyEnabled false
+                      proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                  }
+              }
           EOF
           
-          python3 modify_gradle.py
+          # Find where buildTypes starts and replace it
+          python3 << 'EOF'
+          import re
+          
+          with open('build.gradle', 'r') as f:
+              content = f.read()
+          
+          with open('signing_replacement.gradle', 'r') as f:
+              replacement = f.read()
+          
+          # First add signingConfigs and buildTypes after android {
+          # Remove existing buildTypes section if it exists
+          content = re.sub(r'buildTypes\s*{[^}]*}', '', content, flags=re.DOTALL)
+          
+          # Insert our replacement after android {
+          content = re.sub(r'(android\s*{)', r'\1' + replacement, content, flags=re.DOTALL)
+          
+          with open('build.gradle', 'w') as f:
+              f.write(content)
+          EOF
+          
+          echo "=== Modified build.gradle ==="
+          cat build.gradle
       
       - name: Make gradlew executable
         run: chmod +x android/gradlew
@@ -187,16 +210,21 @@ jobs:
           cd android
           ./gradlew signingReport
       
-      - name: Build AAB
+      - name: Build AAB with explicit signing
         run: |
           cd android
-          ./gradlew bundleRelease --no-daemon --stacktrace
+          ./gradlew bundleRelease \
+            -Pandroid.injected.signing.store.file=app/keystore.jks \
+            -Pandroid.injected.signing.store.password='${{ secrets.KEYSTORE_PASSWORD }}' \
+            -Pandroid.injected.signing.key.alias='${{ secrets.KEY_ALIAS }}' \
+            -Pandroid.injected.signing.key.password='${{ secrets.KEY_PASSWORD }}' \
+            --no-daemon --stacktrace
       
       - name: Verify AAB signing
         run: |
           cd android
           echo "=== Verifying AAB signature ==="
-          keytool -printcert -jarfile app/build/outputs/bundle/release/app-release.aab | head -10
+          keytool -printcert -jarfile app/build/outputs/bundle/release/app-release.aab | head -20
       
       - name: Upload AAB as artifact
         uses: actions/upload-artifact@v4
