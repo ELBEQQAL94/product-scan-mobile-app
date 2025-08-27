@@ -113,10 +113,18 @@ jobs:
       - name: Setup release keystore
         run: |
           mkdir -p android/app
+          echo "=== Debug keystore secret (first 50 chars) ==="
+          echo '${{ secrets.KEYSTORE_FILE }}' | head -c 50
+          echo ""
+          echo "=== Secret length ==="
+          echo '${{ secrets.KEYSTORE_FILE }}' | wc -c
+          echo "=== Decoding keystore ==="
           echo '${{ secrets.KEYSTORE_FILE }}' | base64 -d > android/app/keystore.jks
           echo "=== Keystore file created ==="
           ls -la android/app/keystore.jks
           file android/app/keystore.jks
+          echo "=== Keystore file size ==="
+          wc -c android/app/keystore.jks
           
       - name: Create keystore.properties
         run: |
