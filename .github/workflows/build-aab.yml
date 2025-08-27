@@ -113,19 +113,8 @@ jobs:
       - name: Setup release keystore
         run: |
           mkdir -p android/app
-          echo "=== Debug keystore secret (first 50 chars) ==="
-          echo '${{ secrets.KEYSTORE_FILE }}' | head -c 50
-          echo ""
-          echo "=== Secret length ==="
-          echo '${{ secrets.KEYSTORE_FILE }}' | wc -c
-          echo "=== Cleaning and decoding keystore ==="
-          # Remove any whitespace/newlines and decode
           echo '${{ secrets.KEYSTORE_FILE }}' | tr -d '[:space:]' | base64 -d > android/app/keystore.jks
-          echo "=== Keystore file created ==="
           ls -la android/app/keystore.jks
-          file android/app/keystore.jks
-          echo "=== Keystore file size ==="
-          wc -c android/app/keystore.jks
           
       - name: Create keystore.properties
         run: |
@@ -135,80 +124,27 @@ jobs:
           keyAlias=${{ secrets.KEY_ALIAS }}
           keyPassword=${{ secrets.KEY_PASSWORD }}
           EOF
-          echo "=== keystore.properties created ==="
           cat android/keystore.properties
       
-      - name: Verify keystore
+      - name: List keystore aliases
         run: |
           cd android
-          echo "=== Listing ALL aliases in keystore ==="
-          keytool -list -keystore app/keystore.jks -storepass '${{ secrets.KEYSTORE_PASSWORD }}'
-          echo ""
-          echo "=== Trying to use the configured alias ==="
-          keytool -list -keystore app/keystore.jks -storepass '${{ secrets.KEYSTORE_PASSWORD }}' -alias '${{ secrets.KEY_ALIAS }}' -v || echo "Configured alias failed"
+          echo "=== Available aliases in keystore ==="
+          keytool -list -keystore app/keystore.jks -storepass '${{ secrets.KEYSTORE_PASSWORD }}' || echo "Failed to list keystore"
       
-      - name: Completely replace build.gradle signing configuration
+      - name: Add signing config to build.gradle
         run: |
           cd android/app
           
-          # Create backup
-          cp build.gradle build.gradle.backup
+          # Add signing configuration after the android { line
+          sed -i '/android {/a\\n    signingConfigs {\n        release {\n            def keystorePropertiesFile = rootProject.file("keystore.properties")\n            if (keystorePropertiesFile.exists()) {\n                def keystoreProperties = new Properties()\n                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))\n                storeFile file(keystoreProperties["storeFile"])\n                storePassword keystoreProperties["storePassword"]\n                keyAlias keystoreProperties["keyAlias"]\n                keyPassword keystoreProperties["keyPassword"]\n            }\n        }\n    }' build.gradle
           
-          # Use sed to replace the buildTypes section entirely
-          cat > signing_replacement.gradle << 'EOF'
+          # Modify buildTypes to use signing config
+          sed -i '/buildTypes {/,/}/ { /release {/,/}/ { /}/i\            signingConfig signingConfigs.release
+          } }' build.gradle
           
-              signingConfigs {
-                  release {
-                      def keystorePropertiesFile = rootProject.file("keystore.properties")
-                      if (keystorePropertiesFile.exists()) {
-                          def keystoreProperties = new Properties()
-                          keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-                          
-                          storeFile file(keystoreProperties['storeFile'])
-                          storePassword keystoreProperties['storePassword']
-                          keyAlias keystoreProperties['keyAlias']
-                          keyPassword keystoreProperties['keyPassword']
-                      }
-                  }
-              }
-          
-              buildTypes {
-                  debug {
-                      signingConfig signingConfigs.debug
-                      applicationIdSuffix ".debug"
-                      debuggable true
-                  }
-                  release {
-                      signingConfig signingConfigs.release
-                      minifyEnabled false
-                      proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-                  }
-              }
-          EOF
-          
-          # Find where buildTypes starts and replace it
-          python3 << 'EOF'
-          import re
-          
-          with open('build.gradle', 'r') as f:
-              content = f.read()
-          
-          with open('signing_replacement.gradle', 'r') as f:
-              replacement = f.read()
-          
-          # First add signingConfigs and buildTypes after android {
-          # Remove existing buildTypes section if it exists
-          content = re.sub(r'buildTypes\s*{[^}]*}', '', content, flags=re.DOTALL)
-          
-          # Insert our replacement after android {
-          content = re.sub(r'(android\s*{)', r'\1' + replacement, content, flags=re.DOTALL)
-          
-          with open('build.gradle', 'w') as f:
-              f.write(content)
-          EOF
-          
-          echo "=== Modified build.gradle ==="
-          cat build.gradle
+          echo "=== Modified build.gradle signing sections ==="
+          grep -A 20 "signingConfigs" build.gradle || echo "No signingConfigs found"
       
       - name: Make gradlew executable
         run: chmod +x android/gradlew
@@ -217,11 +153,6 @@ jobs:
         run: |
           cd android
           ./gradlew clean
-      
-      - name: Debug signing configuration
-        run: |
-          cd android
-          ./gradlew signingReport
       
       - name: Build AAB with explicit signing
         run: |
