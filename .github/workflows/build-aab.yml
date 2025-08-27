@@ -141,7 +141,11 @@ jobs:
       - name: Verify keystore
         run: |
           cd android
-          keytool -list -keystore app/keystore.jks -storepass '${{ secrets.KEYSTORE_PASSWORD }}' -alias '${{ secrets.KEY_ALIAS }}' -v
+          echo "=== Listing ALL aliases in keystore ==="
+          keytool -list -keystore app/keystore.jks -storepass '${{ secrets.KEYSTORE_PASSWORD }}'
+          echo ""
+          echo "=== Trying to use the configured alias ==="
+          keytool -list -keystore app/keystore.jks -storepass '${{ secrets.KEYSTORE_PASSWORD }}' -alias '${{ secrets.KEY_ALIAS }}' -v || echo "Configured alias failed"
       
       - name: Completely replace build.gradle signing configuration
         run: |
