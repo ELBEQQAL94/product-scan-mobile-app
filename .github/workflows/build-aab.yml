@@ -121,6 +121,59 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/keystore.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/keystore.properties
       
+      - name: Modify build.gradle for signing
+        run: |
+          # First, let's see the current build.gradle structure
+          echo "=== Current build.gradle ==="
+          cat android/app/build.gradle
+          echo "=========================="
+          
+          # Create a Python script to properly modify the build.gradle
+          cat > modify_gradle.py << 'EOF'
+          import re
+          
+          with open('android/app/build.gradle', 'r') as f:
+              content = f.read()
+          
+          # Add signingConfigs section after android {
+          signing_config = '''
+              signingConfigs {
+                  release {
+                      def keystorePropertiesFile = rootProject.file("keystore.properties")
+                      if (keystorePropertiesFile.exists()) {
+                          def keystoreProperties = new Properties()
+                          keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+                          
+                          storeFile file(keystoreProperties['storeFile'])
+                          storePassword keystoreProperties['storePassword']
+                          keyAlias keystoreProperties['keyAlias']
+                          keyPassword keystoreProperties['keyPassword']
+                      }
+                  }
+              }
+          '''
+          
+          # Insert signingConfigs after 'android {'
+          content = re.sub(r'(android\s*{)', r'\1' + signing_config, content)
+          
+          # Modify buildTypes release section to use signing config
+          content = re.sub(
+              r'(buildTypes\s*{[^}]*release\s*{[^}]*)',
+              r'\1\n            signingConfig signingConfigs.release',
+              content,
+              flags=re.DOTALL
+          )
+          
+          with open('android/app/build.gradle', 'w') as f:
+              f.write(content)
+          
+          print("Modified build.gradle:")
+          with open('android/app/build.gradle', 'r') as f:
+              print(f.read())
+          EOF
+          
+          python3 modify_gradle.py
+      
       - name: Make gradlew executable
         run: chmod +x android/gradlew
       
@@ -129,10 +182,21 @@ jobs:
           cd android
           ./gradlew clean
       
+      - name: Debug signing configuration
+        run: |
+          cd android
+          ./gradlew signingReport
+      
       - name: Build AAB
         run: |
           cd android
           ./gradlew bundleRelease --no-daemon --stacktrace
+      
+      - name: Verify AAB signing
+        run: |
+          cd android
+          echo "=== Verifying AAB signature ==="
+          keytool -printcert -jarfile app/build/outputs/bundle/release/app-release.aab | head -10
       
       - name: Upload AAB as artifact
         uses: actions/upload-artifact@v4
