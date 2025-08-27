@@ -129,23 +129,44 @@ jobs:
       - name: Setup signing
         run: |
           mkdir -p android/app
-          echo '${{ secrets.KEYSTORE_FILE }}' | tr -d '[:space:]' | base64 -d > android/app/keystore.jks
+          echo '${{ secrets.KEYSTORE_FILE }}' | tr -d '[:space:]' | base64 -d > android/app/upload-keystore.jks
           
-          # Create gradle.properties with signing info
-          cat >> android/gradle.properties << EOF
-          MYAPP_UPLOAD_STORE_FILE=keystore.jks
-          MYAPP_UPLOAD_KEY_ALIAS=${{ secrets.KEY_ALIAS }}
-          MYAPP_UPLOAD_STORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}
-          MYAPP_UPLOAD_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}
+          # Create signing config exactly like EAS does
+          cat > android/app/upload-keystore.properties << EOF
+          storeFile=upload-keystore.jks
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
           EOF
           
-          # Add signing config to build.gradle
+          # Modify build.gradle to use the upload keystore (EAS approach)
           cd android/app
-          sed -i '/android {/a\\n    signingConfigs {\n        release {\n            storeFile file(MYAPP_UPLOAD_STORE_FILE)\n            storePassword MYAPP_UPLOAD_STORE_PASSWORD\n            keyAlias MYAPP_UPLOAD_KEY_ALIAS\n            keyPassword MYAPP_UPLOAD_KEY_PASSWORD\n        }\n    }' build.gradle
           
-          # Set release buildType to use signing config
-          sed -i '/buildTypes {/,/}/ { /release {/,/}/ { /}/i\            signingConfig signingConfigs.release
-          } }' build.gradle
+          # Add signing configuration to build.gradle
+          cat >> build.gradle << 'EOF'
+          
+          def keystorePropertiesFile = file("upload-keystore.properties")
+          def keystoreProperties = new Properties()
+          if (keystorePropertiesFile.exists()) {
+              keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+          }
+          
+          android {
+              signingConfigs {
+                  release {
+                      keyAlias keystoreProperties['keyAlias']
+                      keyPassword keystoreProperties['keyPassword']
+                      storeFile file(keystoreProperties['storeFile'])
+                      storePassword keystoreProperties['storePassword']
+                  }
+              }
+              buildTypes {
+                  release {
+                      signingConfig signingConfigs.release
+                  }
+              }
+          }
+          EOF
       
       - name: Make gradlew executable
         run: chmod +x android/gradlew
