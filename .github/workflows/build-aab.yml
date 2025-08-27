@@ -95,6 +95,10 @@ jobs:
       
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          api-level: 34
+          build-tools: 34.0.0
+          ndk-version: 25.2.9519653  # Use a stable NDK version
       
       - name: Create google-services.json
         run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > google-services.json
@@ -109,6 +113,17 @@ jobs:
       
       - name: Generate Android project
         run: npx expo prebuild --platform android --clean
+      
+      - name: Configure Android build
+        run: |
+          cd android
+          
+          # Set NDK version in build.gradle
+          echo "android.ndkVersion '25.2.9519653'" >> gradle.properties
+          
+          # Set specific Android versions to avoid conflicts
+          echo "android.compileSdkVersion=34" >> gradle.properties
+          echo "android.targetSdkVersion=34" >> gradle.properties
       
       - name: Setup signing
         run: |
