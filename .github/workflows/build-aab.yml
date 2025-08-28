@@ -117,9 +117,12 @@ jobs:
           UPLOAD_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           UPLOAD_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       
-      - name: Upload AAB as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-aab
-          path: android/app/build/outputs/bundle/release/app-release.aab
-          retention-days: 30
+      - name: Build AAB with EAS
+        run: eas build --platform android --profile production --local
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          UPLOAD_STORE_FILE: upload-keystore.jks
+          UPLOAD_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          UPLOAD_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          UPLOAD_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+              
