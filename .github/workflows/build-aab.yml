@@ -95,97 +95,27 @@ jobs:
       
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-        with:
-          api-level: 35
-          build-tools: 35.0.0
-          ndk-version: 25.2.9519653
       
       - name: Create google-services.json
         run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > google-services.json
       
+      - name: Create keystore file
+        run: |
+          echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > android/app/upload-keystore.jks
+      
       - name: Install dependencies
         run: npm ci
       
-      - name: Clean dependencies
-        run: |
-          npm run clean || true
-          rm -rf node_modules/.cache || true
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
       
-      - name: Generate Android project
-        run: npx expo prebuild --platform android --clean
-      
-      - name: Configure Android build
-        run: |
-          cd android
-          
-          # Set NDK version in build.gradle
-          echo "android.ndkVersion '25.2.9519653'" >> gradle.properties
-          
-          # Set specific Android versions to avoid conflicts
-          echo "android.compileSdkVersion=35" >> gradle.properties
-          echo "android.targetSdkVersion=34" >> gradle.properties
-          echo "android.buildToolsVersion=35.0.0" >> gradle.properties
-      
-      - name: Setup signing
-        run: |
-          mkdir -p android/app
-          echo '${{ secrets.KEYSTORE_FILE }}' | tr -d '[:space:]' | base64 -d > android/app/upload-keystore.jks
-          
-          # Create signing config exactly like EAS does
-          cat > android/app/upload-keystore.properties << EOF
-          storeFile=upload-keystore.jks
-          keyAlias=${{ secrets.KEY_ALIAS }}
-          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
-          keyPassword=${{ secrets.KEY_PASSWORD }}
-          EOF
-          
-          # Modify build.gradle to use the upload keystore (EAS approach)
-          cd android/app
-          
-          # Add signing configuration to build.gradle
-          cat >> build.gradle << 'EOF'
-          
-          def keystorePropertiesFile = file("upload-keystore.properties")
-          def keystoreProperties = new Properties()
-          if (keystorePropertiesFile.exists()) {
-              keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-          }
-          
-          android {
-              signingConfigs {
-                  release {
-                      keyAlias keystoreProperties['keyAlias']
-                      keyPassword keystoreProperties['keyPassword']
-                      storeFile file(keystoreProperties['storeFile'])
-                      storePassword keystoreProperties['storePassword']
-                  }
-              }
-              buildTypes {
-                  release {
-                      signingConfig signingConfigs.release
-                  }
-              }
-          }
-          EOF
-      
-      - name: Make gradlew executable
-        run: chmod +x android/gradlew
-      
-      - name: Clean Gradle cache
-        run: |
-          cd android
-          ./gradlew clean
-      
-      - name: Build AAB
-        run: |
-          cd android
-          ./gradlew bundleRelease --no-daemon --stacktrace
-      
-      - name: Verify signing
-        run: |
-          cd android
-          echo "=== AAB Signature ==="
-          keytool -printcert -jarfile app/build/outputs/bundle/release/app-release.aab | head -10
+      - name: Build AAB with EAS
+        run: eas build --platform android --profile production --local
+        env:
+          UPLOAD_STORE_FILE: upload-keystore.jks
+          UPLOAD_STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          UPLOAD_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          UPLOAD_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       
       - name: Upload AAB as artifact
         uses: actions/upload-artifact@v4
