@@ -3,7 +3,7 @@ export default {
     name: "MyScan",
     slug: "truth-label",
     icon: "./assets/images/icon.png",
-    version: "1.0.3",
+    version: "1.0.4",
     plugins: [
       [
         "@react-native-google-signin/google-signin",
