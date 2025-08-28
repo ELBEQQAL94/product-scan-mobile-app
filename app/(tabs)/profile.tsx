@@ -292,7 +292,10 @@ const Profile: FC = () => {
           </View>
         </View>
 
-        <Button title="test subscription" onPress={() => router.push("paid")} />
+        <Button
+          title="test subscription"
+          onPress={() => router.push(Screens.PRICING)}
+        />
 
         {/* Logout Section */}
         <View style={styles.section}>

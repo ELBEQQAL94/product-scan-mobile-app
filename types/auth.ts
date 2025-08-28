@@ -10,9 +10,16 @@ export interface UserSchema {
   created_at: number;
   updated_at?: number;
   is_email_verified: boolean;
-  is_subscribed: boolean;
   auth_provider: string;
   date_format: string;
+
+  // Enhanced subscription fields
+  is_subscribed: boolean;
+  subscription_product_id?: string;
+  subscription_platform?: "android" | "ios";
+  subscription_start_date?: number;
+  subscription_expiry_date?: number;
+  purchase_token?: string;
 }
 
 export interface GoogleAuthUserResponse {

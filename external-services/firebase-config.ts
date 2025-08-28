@@ -739,5 +739,239 @@ export const get_unique_products = async (
   }
 };
 
+// Add these functions to your existing firebase-config.js file
+
+/**
+ * Update user subscription status in the database
+ * @param {string} userId - User's UID
+ * @param {boolean} isSubscribed - Subscription status
+ * @param {Object} subscriptionData - Additional subscription data (optional)
+ */
+export const update_user_subscription = async (
+  userId: string,
+  isSubscribed: boolean,
+  subscriptionData?: {
+    productId?: string;
+    purchaseToken?: string;
+    platform?: "android" | "ios";
+    transactionDate?: number;
+    billingCycle?: string;
+  }
+): Promise<void> => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.USER_PURCHASE_SUCCESS, // or create USER_SUBSCRIPTION_UPDATE
+    action_description: `Update user subscription status to ${isSubscribed}`,
+    action_data: JSON.stringify({
+      userId,
+      isSubscribed,
+      subscriptionData,
+    }),
+    date_format: format_date_to_custom_string(),
+  };
+
+  try {
+    // Find the user document by uid
+    const querySnapshot = await firestore()
+      .collection("users")
+      .where("uid", "==", userId)
+      .limit(1)
+      .get();
+
+    if (querySnapshot.empty) {
+      throw new Error(`User with uid ${userId} not found`);
+    }
+
+    // Get the document reference
+    const userDoc = querySnapshot.docs[0];
+    const userDocRef = userDoc.ref;
+
+    // Prepare subscription update data
+    const updateData: Partial<UserSchema> = {
+      is_subscribed: isSubscribed,
+      updated_at: format_date_to_timestamp(),
+    };
+
+    // If you decide to extend UserSchema with subscription fields
+    if (subscriptionData && isSubscribed) {
+      updateData.subscription_product_id = subscriptionData.productId;
+      updateData.subscription_platform = subscriptionData.platform;
+      updateData.subscription_start_date = subscriptionData.transactionDate;
+      updateData.purchase_token = subscriptionData.purchaseToken;
+      // Calculate expiry date based on billing cycle (example: 1 month from now)
+      const now = Date.now();
+      const oneMonth = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+      const oneYear = 365 * 24 * 60 * 60 * 1000; // 365 days in milliseconds
+      updateData.subscription_expiry_date =
+        subscriptionData.billingCycle === "yearly"
+          ? now + oneYear
+          : now + oneMonth;
+    }
+
+    // Update the user document
+    await userDocRef.update(updateData);
+
+    user_action.action_description = "User subscription updated successfully";
+    await create_log(user_action);
+  } catch (error: any) {
+    user_action.action_description = "Error updating user subscription";
+    user_action.action_data = JSON.stringify({
+      userId,
+      isSubscribed,
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+    throw error; // Re-throw to handle in calling function
+  }
+};
+
+/**
+ * Get user subscription status from database
+ * @param {string} userId - User's UID
+ * @returns {Promise<UserSchema | null>} User data with subscription info
+ */
+export const get_user_subscription = async (
+  userId: string
+): Promise<UserSchema | null> => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.CHECK_USER_EXISTS, // or create GET_USER_SUBSCRIPTION
+    action_description: `Get user subscription status for user: ${userId}`,
+    action_data: JSON.stringify({ userId }),
+    date_format: format_date_to_custom_string(),
+  };
+
+  try {
+    const querySnapshot = await firestore()
+      .collection("users")
+      .where("uid", "==", userId)
+      .limit(1)
+      .get();
+
+    if (!querySnapshot.empty) {
+      const userDoc = querySnapshot.docs[0];
+      const userData = userDoc.data() as UserSchema;
+
+      user_action.action_data = JSON.stringify({
+        userId,
+        isSubscribed: userData.is_subscribed,
+        hasSubscriptionData: !!userData.subscription_product_id,
+      });
+      await create_log(user_action);
+
+      return userData;
+    }
+
+    user_action.action_description = `No user found for userId: ${userId}`;
+    await create_log(user_action);
+    return null;
+  } catch (error: any) {
+    user_action.action_description = "Error getting user subscription";
+    user_action.action_data = JSON.stringify({
+      userId,
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+    return null;
+  }
+};
+
+/**
+ * Save detailed subscription record (if you want to keep subscription history)
+ * @param {Object} subscriptionRecord - Complete subscription record
+ */
+export const save_subscription_record = async (subscriptionRecord: {
+  userId: string;
+  productId: string;
+  purchaseToken: string;
+  platform: "android" | "ios";
+  transactionDate: number;
+  billingCycle: string;
+  isActive: boolean;
+  purchaseData: any;
+}): Promise<void> => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.USER_PURCHASE_SUCCESS,
+    action_description: "Save detailed subscription record",
+    action_data: JSON.stringify(subscriptionRecord),
+    date_format: format_date_to_custom_string(),
+  };
+
+  try {
+    // Save to subscriptions collection for history tracking
+    await firestore()
+      .collection("subscriptions")
+      .add({
+        ...subscriptionRecord,
+        created_at: format_date_to_timestamp(),
+        date_format: format_date_to_custom_string(),
+      });
+
+    user_action.action_description = "Subscription record saved successfully";
+    await create_log(user_action);
+  } catch (error: any) {
+    user_action.action_description = "Error saving subscription record";
+    user_action.action_data = JSON.stringify({
+      subscriptionRecord,
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+    throw error;
+  }
+};
+
+/**
+ * Cancel/deactivate user subscription
+ * @param {string} userId - User's UID
+ */
+export const cancel_user_subscription = async (
+  userId: string
+): Promise<void> => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.USER_PURCHASE_ERROR, // or create USER_SUBSCRIPTION_CANCELLED
+    action_description: `Cancel subscription for user: ${userId}`,
+    action_data: JSON.stringify({ userId }),
+    date_format: format_date_to_custom_string(),
+  };
+
+  try {
+    // Update user record
+    await update_user_subscription(userId, false);
+
+    // If using separate subscriptions table, mark as inactive
+    const subscriptionsQuery = await firestore()
+      .collection("subscriptions")
+      .where("userId", "==", userId)
+      .where("isActive", "==", true)
+      .get();
+
+    const batch = firestore().batch();
+    subscriptionsQuery.docs.forEach((doc) => {
+      batch.update(doc.ref, {
+        isActive: false,
+        cancelled_at: format_date_to_timestamp(),
+        updated_at: format_date_to_timestamp(),
+      });
+    });
+
+    if (!subscriptionsQuery.empty) {
+      await batch.commit();
+    }
+
+    user_action.action_description = "User subscription cancelled successfully";
+    await create_log(user_action);
+  } catch (error: any) {
+    user_action.action_description = "Error cancelling user subscription";
+    user_action.action_data = JSON.stringify({
+      userId,
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+    throw error;
+  }
+};
+
 // Export auth and storage instances for use in other parts of the app
 export { auth, firestore };
