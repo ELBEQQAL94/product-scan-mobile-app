@@ -109,6 +109,12 @@ jobs:
       - name: Install EAS CLI
         run: npm install -g eas-cli
       
+      - name: Force clean prebuild
+        run: |
+          rm -rf android
+          rm -rf ios
+          npx expo prebuild --platform android --clean
+      
       - name: Build AAB with EAS
         run: eas build --platform android --profile production --local
         env:
