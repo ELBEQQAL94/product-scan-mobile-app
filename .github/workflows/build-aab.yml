@@ -124,12 +124,19 @@ jobs:
           UPLOAD_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           UPLOAD_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       
+      - name: Find AAB file location
+        run: |
+          echo "Searching for all .aab files:"
+          find . -name "*.aab" -type f -exec ls -la {} \;
+          echo ""
+          echo "Checking EAS build output locations:"
+          ls -la /tmp/runner/eas-build-local-nodejs/ 2>/dev/null || echo "EAS temp dir not found"
+          find /tmp -name "*.aab" -type f 2>/dev/null || echo "No AAB in /tmp"
       - name: Upload AAB as artifact
         uses: actions/upload-artifact@v4
         with:
           name: android-aab
-          path: |
-            android/app/build/outputs/bundle/release/app-release.aab
-            android/app/build/outputs/bundle/release/*.aab
+          path: "**/*.aab"
           retention-days: 30
+          if-no-files-found: error
             
