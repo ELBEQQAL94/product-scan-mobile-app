@@ -80,3 +80,14 @@ export const get_country = async (
 export const get_nutri_score = (data: OpenFoodResponseAPI): number | null => {
   return data.product.nutriscore_score ?? null;
 };
+
+export const send_hello_world_func = async (): Promise<string | undefined> => {
+  try {
+    const BASE_URL = "https://helloworld-apywsmfzka-uc.a.run.app";
+    const response = await axios.get(BASE_URL);
+    const result = response.data as string;
+    return result;
+  } catch (error) {
+    console.log(`error in send_hello_world_func: ${error}`);
+  }
+};

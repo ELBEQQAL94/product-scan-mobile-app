@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/themes/colors";
-import { useIAP, SubscriptionProduct } from "expo-iap";
+import { useIAP } from "expo-iap";
 import { ActionTypeEnum, UserAction } from "@/enums/logs";
 import {
   create_log,
@@ -20,7 +20,7 @@ import {
 } from "@/external-services/firebase-config";
 import { format_date_to_custom_string } from "@/utils";
 import auth from "@react-native-firebase/auth";
-import { UserSchema } from "@/types/auth";
+import { send_hello_world_func } from "@/services";
 
 // Android product IDs - match your Google Play Console
 const androidProductIds = ["premuim"]; // Fix this typo or update in Google Play
@@ -46,7 +46,7 @@ interface UserSubscriptionState {
 }
 
 const PricingScreen = () => {
-  const [billingCycle, setBillingCycle] = useState("monthly");
+  const [billingCycle, setBillingCycle] = useState<string>("monthly");
   const [userSubscription, setUserSubscription] =
     useState<UserSubscriptionState | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -243,6 +243,14 @@ const PricingScreen = () => {
   };
 
   const handlePurchase = async (planConfig: PlanConfig) => {
+    const result = await send_hello_world_func();
+    const user_action: UserAction = {
+      action_type: ActionTypeEnum.CHECK_HELLO_WORLD_FUNCTION,
+      action_description: `test hello world function`,
+      action_data: JSON.stringify(result),
+      date_format: format_date_to_custom_string(),
+    };
+    await create_log(user_action);
     if (planConfig.isFree) {
       // Handle downgrade to free plan
       await handleDowngradeToFree();
@@ -368,8 +376,9 @@ const PricingScreen = () => {
     // Extract price from displayPrice
     const price = subscription.displayPrice.replace(/[^0-9.,]/g, "");
     const period = billingCycle === "monthly" ? "month" : "year";
+    const currency = subscription.currency;
 
-    return { price, period };
+    return { price, period, currency };
   };
 
   const isCurrentPlan = (planConfig: PlanConfig) => {
@@ -486,7 +495,7 @@ const PricingScreen = () => {
       {/* Pricing Cards */}
       <View style={styles.cardsContainer}>
         {planConfigs.map((planConfig, index) => {
-          const { price, period } = getSubscriptionPrice(planConfig);
+          const { price, period, currency } = getSubscriptionPrice(planConfig);
           const isCurrent = isCurrentPlan(planConfig);
 
           return (
@@ -527,7 +536,7 @@ const PricingScreen = () => {
 
                 {/* Price */}
                 <View style={styles.priceContainer}>
-                  <Text style={styles.priceSymbol}>$</Text>
+                  <Text style={styles.priceSymbol}>{currency}</Text>
                   <Text style={styles.priceAmount}>{price}</Text>
                   {period && <Text style={styles.pricePeriod}>/{period}</Text>}
                 </View>
