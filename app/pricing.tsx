@@ -20,7 +20,8 @@ import {
 } from "@/external-services/firebase-config";
 import { format_date_to_custom_string } from "@/utils";
 import auth from "@react-native-firebase/auth";
-import { send_hello_world_func } from "@/services";
+import { send_hello_world_func, verify_google_purchase_func } from "@/services";
+import { VerifyPurchaseRequestBody } from "@/types/requests";
 
 // Android product IDs - match your Google Play Console
 const androidProductIds = ["premuim"]; // Fix this typo or update in Google Play
@@ -74,6 +75,28 @@ const PricingScreen = () => {
         );
       },
       onPurchaseError: async (error) => {
+        // other cases
+        //         const {requestPurchase} = useIAP({
+        //   onPurchaseError: (error) => {
+        //     // Error is automatically typed as PurchaseError
+        //     switch (error.code) {
+        //       case ErrorCode.E_USER_CANCELLED:
+        //         // Don't show error for user cancellation
+        //         break;
+        //       case ErrorCode.E_NETWORK_ERROR:
+        //         Alert.alert('Network Error', 'Please check your connection');
+        //         break;
+        //       case ErrorCode.E_ITEM_UNAVAILABLE:
+        //         Alert.alert(
+        //           'Item Unavailable',
+        //           'This item is not available for purchase',
+        //         );
+        //         break;
+        //       default:
+        //         Alert.alert('Purchase Failed', error.message);
+        //     }
+        //   },
+        // });
         const user_action: UserAction = {
           action_type: ActionTypeEnum.USER_PURCHASE_ERROR,
           action_description: `subscription purchase failed`,
@@ -201,7 +224,16 @@ const PricingScreen = () => {
         throw new Error("No authenticated user");
       }
 
+      // const verify_google_purchase_token: VerifyPurchaseRequestBody = {
+      //   subscription_product_id: purchase.productId,
+      //   purchase_token: purchase.purchaseToken,
+      // };
       // Update user subscription in database
+      // const verify_request = await verify_google_purchase_func(
+      //   verify_google_purchase_token
+      // );
+
+      // if (verify_request?.statusCode === 200 && verify_request.valid) {
       await update_user_subscription(currentUser.uid, true, {
         productId: purchase.productId,
         purchaseToken: purchase.purchaseToken,
@@ -232,6 +264,12 @@ const PricingScreen = () => {
       });
 
       setIsLoading(false);
+      // } else {
+      //         If expired:
+      // Update local is_subscribed = false.
+      // Show a paywall / pricing screen.
+      // Offer them to resubscribe.
+      // }
     } catch (error) {
       console.error("Failed to save subscription:", error);
       setIsLoading(false);

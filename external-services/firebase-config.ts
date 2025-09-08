@@ -2,7 +2,6 @@ import auth from "@react-native-firebase/auth";
 import firestore, {
   addDoc,
   collection,
-  orderBy,
 } from "@react-native-firebase/firestore";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import {
@@ -19,7 +18,7 @@ import { ActionTypeEnum, UserAction } from "@/enums/logs";
 import { FirebaseErrorMessages } from "@/enums/firebase-errors-messages";
 import { ProductTypeFromDB, UniqueProduct } from "@/types/products";
 import { NOW_DATE, NOW_DATE_TIMESTAMP } from "@/constants/constants";
-import ProductName from "@/components/ScanResultScreen/ProductName";
+import { SubscriptionData } from "@/types/subscription";
 
 // const db = firestore();
 
@@ -750,13 +749,7 @@ export const get_unique_products = async (
 export const update_user_subscription = async (
   userId: string,
   isSubscribed: boolean,
-  subscriptionData?: {
-    productId?: string;
-    purchaseToken?: string;
-    platform?: "android" | "ios";
-    transactionDate?: number;
-    billingCycle?: string;
-  }
+  subscriptionData?: SubscriptionData
 ): Promise<void> => {
   const user_action: UserAction = {
     action_type: ActionTypeEnum.USER_PURCHASE_SUCCESS, // or create USER_SUBSCRIPTION_UPDATE

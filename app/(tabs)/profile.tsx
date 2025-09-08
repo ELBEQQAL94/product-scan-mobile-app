@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Alert,
   Button,
+  Platform,
+  Linking,
 } from "react-native";
 import {
   FontAwesome,
@@ -24,7 +26,7 @@ import { LanguageKey } from "@/constants/keys";
 import ProfileItem from "@/components/ProfileScreen/ProfileItem";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import ProfileScreenLoading from "@/components/ProfileScreen/ProfileScreenLoading";
-import { format_date } from "@/utils";
+import { format_date, get_android_package_id } from "@/utils";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useLanguage } from "@/context/LanguageProvider";
 import { Step } from "@/enums/step";
@@ -83,6 +85,14 @@ const Profile: FC = () => {
         onPress: on_logout,
       },
     ]);
+  };
+
+  const handleCancelSubscription = async () => {
+    const PACKAGE_ID = get_android_package_id();
+    const sku = "premium_monthly";
+    await Linking.openURL(
+      `https://play.google.com/store/account/subscriptions?sku=${sku}&package=${PACKAGE_ID}`
+    );
   };
 
   if (loading) {
@@ -297,6 +307,28 @@ const Profile: FC = () => {
           onPress={() => router.push(Screens.PRICING)}
         />
 
+        {/* Cancel Subscription Section */}
+        <View style={styles.section}>
+          <Text
+            style={[
+              styles.sectionTitle,
+              { textAlign: is_arabic ? "right" : "left" },
+            ]}
+          >
+            {t(LanguageKey.SUBSCRIPTION_ACTIONS)}
+          </Text>
+
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={handleCancelSubscription}
+          >
+            <MaterialCommunityIcons name="cancel" size={20} color="#fff" />
+            <Text style={styles.cancelButtonText}>
+              {t(LanguageKey.CANCEL_SUBSCRIPTION)}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Logout Section */}
         <View style={styles.section}>
           <Text
@@ -451,6 +483,22 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   logoutButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+    marginLeft: 8,
+  },
+  cancelButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#6c757d", // gray, so it’s different from logout
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 5,
+  },
+  cancelButtonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
