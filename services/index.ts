@@ -8,6 +8,8 @@ import {
   HalalScanResultResponse,
   ScanResultResponse,
 } from "@/types/scan-result";
+import { VerifyPurchaseRequestBody } from "@/types/requests";
+import { VerifyPurchaseResponse } from "@/types/response";
 
 export const ai_scan = async (
   content: string
@@ -91,3 +93,21 @@ export const send_hello_world_func = async (): Promise<string | undefined> => {
     console.log(`error in send_hello_world_func: ${error}`);
   }
 };
+
+export const verify_google_purchase_func = async (
+  request: VerifyPurchaseRequestBody
+): Promise<VerifyPurchaseResponse | undefined> => {
+  try {
+    const BASE_URL = "https://verifygoogleplaypurchase-apywsmfzka-uc.a.run.app";
+    const response = await axios.post(BASE_URL, request);
+    const result = response.data;
+    return result;
+  } catch (error) {
+    console.log(`error in send_hello_world_func: ${error}`);
+  }
+};
+
+// save user data in db
+// handle cancel
+// change data to handle cancel case
+// notify user to subscribe again

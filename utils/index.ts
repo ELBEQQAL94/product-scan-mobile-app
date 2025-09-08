@@ -644,3 +644,8 @@ export const get_current_version = () => {
   const version = Constants.expoConfig?.version || "1.0.0";
   return version;
 };
+
+export const get_android_package_id = () => {
+  const version = Constants.expoConfig?.android?.package || "1.0.0";
+  return version;
+};

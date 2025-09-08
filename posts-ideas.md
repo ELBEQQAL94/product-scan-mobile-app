@@ -1,0 +1,5 @@
+- authentication with google and firebase in local and prod after deploy to google play.
+- integrate app in purchase and add license test
+- build .abb using github actions
+- Google API permission issue
+  - https://developers.google.com/android-publisher/getting_started?hl=en#configure_oauth_and_service_accounts

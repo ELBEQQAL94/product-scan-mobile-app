@@ -1,5 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable object-curly-spacing */
 /**
  * Import function triggers from their respective submodules:
  *
@@ -12,7 +10,6 @@
 // import { setGlobalOptions } from "firebase-functions";
 import { onRequest } from "firebase-functions/https";
 import * as logger from "firebase-functions/logger";
-import { google } from "googleapis";
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
@@ -29,46 +26,78 @@ import { google } from "googleapis";
 // this will be the maximum concurrent request count.
 // setGlobalOptions({ maxInstances: 10 });
 
+// Some notes
+// Try to remove permissions from google play service and tets again
+// generate a new token and test it again with the function locally
 export const helloWorld = onRequest((_request, response) => {
   logger.info("Hello logs!", { structuredData: true });
   response.send("Hello from Firebase!");
 });
 
-// eslint-disable-next-line max-len
+import path from "path";
+
+interface isActiveSubscription {
+  startTimeMillis: string;
+  expiryTimeMillis: string;
+  autoRenewing: boolean;
+  priceCurrencyCode: string;
+  priceAmountMicros: string;
+  countryCode: string;
+  developerPayload: string;
+  cancelReason: number;
+  orderId: string;
+  purchaseType: number;
+  acknowledgementState: number;
+  kind: string;
+  paymentState?: number;
+}
+
 export const verifyGooglePlayPurchase = onRequest(
-  async (request): Promise<any> => {
-    // eslint-disable-next-line indent
-    const data = request.rawBody;
+  async (request, response): Promise<any> => {
+    const data = request.body;
     logger.info("validate purchase for user");
     logger.info(data, { structuredData: true });
+    // Import inside the function
+    const { google } = await import("googleapis");
+    const fileName = path.join(__dirname, "..", "admin.json");
+    logger.info(fileName);
     const auth = new google.auth.GoogleAuth({
-      keyFile: "./admin.json",
+      keyFile: fileName,
       scopes: ["https://www.googleapis.com/auth/androidpublisher"],
     });
+
     try {
       const res = await google
         .androidpublisher("v3")
         .purchases.subscriptions.get({
           packageName: "com.myscan.appmyscan",
-          subscriptionId: JSON.parse(data.toString())["productId"],
-          token: JSON.parse(data.toString())["purchaseToken"],
+          subscriptionId: data.subscription_product_id,
+          token: data.purchase_token,
           auth: auth,
         });
-      logger.info(res, {
-        structuredData: true,
-      });
+
       if (res.status == 200) {
-        logger.info(res.data.paymentState === 1, {
-          structuredData: true,
+        const subscription = res.data as isActiveSubscription;
+        logger.info(`subscription: ${JSON.stringify(subscription)}`);
+        // Check acknowledgement (should be 1)
+        if (subscription.paymentState && subscription.paymentState === 1) {
+          logger.info(subscription.paymentState, { structuredData: true });
+          response.send({
+            statusCode: 200,
+            valid: true,
+          });
+        }
+
+        response.send({
+          valid: false,
         });
-        return { isActiveSubscription: res.data.paymentState === 1 };
       }
-      return { error: -1 };
+      response.send({ error: res });
     } catch (error) {
       logger.error(error, {
         structuredData: true,
       });
-      return { error: -1 };
+      response.send({ error });
     }
   }
 );

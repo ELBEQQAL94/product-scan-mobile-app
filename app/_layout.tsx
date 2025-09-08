@@ -14,7 +14,7 @@ import { LanguageKey } from "@/constants/keys";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
-import { get_current_version } from "@/utils";
+import { get_android_package_id, get_current_version } from "@/utils";
 import {
   create_latest_app_version,
   get_latest_app_version,
@@ -71,10 +71,10 @@ export default function Layout() {
     );
   };
 
-  const redirectToStore = () => {
+  const redirectToStore = async () => {
+    const PACKAGE_ID = get_android_package_id();
     const storeUrl = Platform.select({
-      android:
-        "https://play.google.com/store/apps/details?id=com.myscan.appmyscan",
+      android: `https://play.google.com/store/apps/details?id=${PACKAGE_ID}`,
     });
 
     if (storeUrl) {
