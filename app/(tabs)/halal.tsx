@@ -1,5 +1,6 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Scan from "@/components/ScanScreen/Scan";
+import ProGate from "@/components/shared/ProGate";
 import { Screens } from "@/constants/screens";
 import { useAuth } from "@/hooks/useAuth";
 import { BarcodeScanningResult } from "expo-camera";
@@ -28,12 +29,14 @@ const HalalScreen: FC = () => {
 
   return (
     <ProtectedRoute>
-      <Scan
-        scanned={scanned}
-        handleBarcodeScanned={handleBarcodeScanned}
-        redirectToScanResult={redirect_to_scan_result}
-        isCheckHalal={true}
-      />
+      <ProGate>
+        <Scan
+          scanned={scanned}
+          handleBarcodeScanned={handleBarcodeScanned}
+          redirectToScanResult={redirect_to_scan_result}
+          isCheckHalal={true}
+        />
+      </ProGate>
     </ProtectedRoute>
   );
 };

@@ -8,6 +8,7 @@
  */
 
 // import { setGlobalOptions } from "firebase-functions";
+import { error } from "console";
 import { onRequest } from "firebase-functions/https";
 import * as logger from "firebase-functions/logger";
 
@@ -50,11 +51,23 @@ interface isActiveSubscription {
   acknowledgementState: number;
   kind: string;
   paymentState?: number;
+  gracePeriodEndTimeMillis?: string;
 }
 
 export const verifyGooglePlayPurchase = onRequest(
   async (request, response): Promise<any> => {
-    const data = request.body;
+    const data = request.body as {
+      subscription_product_id: string;
+      purchase_token: string;
+    };
+
+    if (!data.subscription_product_id && !data.purchase_token) {
+      return response.status(400).send({
+        valid: false,
+        error: "Missing required parameters.",
+      });
+    }
+
     logger.info("validate purchase for user");
     logger.info(data, { structuredData: true });
     // Import inside the function
@@ -79,20 +92,30 @@ export const verifyGooglePlayPurchase = onRequest(
       if (res.status == 200) {
         const subscription = res.data as isActiveSubscription;
         logger.info(`subscription: ${JSON.stringify(subscription)}`);
-        // Check acknowledgement (should be 1)
-        if (subscription.paymentState && subscription.paymentState === 1) {
-          logger.info(subscription.paymentState, { structuredData: true });
-          response.send({
-            statusCode: 200,
-            valid: true,
-          });
-        }
 
-        response.send({
-          valid: false,
+        // Check if subscription hasn't expired
+        const now = Date.now();
+        const expiryTime = parseInt(subscription.expiryTimeMillis || "0");
+        const hasValidPayment = [0, 1, 2].includes(
+          subscription.paymentState || 1
+        );
+        const gracePeriodEndTime = parseInt(
+          subscription.gracePeriodEndTimeMillis || "0"
+        );
+        const isNotExpired = expiryTime > now || gracePeriodEndTime > now;
+        const isValid = hasValidPayment && isNotExpired;
+
+        logger.info(`Subscription valid: ${isValid}`, {
+          paymentState: subscription.paymentState,
+          expiryTime: new Date(expiryTime).toISOString(),
+          structuredData: true,
+        });
+        return response.send({
+          statusCode: 200,
+          valid: isValid,
         });
       }
-      response.send({ error: res });
+      return response.send({ status: res.status });
     } catch (error) {
       logger.error(error, {
         structuredData: true,

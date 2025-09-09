@@ -2,6 +2,7 @@ import Products from "@/components/ProductListScreen/Products";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import ActionButton from "@/components/shared/ActionButton";
 import SearchInput from "@/components/shared/form/SearchInput";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 import Loading from "@/components/shared/Loading";
 import ScreenTitle from "@/components/shared/ScreenTitle";
 import { LanguageKey } from "@/constants/keys";
@@ -17,9 +18,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/themes/colors";
 import { Typography } from "@/themes/typography";
 import { ProductTypeFromDB } from "@/types/products";
-import { EvilIcons } from "@expo/vector-icons";
 import { FC, useEffect, useState } from "react";
-import { View, Text, StyleSheet, Alert, TextInput } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 
 const ProductList: FC = () => {
   // Hooks
@@ -27,6 +27,8 @@ const ProductList: FC = () => {
   const { is_arabic } = useLanguage();
   const { t } = useTranslation();
   const { redirect_to } = useCustomRouter();
+  const { modalVisible, language, setModalVisible, setLanguage } =
+    useLanguage();
 
   // States
   const [products, setProducts] = useState<ProductTypeFromDB[]>([]);
@@ -97,6 +99,12 @@ const ProductList: FC = () => {
 
   return (
     <ProtectedRoute>
+      <LanguageSwitcher
+        modalVisible={modalVisible}
+        currentLanguage={language}
+        setModalVisible={setModalVisible}
+        changeLanguage={setLanguage}
+      />
       <View style={styles.container}>
         {products.length === 0 ? (
           <View style={styles.no_product_found_container}>

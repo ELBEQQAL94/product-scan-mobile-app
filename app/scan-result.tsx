@@ -25,6 +25,7 @@ import {
   map_to_product_db,
   save_product_by_bar_code,
 } from "@/utils";
+import { useSubscription } from "@/hooks/useSubscription";
 
 const ScanResultScreen: FC = () => {
   // Hooks
@@ -33,6 +34,7 @@ const ScanResultScreen: FC = () => {
   const colorScheme = useColorScheme();
   const { is_arabic, language } = useLanguage();
   const { redirect_to } = useCustomRouter();
+  const { isSubscribed } = useSubscription();
 
   const bar_code = local.bar_code as string;
   const user_id = local.user_id as string;
@@ -151,6 +153,7 @@ const ScanResultScreen: FC = () => {
         data={product}
         user={user}
         isArabic={is_arabic}
+        isSubscribed={isSubscribed}
         redirectTo={redirect_to}
       />
     </ProtectedRoute>

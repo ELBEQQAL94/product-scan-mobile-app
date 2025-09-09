@@ -11,5 +11,5 @@ export const Screens = {
   SETTINGS_SCREEN: "settings",
   ONBOARDING_SCREEN: "onboarding",
   HALAL_SCAN_RESULT_SCREEN: "halal-scan-result",
-  PRICING: "pricing",
+  PRICING_SCREEN: "pricing",
 };

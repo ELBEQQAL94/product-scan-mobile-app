@@ -29,6 +29,7 @@ import AuthFooter from "@/components/shared/AuthFooter";
 import crashlytics from "@react-native-firebase/crashlytics";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useLanguage } from "@/context/LanguageProvider";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 const LoginScreen: FC = () => {
   // States
@@ -44,6 +45,8 @@ const LoginScreen: FC = () => {
   const { is_arabic } = useLanguage();
   const { redirect_to } = useCustomRouter();
   const { t } = useTranslation();
+  const { modalVisible, language, setModalVisible, setLanguage } =
+    useLanguage();
 
   const show_toast = () => {
     ToastAndroid.show(t(LanguageKey.LOGIN_SUCCESS), ToastAndroid.SHORT);
@@ -141,6 +144,12 @@ const LoginScreen: FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <LanguageSwitcher
+        modalVisible={modalVisible}
+        currentLanguage={language}
+        setModalVisible={setModalVisible}
+        changeLanguage={setLanguage}
+      />
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
