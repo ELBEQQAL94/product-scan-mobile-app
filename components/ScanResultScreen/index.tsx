@@ -2,7 +2,6 @@ import { FC } from "react";
 import { ScrollView, View, StyleSheet, TouchableOpacity } from "react-native";
 import HealthScore from "./HealthScore";
 import PersonalizedMessage from "./PersonalizedMessage";
-import PremiumUpgrade from "./PremiumUpgrade";
 import ProductImage from "../shared/ProductImage";
 import ProductName from "./ProductName";
 import { ProductScanResult } from "@/constants/responses";
@@ -16,6 +15,7 @@ interface ScanResultProps {
   redirectTo: (screen: string) => void;
   data: ProductScanResult;
   user: UserSchema | null | undefined;
+  isSubscribed: boolean;
 }
 
 const ScanResult: FC<ScanResultProps> = ({
@@ -23,6 +23,7 @@ const ScanResult: FC<ScanResultProps> = ({
   isArabic,
   redirectTo,
   user,
+  isSubscribed,
 }) => {
   return (
     <View style={styles.container}>
@@ -30,14 +31,10 @@ const ScanResult: FC<ScanResultProps> = ({
         <ProductImage imageUri={data.image_url} />
         <ProductName name={data.product_name} />
         <HealthScore score={data.score} />
-        <PremiumUpgrade
-          isProfileHealthCreated={user?.is_profile_health_created}
-          isArabic={isArabic}
-          redirectTo={redirectTo}
-        />
         <PersonalizedMessage
           score={data.score}
           recommendations={data.recommendations}
+          isSubscribed={isSubscribed}
         />
         {/* <View style={{ margin: 25 }}>
           <ActionButton

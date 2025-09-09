@@ -1,98 +1,69 @@
-import { useEffect, useState, useCallback } from "react";
-import {
-  get_user_subscription,
-  update_user_subscription,
-} from "@/external-services/firebase-config";
+import { useEffect, useState } from "react";
+import { get_user_subscription } from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
 import { VerifyPurchaseRequestBody } from "@/types/requests";
-import { verify_google_purchase_func } from "@/services";
+import { verify_google_play_purchase_func } from "@/services";
 
 export const useSubscription = () => {
   // Hooks
   const { user, loading: userLoading } = useAuth();
 
   // States
-  const [isPro, setIsPro] = useState<boolean>(false);
-  const [loading, setLoading] = useState(true);
+  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  /**
-   * Load subscription info from Firestore
-   */
-  const loadUserSubscription = useCallback(async () => {
-    if (!user) {
-      setIsPro(false);
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const userData = await get_user_subscription(user.uid);
-
-      if (userData?.is_subscribed) {
-        const expired =
-          userData.subscription_expiry_date &&
-          userData.subscription_expiry_date < Date.now();
-
-        if (expired) {
-          // Expired → update DB
-          await update_user_subscription(user.uid, false);
-          setIsPro(false);
-        } else {
-          setIsPro(true);
-        }
-      } else {
-        setIsPro(false);
-      }
-    } catch (error) {
-      console.error("❌ Failed to load subscription:", error);
-      setIsPro(false);
-    } finally {
-      setLoading(false);
-    }
-  }, [user]);
-
-  /**
-   * Verify purchase token with server
-   */
-  const verify = useCallback(async () => {
-    if (!user) return false;
-
-    try {
-      const userData = await get_user_subscription(user.uid);
-      if (!userData?.purchase_token || !userData?.subscription_product_id) {
-        return false;
-      }
-
-      const body: VerifyPurchaseRequestBody = {
-        subscription_product_id: userData.subscription_product_id,
-        purchase_token: userData.purchase_token,
-      };
-
-      const res = await verify_google_purchase_func(body);
-      if (res?.valid) {
-        setIsPro(true);
-        return true;
-      } else {
-        setIsPro(false);
-        return false;
-      }
-    } catch (error) {
-      console.error("❌ Failed to verify purchase:", error);
-      setIsPro(false);
-      return false;
-    }
-  }, [user]);
+  // load user subscription
+  // verify token if exists
+  // if not valid update user subscription data
 
   useEffect(() => {
+    const verify = async () => {
+      // user not auth or account not exists
+      if (!user && !userLoading) {
+        setIsSubscribed(false);
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
+
+      if (user?.uid) {
+        try {
+          const userData = await get_user_subscription(user.uid);
+
+          if (!userData?.is_subscribed) {
+            setIsSubscribed(false);
+            setIsLoading(false);
+            return;
+          }
+
+          if (userData.subscription_product_id && userData.purchase_token) {
+            const body: VerifyPurchaseRequestBody = {
+              subscription_product_id: userData.subscription_product_id,
+              purchase_token: userData.purchase_token,
+            };
+            const response = await verify_google_play_purchase_func(body);
+
+            if (response) {
+              setIsSubscribed(response.valid);
+              setIsLoading(false);
+            }
+          }
+        } catch (error: unknown) {
+          console.log("error: verify token", error);
+          setIsLoading(false);
+          setIsSubscribed(false);
+        }
+      }
+    };
+
     if (user && !userLoading) {
-      loadUserSubscription();
+      verify();
     }
-  }, [user, userLoading, loadUserSubscription]);
+  }, [user, userLoading]);
 
   return {
-    isPro,
-    loading,
-    verify,
+    isSubscribed,
+    isLoading,
   };
 };

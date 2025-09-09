@@ -1,4 +1,19 @@
 export const en = {
+  CURRENT_PLAN: "Current Plan",
+  PURCHASE_SUCCESSFUL_BUT_FAILED:
+    "Purchase successful but failed to save subscription data. Please restart the app.",
+  WARNING: "Warning",
+  PURCHASE_FAILED: "Purchase Failed",
+  ITEM_IS_NOT_AVAILABLE_FOR_PURCHASE: "This item is not available for purchase",
+  ITEM_UNAVAILABLE: "Item Unavailable",
+  NETWORK_ERROR: "Network Error",
+  PLEASE_CHECK_YOUR_CONNECTION: "Please check your connection",
+  YOUR_SUBSCRIPTION_IS_NOW_ACTIVE:
+    "Your subscription is now active. Enjoy premium features!",
+  UPGRADE_NOW: "Upgrade Now",
+  SUBSCRIBE_TO_UNLOCK:
+    "Subscribe to unlock detailed health analysis and personalized recommendations",
+  PREMIUM_CONTENT: "Premium Content",
   START_SCANNING: "Start scanning",
   EXCELLENT: "Excellent",
   GOOD: "Good",

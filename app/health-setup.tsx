@@ -20,6 +20,7 @@ import ScreenTitle from "@/components/shared/ScreenTitle";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Colors } from "@/themes/colors";
 import Loading from "@/components/shared/Loading";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 const HealthSetup: FC = () => {
   // Hooks
@@ -28,6 +29,8 @@ const HealthSetup: FC = () => {
   const { is_arabic } = useLanguage();
   const { t } = useTranslation();
   const local = useLocalSearchParams();
+  const { modalVisible, language, setModalVisible, setLanguage } =
+    useLanguage();
 
   const DEFAULT_STEP = (local.default_step as Step) || Step.DISEASES;
 
@@ -140,6 +143,12 @@ const HealthSetup: FC = () => {
 
   return (
     <ProtectedRoute>
+      <LanguageSwitcher
+        modalVisible={modalVisible}
+        currentLanguage={language}
+        setModalVisible={setModalVisible}
+        changeLanguage={setLanguage}
+      />
       <View style={styles.container}>
         <ScreenTitle
           title={

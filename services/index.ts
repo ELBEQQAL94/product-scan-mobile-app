@@ -94,11 +94,16 @@ export const send_hello_world_func = async (): Promise<string | undefined> => {
   }
 };
 
-export const verify_google_purchase_func = async (
+export const verify_google_play_purchase_func = async (
   request: VerifyPurchaseRequestBody
 ): Promise<VerifyPurchaseResponse | undefined> => {
+  const BASE_URL = process.env.EXPO_PUBLIC_VERIFY_GOOGLE_PURCHASE_FUNC || "";
+
+  if (!BASE_URL) {
+    throw Error("BASE_URL not provide for veirfy google play purchase");
+  }
+
   try {
-    const BASE_URL = "https://verifygoogleplaypurchase-apywsmfzka-uc.a.run.app";
     const response = await axios.post(BASE_URL, request);
     const result = response.data;
     return result;

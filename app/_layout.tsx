@@ -147,6 +147,12 @@ export default function Layout() {
               },
             }}
           />
+          <Stack.Screen
+            name={Screens.PRICING_SCREEN}
+            options={{
+              headerShown: false,
+            }}
+          />
         </Stack>
       </ThemeProvider>
     </LanguageProvider>

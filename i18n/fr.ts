@@ -1,4 +1,20 @@
 export const fr = {
+  CURRENT_PLAN: "Plan Actuel",
+  PURCHASE_SUCCESSFUL_BUT_FAILED:
+    "Achat réussi mais échec de sauvegarde des données d'abonnement. Veuillez redémarrer l'application.",
+  WARNING: "Avertissement",
+  PURCHASE_FAILED: "Échec de l'Achat",
+  ITEM_IS_NOT_AVAILABLE_FOR_PURCHASE:
+    "Cet article n'est pas disponible à l'achat",
+  ITEM_UNAVAILABLE: "Article Non Disponible",
+  NETWORK_ERROR: "Erreur Réseau",
+  PLEASE_CHECK_YOUR_CONNECTION: "Veuillez vérifier votre connexion",
+  YOUR_SUBSCRIPTION_IS_NOW_ACTIVE:
+    "Votre abonnement est maintenant actif. Profitez des fonctionnalités premium !",
+  UPGRADE_NOW: "Mettre à niveau maintenant",
+  SUBSCRIBE_TO_UNLOCK:
+    "Abonnez-vous pour débloquer une analyse de santé détaillée et des recommandations personnalisées",
+  PREMIUM_CONTENT: "Contenu Premium",
   START_SCANNING: "Commencer le scan",
   EXCELLENT: "Excellent",
   GOOD: "Bon",

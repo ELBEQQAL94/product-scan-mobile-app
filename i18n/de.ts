@@ -1,4 +1,20 @@
 export const de = {
+  CURRENT_PLAN: "Aktueller Plan",
+  PURCHASE_SUCCESSFUL_BUT_FAILED:
+    "Kauf erfolgreich, aber das Speichern der Abonnementdaten ist fehlgeschlagen. Bitte starten Sie die App neu.",
+  WARNING: "Warnung",
+  PURCHASE_FAILED: "Kauf fehlgeschlagen",
+  ITEM_IS_NOT_AVAILABLE_FOR_PURCHASE:
+    "Dieser Artikel ist nicht zum Kauf verfügbar",
+  ITEM_UNAVAILABLE: "Artikel nicht verfügbar",
+  NETWORK_ERROR: "Netzwerkfehler",
+  PLEASE_CHECK_YOUR_CONNECTION: "Bitte überprüfen Sie Ihre Verbindung",
+  YOUR_SUBSCRIPTION_IS_NOW_ACTIVE:
+    "Ihr Abonnement ist jetzt aktiv. Genießen Sie die Premium-Features!",
+  UPGRADE_NOW: "Jetzt upgraden",
+  SUBSCRIBE_TO_UNLOCK:
+    "Abonnieren Sie, um detaillierte Gesundheitsanalysen und personalisierte Empfehlungen freizuschalten",
+  PREMIUM_CONTENT: "Premium-Inhalt",
   START_SCANNING: "Scannen starten",
   EXCELLENT: "Ausgezeichnet",
   GOOD: "Gut",

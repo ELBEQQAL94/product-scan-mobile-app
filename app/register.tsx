@@ -31,8 +31,16 @@ import AuthFooter from "@/components/shared/AuthFooter";
 import Terms from "@/components/RegisterScreen/Terms";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useLanguage } from "@/context/LanguageProvider";
+import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 
 const RegisterScreen: FC = () => {
+  // Hooks
+  const { is_arabic } = useLanguage();
+  const { redirect_to } = useCustomRouter();
+  const { t } = useTranslation();
+  const { modalVisible, language, setModalVisible, setLanguage } =
+    useLanguage();
+
   // States
   const [step, setStep] = useState<AuthSteps>(AuthSteps.EMAIL);
   const [email, setEmail] = useState<string>("");
@@ -44,11 +52,6 @@ const RegisterScreen: FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [googleLoading, setGoogleLoading] = useState<boolean>(false);
-
-  // Hooks
-  const { is_arabic } = useLanguage();
-  const { redirect_to } = useCustomRouter();
-  const { t } = useTranslation();
 
   const show_toast = () => {
     ToastAndroid.show(t(LanguageKey.ACCOUNT_CREATED), ToastAndroid.SHORT);
@@ -125,6 +128,12 @@ const RegisterScreen: FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <LanguageSwitcher
+        modalVisible={modalVisible}
+        currentLanguage={language}
+        setModalVisible={setModalVisible}
+        changeLanguage={setLanguage}
+      />
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingView}
         behavior={Platform.OS === "ios" ? "padding" : "height"}

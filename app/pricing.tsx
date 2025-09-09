@@ -1,465 +1,39 @@
-import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  Alert,
   ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/themes/colors";
-import { useIAP } from "expo-iap";
-import { ActionTypeEnum, UserAction } from "@/enums/logs";
-import {
-  create_log,
-  update_user_subscription,
-  get_user_subscription,
-  save_subscription_record,
-} from "@/external-services/firebase-config";
-import { format_date_to_custom_string } from "@/utils";
-import auth from "@react-native-firebase/auth";
-import { send_hello_world_func, verify_google_purchase_func } from "@/services";
-import { VerifyPurchaseRequestBody } from "@/types/requests";
+import { PlanConfig } from "@/types/subscription";
+import { planConfigs } from "@/constants/pricing-plans";
+import Loading from "@/components/shared/Loading";
+import { useInAppPurchase } from "@/hooks/useInAppPurchase";
+import { BillingCycleEnum } from "@/enums/subscriptions";
 
 // Android product IDs - match your Google Play Console
-const androidProductIds = ["premuim"]; // Fix this typo or update in Google Play
-
-interface PlanConfig {
-  id: string;
-  name: string;
-  description: string;
-  features: string[];
-  buttonText: string;
-  buttonStyle: "outline" | "primary";
-  popular: boolean;
-  isFree: boolean;
-}
-
-interface UserSubscriptionState {
-  productId: string;
-  isActive: boolean;
-  platform: "android" | "ios";
-  transactionDate?: number;
-  expiryDate?: number;
-  purchaseToken?: string;
-}
+// const androidProductIds = ["premuim"]; // Fix this typo or update in Google Play
 
 const PricingScreen = () => {
-  const [billingCycle, setBillingCycle] = useState<string>("monthly");
-  const [userSubscription, setUserSubscription] =
-    useState<UserSubscriptionState | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [loadingSubscription, setLoadingSubscription] = useState(true);
+  // Hooks
+  const {
+    isLoading,
+    loadingSubscription,
+    userSubscription,
+    billingCycle,
+    setBillingCycle,
+    handlePurchase,
+    getSubscriptionPrice,
+    getButtonText,
+    getButtonDisabled,
+    isCurrentPlan,
+  } = useInAppPurchase();
 
-  // IAP Hook
-  const { connected, subscriptions, requestProducts, requestPurchase } = useIAP(
-    {
-      onPurchaseSuccess: async (purchase) => {
-        const user_action: UserAction = {
-          action_type: ActionTypeEnum.USER_PURCHASE_SUCCESS,
-          action_description: `subscription purchase successful`,
-          action_data: JSON.stringify(purchase),
-          date_format: format_date_to_custom_string(),
-        };
-        await create_log(user_action);
-
-        // Update user subscription state
-        await handleSubscriptionUpdate(purchase);
-
-        Alert.alert(
-          "Success!",
-          "Your subscription is now active. Enjoy premium features!"
-        );
-      },
-      onPurchaseError: async (error) => {
-        // other cases
-        //         const {requestPurchase} = useIAP({
-        //   onPurchaseError: (error) => {
-        //     // Error is automatically typed as PurchaseError
-        //     switch (error.code) {
-        //       case ErrorCode.E_USER_CANCELLED:
-        //         // Don't show error for user cancellation
-        //         break;
-        //       case ErrorCode.E_NETWORK_ERROR:
-        //         Alert.alert('Network Error', 'Please check your connection');
-        //         break;
-        //       case ErrorCode.E_ITEM_UNAVAILABLE:
-        //         Alert.alert(
-        //           'Item Unavailable',
-        //           'This item is not available for purchase',
-        //         );
-        //         break;
-        //       default:
-        //         Alert.alert('Purchase Failed', error.message);
-        //     }
-        //   },
-        // });
-        const user_action: UserAction = {
-          action_type: ActionTypeEnum.USER_PURCHASE_ERROR,
-          action_description: `subscription purchase failed`,
-          action_data: JSON.stringify(error),
-          date_format: format_date_to_custom_string(),
-        };
-        await create_log(user_action);
-
-        setIsLoading(false);
-        Alert.alert(
-          "Purchase Failed",
-          error.message || "Something went wrong. Please try again."
-        );
-      },
-    }
-  );
-
-  // Plan configurations
-  const planConfigs: PlanConfig[] = [
-    {
-      id: "free",
-      name: "Free",
-      description: "Perfect for trying out our service",
-      features: [
-        "Basic barcode scanning (camera)",
-        "Product search",
-        "Health score analysis",
-        "Manual barcode entry",
-      ],
-      buttonText: "Current Plan",
-      buttonStyle: "outline",
-      popular: false,
-      isFree: true,
-    },
-    {
-      id: "premuim", // Match your Google Play product ID
-      name: "Pro",
-      description: "Best for regular users",
-      features: [
-        "Unlimited scans",
-        "Detailed nutrition analysis",
-        "Ingredient breakdown",
-        "Personalized recommendations",
-        "Halal/Haram detection",
-        "Priority support",
-        "Export features",
-      ],
-      buttonText: "Start Free Trial",
-      buttonStyle: "primary",
-      popular: true,
-      isFree: false,
-    },
-  ];
-
-  // Initialize IAP
-  useEffect(() => {
-    const initializeIAP = async () => {
-      if (connected && !isInitialized) {
-        try {
-          await requestProducts({
-            skus: androidProductIds,
-            type: "subs",
-          });
-          setIsInitialized(true);
-        } catch (error) {
-          console.error("Failed to initialize products:", error);
-        }
-      }
-    };
-
-    initializeIAP();
-  }, [connected, requestProducts, isInitialized]);
-
-  // Load user subscription status on mount
-  useEffect(() => {
-    loadUserSubscription();
-  }, []);
-
-  const loadUserSubscription = async () => {
-    try {
-      setLoadingSubscription(true);
-      const currentUser = auth().currentUser;
-      if (!currentUser) {
-        setLoadingSubscription(false);
-        return;
-      }
-
-      const userData = await get_user_subscription(currentUser.uid);
-      if (userData?.is_subscribed) {
-        // Check if subscription is still valid (not expired)
-        const isExpired =
-          userData.subscription_expiry_date &&
-          userData.subscription_expiry_date < Date.now();
-
-        if (isExpired) {
-          // Subscription expired, update database
-          await update_user_subscription(currentUser.uid, false);
-          setUserSubscription(null);
-        } else {
-          // Active subscription
-          setUserSubscription({
-            productId: userData.subscription_product_id || "premuim",
-            isActive: userData.is_subscribed,
-            platform: userData.subscription_platform || "android",
-            transactionDate: userData.subscription_start_date,
-            expiryDate: userData.subscription_expiry_date,
-            purchaseToken: userData.purchase_token,
-          });
-        }
-      } else {
-        setUserSubscription(null);
-      }
-    } catch (error) {
-      console.error("Failed to load user subscription:", error);
-      setUserSubscription(null);
-    } finally {
-      setLoadingSubscription(false);
-    }
-  };
-
-  const handleSubscriptionUpdate = async (purchase: any) => {
-    try {
-      const currentUser = auth().currentUser;
-      if (!currentUser) {
-        throw new Error("No authenticated user");
-      }
-
-      // const verify_google_purchase_token: VerifyPurchaseRequestBody = {
-      //   subscription_product_id: purchase.productId,
-      //   purchase_token: purchase.purchaseToken,
-      // };
-      // Update user subscription in database
-      // const verify_request = await verify_google_purchase_func(
-      //   verify_google_purchase_token
-      // );
-
-      // if (verify_request?.statusCode === 200 && verify_request.valid) {
-      await update_user_subscription(currentUser.uid, true, {
-        productId: purchase.productId,
-        purchaseToken: purchase.purchaseToken,
-        platform: "android",
-        transactionDate: purchase.transactionDate,
-        billingCycle: billingCycle,
-      });
-
-      // Save detailed subscription record for history
-      await save_subscription_record({
-        userId: currentUser.uid,
-        productId: purchase.productId,
-        purchaseToken: purchase.purchaseToken,
-        platform: "android",
-        transactionDate: purchase.transactionDate,
-        billingCycle: billingCycle,
-        isActive: true,
-        purchaseData: purchase,
-      });
-
-      // Update local state
-      setUserSubscription({
-        productId: purchase.productId,
-        isActive: true,
-        platform: "android",
-        transactionDate: purchase.transactionDate,
-        purchaseToken: purchase.purchaseToken,
-      });
-
-      setIsLoading(false);
-      // } else {
-      //         If expired:
-      // Update local is_subscribed = false.
-      // Show a paywall / pricing screen.
-      // Offer them to resubscribe.
-      // }
-    } catch (error) {
-      console.error("Failed to save subscription:", error);
-      setIsLoading(false);
-      Alert.alert(
-        "Warning",
-        "Purchase successful but failed to save subscription data. Please restart the app."
-      );
-    }
-  };
-
-  const handlePurchase = async (planConfig: PlanConfig) => {
-    const result = await send_hello_world_func();
-    const user_action: UserAction = {
-      action_type: ActionTypeEnum.CHECK_HELLO_WORLD_FUNCTION,
-      action_description: `test hello world function`,
-      action_data: JSON.stringify(result),
-      date_format: format_date_to_custom_string(),
-    };
-    await create_log(user_action);
-    if (planConfig.isFree) {
-      // Handle downgrade to free plan
-      await handleDowngradeToFree();
-      return;
-    }
-
-    if (!connected) {
-      Alert.alert(
-        "Connection Error",
-        "Not connected to store. Please try again."
-      );
-      return;
-    }
-
-    const currentUser = auth().currentUser;
-    if (!currentUser) {
-      Alert.alert("Authentication Error", "Please log in to continue.");
-      return;
-    }
-
-    if (
-      userSubscription?.isActive &&
-      userSubscription?.productId === planConfig.id
-    ) {
-      Alert.alert("Already Subscribed", "You already have this subscription!");
-      return;
-    }
-
-    // Find the subscription product
-    const subscription = subscriptions.find((sub) => sub.id === planConfig.id);
-    if (!subscription) {
-      Alert.alert(
-        "Product Not Found",
-        "This subscription is not available right now."
-      );
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      // Check if Android subscription and get offer details
-      const isAndroidSubscription = subscription.platform === "android";
-      const hasOfferDetails =
-        isAndroidSubscription &&
-        "subscriptionOfferDetailsAndroid" in subscription &&
-        subscription.subscriptionOfferDetailsAndroid;
-
-      // Make purchase request
-      await requestPurchase({
-        request: {
-          android: {
-            skus: [subscription.id],
-            subscriptionOffers: hasOfferDetails
-              ? subscription.subscriptionOfferDetailsAndroid.map((offer) => ({
-                  sku: subscription.id,
-                  offerToken: offer.offerToken || "",
-                }))
-              : [
-                  {
-                    sku: subscription.id,
-                    offerToken: "",
-                  },
-                ],
-          },
-        },
-        type: "subs",
-      });
-    } catch (error) {
-      setIsLoading(false);
-      console.error("Purchase failed:", error);
-      Alert.alert("Purchase Failed", "Something went wrong. Please try again.");
-    }
-  };
-
-  const handleDowngradeToFree = async () => {
-    const currentUser = auth().currentUser;
-    if (!currentUser) return;
-
-    Alert.alert(
-      "Downgrade to Free",
-      "Are you sure you want to cancel your subscription? You'll lose access to premium features.",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Confirm",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              setIsLoading(true);
-
-              // Update subscription status in database
-              await update_user_subscription(currentUser.uid, false);
-
-              // Update local state
-              setUserSubscription(null);
-
-              Alert.alert(
-                "Subscription Cancelled",
-                "You've been downgraded to the free plan."
-              );
-            } catch (error) {
-              console.error("Failed to cancel subscription:", error);
-              Alert.alert(
-                "Error",
-                "Failed to cancel subscription. Please try again."
-              );
-            } finally {
-              setIsLoading(false);
-            }
-          },
-        },
-      ]
-    );
-  };
-
-  const getSubscriptionPrice = (planConfig: PlanConfig) => {
-    if (planConfig.isFree) return { price: "0", period: "" };
-
-    const subscription = subscriptions.find((sub) => sub.id === planConfig.id);
-    if (!subscription) return { price: "N/A", period: "" };
-
-    // Extract price from displayPrice
-    const price = subscription.displayPrice.replace(/[^0-9.,]/g, "");
-    const period = billingCycle === "monthly" ? "month" : "year";
-    const currency = subscription.currency;
-
-    return { price, period, currency };
-  };
-
-  const isCurrentPlan = (planConfig: PlanConfig) => {
-    if (planConfig.isFree && !userSubscription?.isActive) return true;
-    if (
-      !planConfig.isFree &&
-      userSubscription?.productId === planConfig.id &&
-      userSubscription?.isActive
-    )
-      return true;
-    return false;
-  };
-
-  const getButtonText = (planConfig: PlanConfig) => {
-    if (isCurrentPlan(planConfig)) return "Current Plan";
-    if (planConfig.isFree && userSubscription?.isActive)
-      return "Cancel Subscription";
-    if (planConfig.isFree) return "Current Plan";
-    if (userSubscription?.isActive) return "Switch Plan";
-    return planConfig.buttonText;
-  };
-
-  const getButtonDisabled = (planConfig: PlanConfig) => {
-    if (isLoading) return true;
-    if (isCurrentPlan(planConfig) && planConfig.isFree) return true;
-    return false;
-  };
-
-  // Show loading state while checking subscription
   if (loadingSubscription) {
-    return (
-      <View
-        style={[
-          styles.container,
-          { justifyContent: "center", alignItems: "center" },
-        ]}
-      >
-        <ActivityIndicator size="large" color={Colors.LIGHT_GREEN} />
-        <Text style={{ marginTop: 10, color: Colors.MEDIUM_GRAY }}>
-          Loading subscription...
-        </Text>
-      </View>
-    );
+    return <Loading />;
   }
 
   return (
@@ -472,28 +46,16 @@ const PricingScreen = () => {
         </Text>
       </View>
 
-      {/* Connection Status */}
-      <View style={styles.statusContainer}>
-        <Text style={styles.statusText}>
-          Store: {connected ? "✅ Connected" : "❌ Disconnected"}
-        </Text>
-        <Text style={styles.statusText}>
-          Products: {subscriptions.length} available
-        </Text>
-        {userSubscription?.isActive && (
-          <Text style={styles.statusText}>Status: ✅ Premium Active</Text>
-        )}
-      </View>
-
       {/* Billing Toggle - only show if not subscribed */}
       {!userSubscription?.isActive && (
         <View style={styles.billingToggleContainer}>
           <View style={styles.billingToggle}>
             <TouchableOpacity
-              onPress={() => setBillingCycle("monthly")}
+              onPress={() => setBillingCycle(BillingCycleEnum.MONTHLY)}
               style={[
                 styles.toggleButton,
-                billingCycle === "monthly" && styles.toggleButtonActive,
+                billingCycle === BillingCycleEnum.MONTHLY &&
+                  styles.toggleButtonActive,
               ]}
             >
               <Text
@@ -507,17 +69,19 @@ const PricingScreen = () => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => setBillingCycle("yearly")}
+              onPress={() => setBillingCycle(BillingCycleEnum.YEARLY)}
               style={[
                 styles.toggleButton,
-                billingCycle === "yearly" && styles.toggleButtonActive,
+                billingCycle === BillingCycleEnum.YEARLY &&
+                  styles.toggleButtonActive,
                 { position: "relative" },
               ]}
             >
               <Text
                 style={[
                   styles.toggleButtonText,
-                  billingCycle === "yearly" && styles.toggleButtonTextActive,
+                  billingCycle === BillingCycleEnum.YEARLY &&
+                    styles.toggleButtonTextActive,
                 ]}
               >
                 Yearly
@@ -532,7 +96,7 @@ const PricingScreen = () => {
 
       {/* Pricing Cards */}
       <View style={styles.cardsContainer}>
-        {planConfigs.map((planConfig, index) => {
+        {planConfigs.map((planConfig: PlanConfig) => {
           const { price, period, currency } = getSubscriptionPrice(planConfig);
           const isCurrent = isCurrentPlan(planConfig);
 
@@ -631,33 +195,6 @@ const PricingScreen = () => {
           );
         })}
       </View>
-
-      {/* Current Subscription Info */}
-      {userSubscription?.isActive && (
-        <View style={styles.subscriptionInfo}>
-          <Text style={styles.subscriptionTitle}>Current Subscription</Text>
-          <Text style={styles.subscriptionDetails}>
-            Plan:{" "}
-            {planConfigs.find((p) => p.id === userSubscription.productId)
-              ?.name || "Pro"}
-          </Text>
-          {userSubscription.transactionDate && (
-            <Text style={styles.subscriptionDetails}>
-              Started:{" "}
-              {new Date(userSubscription.transactionDate).toLocaleDateString()}
-            </Text>
-          )}
-          {userSubscription.expiryDate && (
-            <Text style={styles.subscriptionDetails}>
-              {userSubscription.expiryDate > Date.now()
-                ? `Expires: ${new Date(
-                    userSubscription.expiryDate
-                  ).toLocaleDateString()}`
-                : "Status: Expired"}
-            </Text>
-          )}
-        </View>
-      )}
     </ScrollView>
   );
 };

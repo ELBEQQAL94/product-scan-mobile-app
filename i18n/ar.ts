@@ -1,4 +1,17 @@
 export const ar = {
+  CURRENT_PLAN: "الخطة الحالية",
+  PURCHASE_SUCCESSFUL_BUT_FAILED:
+    "تم الشراء بنجاح لكن فشل في حفظ بيانات الاشتراك. يرجى إعادة تشغيل التطبيق.",
+  WARNING: "تحذير",
+  PURCHASE_FAILED: "فشل الشراء",
+  ITEM_IS_NOT_AVAILABLE_FOR_PURCHASE: "هذا العنصر غير متاح للشراء",
+  ITEM_UNAVAILABLE: "العنصر غير متاح",
+  NETWORK_ERROR: "خطأ في الشبكة",
+  PLEASE_CHECK_YOUR_CONNECTION: "يرجى التحقق من اتصالك",
+  YOUR_SUBSCRIPTION_IS_NOW_ACTIVE: "اشتراكك نشط الآن. استمتع بالميزات المميزة!",
+  UPGRADE_NOW: "ترقية الآن",
+  SUBSCRIBE_TO_UNLOCK: "اشترك لفتح تحليل صحي مفصل وتوصيات شخصية",
+  PREMIUM_CONTENT: "محتوى مميز",
   START_SCANNING: "ابدأ المسح",
   EXCELLENT: "ممتاز",
   GOOD: "جيد",
