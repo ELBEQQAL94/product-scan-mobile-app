@@ -42,6 +42,14 @@ export default {
           ios: {
             useFrameworks: "static",
           },
+          android: {
+            compileSdkVersion: 35,
+            targetSdkVersion: 35,
+            minSdkVersion: 21,
+            // Enable ProGuard/R8 for code obfuscation and size reduction
+            proguardMinifyEnabled: true,
+            enableProguardInReleaseBuilds: true,
+          },
         },
       ],
       [
