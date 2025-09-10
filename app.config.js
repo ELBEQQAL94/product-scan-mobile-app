@@ -3,7 +3,7 @@ export default {
     name: "MyScan",
     slug: "truth-label",
     icon: "./assets/images/icon.png",
-    version: "1.0.4",
+    version: "1.0.5",
     plugins: [
       [
         "@react-native-google-signin/google-signin",
@@ -67,7 +67,7 @@ export default {
     },
     android: {
       package: "com.myscan.appmyscan",
-      versionCode: 3,
+      versionCode: 4,
       googleServicesFile:
         process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
       image: "./assets/images/splash.png",
