@@ -21,6 +21,7 @@ export enum ActionTypeEnum {
   USER_PURCHASE_CONNECTED = "USER_PURCHASE_CONNECTED",
   // should remove later on
   CHECK_HELLO_WORLD_FUNCTION = "CHECK_HELLO_WORLD_FUNCTION",
+  GET_SUBSCRIPTION_PRICE = "GET_SUBSCRIPTION_PRICE",
 }
 
 export interface UserAction {
