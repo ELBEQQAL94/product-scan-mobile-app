@@ -213,20 +213,10 @@ export const useInAppPurchase = () => {
     }
   };
 
-  const getSubscriptionPrice = async (planConfig: PlanConfig) => {
-    const user_action: UserAction = {
-      action_type: ActionTypeEnum.GET_SUBSCRIPTION_PRICE,
-      action_description: "getSubscriptionPrice",
-      action_data: null,
-      date_format: format_date_to_custom_string(),
-    };
-    await create_log(user_action);
+  const getSubscriptionPrice = (planConfig: PlanConfig) => {
     if (planConfig.isFree) return { price: "0", period: "" };
 
     const subscription = subscriptions.find((sub) => sub.id === planConfig.id);
-    user_action.action_data = JSON.stringify(subscription);
-
-    await create_log(user_action);
 
     if (!subscription) return { price: "N/A", period: "" };
 
