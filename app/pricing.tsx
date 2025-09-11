@@ -29,32 +29,6 @@ const PricingScreen = () => {
     isCurrentPlan,
   } = useInAppPurchase();
 
-  // Helper function to calculate yearly savings
-  const getYearlySavings = (planConfig: PlanConfig) => {
-    if (planConfig.isFree) return null;
-
-    // Get monthly price
-    const currentCycle = billingCycle;
-    setBillingCycle(BillingCycleEnum.MONTHLY);
-    const monthlyPrice = getSubscriptionPrice(planConfig);
-    setBillingCycle(BillingCycleEnum.YEARLY);
-    const yearlyPrice = getSubscriptionPrice(planConfig);
-    setBillingCycle(currentCycle); // Reset to original
-
-    if (monthlyPrice.price === "N/A" || yearlyPrice.price === "N/A")
-      return null;
-
-    const monthlyTotal = parseFloat(monthlyPrice.price) * 12;
-    const yearlyTotal = parseFloat(yearlyPrice.price);
-    const savings = monthlyTotal - yearlyTotal;
-    const savingsPercentage = Math.round((savings / monthlyTotal) * 100);
-
-    return {
-      amount: savings.toFixed(2),
-      percentage: savingsPercentage,
-    };
-  };
-
   if (loadingSubscription) {
     return <Loading />;
   }
@@ -123,10 +97,6 @@ const PricingScreen = () => {
         {planConfigs.map((planConfig: PlanConfig) => {
           const { price, period, currency } = getSubscriptionPrice(planConfig);
           const isCurrent = isCurrentPlan(planConfig);
-          const yearlySavings =
-            billingCycle === BillingCycleEnum.YEARLY
-              ? getYearlySavings(planConfig)
-              : null;
 
           return (
             <View
@@ -171,13 +141,13 @@ const PricingScreen = () => {
                   {period && <Text style={styles.pricePeriod}>/{period}</Text>}
                 </View>
 
-                {/* Yearly Savings Info */}
-                {yearlySavings && (
-                  <Text style={styles.savingsText}>
-                    Save ${yearlySavings.amount} ({yearlySavings.percentage}%
-                    off)
-                  </Text>
-                )}
+                {/* Show "Best Value" for yearly */}
+                {billingCycle === BillingCycleEnum.YEARLY &&
+                  !planConfig.isFree && (
+                    <Text style={styles.bestValueText}>
+                      Best Value - Save 30%
+                    </Text>
+                  )}
               </View>
 
               {/* Features */}
@@ -260,18 +230,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     opacity: 0.9,
     lineHeight: 22,
-  },
-  statusContainer: {
-    backgroundColor: Colors.WHITE,
-    margin: 20,
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-  },
-  statusText: {
-    fontSize: 12,
-    color: Colors.MEDIUM_GRAY,
-    marginBottom: 2,
   },
   billingToggleContainer: {
     alignItems: "center",
@@ -420,7 +378,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginTop: 20,
   },
-  savingsText: {
+  bestValueText: {
     fontSize: 12,
     color: Colors.LIGHT_GREEN,
     fontWeight: "600",
@@ -477,25 +435,6 @@ const styles = StyleSheet.create({
   },
   ctaButtonTextCurrent: {
     color: Colors.WHITE,
-  },
-  subscriptionInfo: {
-    backgroundColor: Colors.WHITE,
-    margin: 20,
-    padding: 20,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: Colors.LIGHT_GREEN,
-  },
-  subscriptionTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: Colors.CHARCOAL,
-    marginBottom: 8,
-  },
-  subscriptionDetails: {
-    fontSize: 14,
-    color: Colors.MEDIUM_GRAY,
-    marginBottom: 4,
   },
 });
 
