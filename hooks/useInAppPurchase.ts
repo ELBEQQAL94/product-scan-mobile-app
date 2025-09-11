@@ -56,14 +56,24 @@ export const useInAppPurchase = () => {
     // Update user subscription state
     await handleSubscriptionUpdate(purchase);
 
-    ToastAndroid.show(
-      t(LanguageKey.YOUR_SUBSCRIPTION_IS_NOW_ACTIVE),
-      ToastAndroid.SHORT
-    );
+    // ToastAndroid.show(
+    //   t(LanguageKey.YOUR_SUBSCRIPTION_IS_NOW_ACTIVE),
+    //   ToastAndroid.SHORT
+    // );
+
+    Alert.alert("Purchase success", JSON.stringify(purchase));
   };
 
   const onPurchaseError = async (purchaseError: PurchaseError) => {
     // Error is automatically typed as PurchaseError
+    const user_action: UserAction = {
+      action_type: ActionTypeEnum.USER_PURCHASE_SUCCESS,
+      action_description: `subscription purchase successful`,
+      action_data: JSON.stringify(purchaseError),
+      date_format: format_date_to_custom_string(),
+    };
+    await create_log(user_action);
+
     switch (purchaseError.code) {
       case ErrorCode.E_USER_CANCELLED:
         // Don't show error for user cancellation
@@ -83,15 +93,11 @@ export const useInAppPurchase = () => {
       default:
         Alert.alert(t(LanguageKey.PURCHASE_FAILED), purchaseError.message);
     }
-    const user_action: UserAction = {
-      action_type: ActionTypeEnum.USER_PURCHASE_ERROR,
-      action_description: `subscription purchase failed`,
-      action_data: JSON.stringify(purchaseError),
-      date_format: format_date_to_custom_string(),
-    };
-    await create_log(user_action);
+    user_action.action_data = JSON.stringify(purchaseError);
 
+    await create_log(user_action);
     setIsLoading(false);
+
     Alert.alert(
       t(LanguageKey.PURCHASE_FAILED),
       purchaseError.message || t(LanguageKey.SOMETHING_WENT_WRONG)
@@ -99,6 +105,13 @@ export const useInAppPurchase = () => {
   };
 
   const handleSubscriptionUpdate = async (purchase: any) => {
+    const user_action: UserAction = {
+      action_type: ActionTypeEnum.USER_SUBSCRIPTION_UPDATE,
+      action_description: "handleSubscriptionUpdate",
+      action_data: JSON.stringify(purchase),
+      date_format: format_date_to_custom_string(),
+    };
+
     try {
       if (user && !loading) {
         await update_user_subscription(user.uid, true, {
@@ -132,8 +145,12 @@ export const useInAppPurchase = () => {
 
         setIsLoading(false);
       }
+      await create_log(user_action);
     } catch (error) {
       console.error("Failed to save subscription:", error);
+      user_action.action_data = JSON.stringify(error);
+
+      await create_log(user_action);
       setIsLoading(false);
       Alert.alert(
         t(LanguageKey.WARNING),

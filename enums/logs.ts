@@ -22,6 +22,7 @@ export enum ActionTypeEnum {
   // should remove later on
   CHECK_HELLO_WORLD_FUNCTION = "CHECK_HELLO_WORLD_FUNCTION",
   GET_SUBSCRIPTION_PRICE = "GET_SUBSCRIPTION_PRICE",
+  USER_SUBSCRIPTION_UPDATE = "USER_SUBSCRIPTION_UPDATE",
 }
 
 export interface UserAction {
