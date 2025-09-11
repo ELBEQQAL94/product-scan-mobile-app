@@ -35,12 +35,6 @@ export const useInAppPurchase = () => {
   // Hooks
   const { user, loading } = useAuth();
   const { t } = useTranslation();
-  const { connected, subscriptions, requestProducts, requestPurchase } = useIAP(
-    {
-      onPurchaseSuccess: () => onPurchaseSuccess,
-      onPurchaseError: () => onPurchaseError,
-    }
-  );
 
   const onPurchaseSuccess = async (
     purchase: ProductPurchase | SubscriptionPurchase
@@ -103,6 +97,13 @@ export const useInAppPurchase = () => {
       purchaseError.message || t(LanguageKey.SOMETHING_WENT_WRONG)
     );
   };
+
+  const { connected, subscriptions, requestProducts, requestPurchase } = useIAP(
+    {
+      onPurchaseSuccess,
+      onPurchaseError,
+    }
+  );
 
   const handleSubscriptionUpdate = async (purchase: any) => {
     const user_action: UserAction = {
