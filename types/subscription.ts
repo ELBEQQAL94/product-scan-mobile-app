@@ -15,6 +15,8 @@ export interface PlanConfig {
   buttonStyle: "outline" | "primary";
   popular: boolean;
   isFree: boolean;
+  monthlyId?: string;
+  yearlyId?: string;
 }
 
 export interface UserSubscriptionState {

@@ -73,7 +73,6 @@ export const useInAppPurchase = () => {
           t(LanguageKey.NETWORK_ERROR),
           t(LanguageKey.PLEASE_CHECK_YOUR_CONNECTION)
         );
-
         break;
       case ErrorCode.E_ITEM_UNAVAILABLE:
         Alert.alert(
@@ -107,7 +106,7 @@ export const useInAppPurchase = () => {
           purchaseToken: purchase.purchaseToken,
           platform: "android",
           transactionDate: purchase.transactionDate,
-          billingCycle: billingCycle,
+          billingCycle,
         });
 
         // Save detailed subscription record for history
@@ -117,7 +116,7 @@ export const useInAppPurchase = () => {
           purchaseToken: purchase.purchaseToken,
           platform: "android",
           transactionDate: purchase.transactionDate,
-          billingCycle: billingCycle,
+          billingCycle,
           isActive: true,
           purchaseData: purchase,
         });
@@ -143,8 +142,16 @@ export const useInAppPurchase = () => {
     }
   };
 
+  // Helper function to get the correct product ID based on billing cycle
+  const getProductIdForBillingCycle = (planConfig: PlanConfig): string => {
+    if (planConfig.isFree) return "";
+
+    return billingCycle === BillingCycleEnum.MONTHLY
+      ? planConfig.monthlyId || ""
+      : planConfig.yearlyId || "";
+  };
+
   const handlePurchase = async (planConfig: PlanConfig) => {
-    // TODO should remove after finish testing
     if (!connected) {
       Alert.alert(
         t(LanguageKey.CONNECTION_ERROR),
@@ -153,18 +160,25 @@ export const useInAppPurchase = () => {
       return;
     }
 
-    // TODO should be removed after finish testing
+    // Get the correct product ID based on billing cycle
+    const productId = getProductIdForBillingCycle(planConfig);
+
+    if (!productId) {
+      Alert.alert("Error", "Product ID not configured for this billing cycle");
+      return;
+    }
+
     if (
       userSubscription?.isActive &&
-      userSubscription?.productId === planConfig.id
+      userSubscription?.productId === productId
     ) {
       Alert.alert("Already Subscribed", "You already have this subscription!");
       return;
     }
 
     // Find the subscription product
-    const subscription = subscriptions.find((sub) => sub.id === planConfig.id);
-    // TODO should be removed after finish testing
+    const subscription = subscriptions.find((sub) => sub.id === productId);
+
     if (!subscription) {
       Alert.alert(
         "Product Not Found",
@@ -216,16 +230,18 @@ export const useInAppPurchase = () => {
   const getSubscriptionPrice = (planConfig: PlanConfig) => {
     if (planConfig.isFree) return { price: "0", period: "" };
 
-    const subscription = subscriptions.find((sub) => sub.id === planConfig.id);
+    // Get the correct product ID based on billing cycle
+    const productId = getProductIdForBillingCycle(planConfig);
+
+    if (!productId) return { price: "N/A", period: "" };
+
+    const subscription = subscriptions.find((sub) => sub.id === productId);
 
     if (!subscription) return { price: "N/A", period: "" };
 
     // Extract price from displayPrice
     const price = subscription.displayPrice.replace(/[^0-9.,]/g, "");
-    const period =
-      billingCycle === BillingCycleEnum.MONTHLY
-        ? BillingCycleEnum.MONTHLY
-        : BillingCycleEnum.YEARLY;
+    const period = billingCycle;
     const currency = subscription.currency;
 
     return { price, period, currency };
@@ -233,12 +249,17 @@ export const useInAppPurchase = () => {
 
   const isCurrentPlan = (planConfig: PlanConfig) => {
     if (planConfig.isFree && !userSubscription?.isActive) return true;
-    if (
-      !planConfig.isFree &&
-      userSubscription?.productId === planConfig.id &&
-      userSubscription?.isActive
-    )
-      return true;
+
+    // Check if user has any premium subscription active
+    if (!planConfig.isFree && userSubscription?.isActive) {
+      // Check if user has either monthly or yearly version of this plan
+      const monthlyId = planConfig.monthlyId;
+      const yearlyId = planConfig.yearlyId;
+      const userProductId = userSubscription?.productId;
+
+      return userProductId === monthlyId || userProductId === yearlyId;
+    }
+
     return false;
   };
 
@@ -256,13 +277,22 @@ export const useInAppPurchase = () => {
     return false;
   };
 
-  // Initialize IAP
+  // Initialize IAP with multiple product IDs
   useEffect(() => {
     const initializeIAP = async () => {
       if (connected && !isInitialized) {
         try {
+          // Parse the subscription IDs from environment variable
+          const subscriptionIds =
+            process.env.EXPO_PUBLIC_SUBSCRIPTION_ID?.split(",") || [];
+
+          if (subscriptionIds.length === 0) {
+            console.error("No subscription IDs found in environment variable");
+            return;
+          }
+
           await requestProducts({
-            skus: [process.env.EXPO_PUBLIC_SUBSCRIPTION_ID || ""],
+            skus: subscriptionIds,
             type: "subs",
           });
           setIsInitialized(true);
@@ -298,7 +328,7 @@ export const useInAppPurchase = () => {
           } else {
             // Active subscription
             setUserSubscription({
-              productId: userData.subscription_product_id || "premuim",
+              productId: userData.subscription_product_id || "premuim_monthly",
               isActive: userData.is_subscribed,
               platform: userData.subscription_platform || "android",
               transactionDate: userData.subscription_start_date,

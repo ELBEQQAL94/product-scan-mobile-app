@@ -17,7 +17,9 @@ export const planConfigs: PlanConfig[] = [
     isFree: true,
   },
   {
-    id: "premuim", // Match your Google Play product ID
+    id: "premuim", // Base ID
+    monthlyId: "premuim_monthly", // Matches your Google Play product ID
+    yearlyId: "premuim_yearly", // Matches your Google Play product ID
     name: "Pro",
     description: "Best for regular users",
     features: [

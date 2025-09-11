@@ -14,9 +14,6 @@ import Loading from "@/components/shared/Loading";
 import { useInAppPurchase } from "@/hooks/useInAppPurchase";
 import { BillingCycleEnum } from "@/enums/subscriptions";
 
-// Android product IDs - match your Google Play Console
-// const androidProductIds = ["premuim"]; // Fix this typo or update in Google Play
-
 const PricingScreen = () => {
   // Hooks
   const {
@@ -31,6 +28,32 @@ const PricingScreen = () => {
     getButtonDisabled,
     isCurrentPlan,
   } = useInAppPurchase();
+
+  // Helper function to calculate yearly savings
+  const getYearlySavings = (planConfig: PlanConfig) => {
+    if (planConfig.isFree) return null;
+
+    // Get monthly price
+    const currentCycle = billingCycle;
+    setBillingCycle(BillingCycleEnum.MONTHLY);
+    const monthlyPrice = getSubscriptionPrice(planConfig);
+    setBillingCycle(BillingCycleEnum.YEARLY);
+    const yearlyPrice = getSubscriptionPrice(planConfig);
+    setBillingCycle(currentCycle); // Reset to original
+
+    if (monthlyPrice.price === "N/A" || yearlyPrice.price === "N/A")
+      return null;
+
+    const monthlyTotal = parseFloat(monthlyPrice.price) * 12;
+    const yearlyTotal = parseFloat(yearlyPrice.price);
+    const savings = monthlyTotal - yearlyTotal;
+    const savingsPercentage = Math.round((savings / monthlyTotal) * 100);
+
+    return {
+      amount: savings.toFixed(2),
+      percentage: savingsPercentage,
+    };
+  };
 
   if (loadingSubscription) {
     return <Loading />;
@@ -61,7 +84,8 @@ const PricingScreen = () => {
               <Text
                 style={[
                   styles.toggleButtonText,
-                  billingCycle === "monthly" && styles.toggleButtonTextActive,
+                  billingCycle === BillingCycleEnum.MONTHLY &&
+                    styles.toggleButtonTextActive,
                 ]}
               >
                 Monthly
@@ -99,6 +123,10 @@ const PricingScreen = () => {
         {planConfigs.map((planConfig: PlanConfig) => {
           const { price, period, currency } = getSubscriptionPrice(planConfig);
           const isCurrent = isCurrentPlan(planConfig);
+          const yearlySavings =
+            billingCycle === BillingCycleEnum.YEARLY
+              ? getYearlySavings(planConfig)
+              : null;
 
           return (
             <View
@@ -142,6 +170,14 @@ const PricingScreen = () => {
                   <Text style={styles.priceAmount}>{price}</Text>
                   {period && <Text style={styles.pricePeriod}>/{period}</Text>}
                 </View>
+
+                {/* Yearly Savings Info */}
+                {yearlySavings && (
+                  <Text style={styles.savingsText}>
+                    Save ${yearlySavings.amount} ({yearlySavings.percentage}%
+                    off)
+                  </Text>
+                )}
               </View>
 
               {/* Features */}
@@ -383,6 +419,12 @@ const styles = StyleSheet.create({
     color: Colors.MEDIUM_GRAY,
     fontWeight: "500",
     marginTop: 20,
+  },
+  savingsText: {
+    fontSize: 12,
+    color: Colors.LIGHT_GREEN,
+    fontWeight: "600",
+    marginTop: 4,
   },
   featuresContainer: {
     marginBottom: 24,
