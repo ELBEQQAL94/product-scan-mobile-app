@@ -262,7 +262,7 @@ export const useInAppPurchase = () => {
       if (connected && !isInitialized) {
         try {
           await requestProducts({
-            skus: [process.env.EXPO_PUBLIC_SUBSCRIPTION_ID || "premuim"],
+            skus: [process.env.EXPO_PUBLIC_SUBSCRIPTION_ID || ""],
             type: "subs",
           });
           setIsInitialized(true);
