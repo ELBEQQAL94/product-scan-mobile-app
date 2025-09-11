@@ -152,6 +152,7 @@ export const useInAppPurchase = () => {
   };
 
   const handlePurchase = async (planConfig: PlanConfig) => {
+    // should remove after testing finish
     if (!connected) {
       Alert.alert(
         t(LanguageKey.CONNECTION_ERROR),

@@ -4,7 +4,6 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
-  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "@/themes/colors";
@@ -17,7 +16,6 @@ import { BillingCycleEnum } from "@/enums/subscriptions";
 const PricingScreen = () => {
   // Hooks
   const {
-    isLoading,
     loadingSubscription,
     userSubscription,
     billingCycle,
@@ -180,22 +178,18 @@ const PricingScreen = () => {
                 disabled={getButtonDisabled(planConfig)}
                 activeOpacity={0.8}
               >
-                {isLoading ? (
-                  <ActivityIndicator size="small" color={Colors.WHITE} />
-                ) : (
-                  <Text
-                    style={[
-                      styles.ctaButtonText,
-                      isCurrent
-                        ? styles.ctaButtonTextCurrent
-                        : planConfig.buttonStyle === "outline"
-                        ? styles.ctaButtonTextOutline
-                        : styles.ctaButtonTextPrimary,
-                    ]}
-                  >
-                    {getButtonText(planConfig)}
-                  </Text>
-                )}
+                <Text
+                  style={[
+                    styles.ctaButtonText,
+                    isCurrent
+                      ? styles.ctaButtonTextCurrent
+                      : planConfig.buttonStyle === "outline"
+                      ? styles.ctaButtonTextOutline
+                      : styles.ctaButtonTextPrimary,
+                  ]}
+                >
+                  {getButtonText(planConfig)}
+                </Text>
               </TouchableOpacity>
             </View>
           );
