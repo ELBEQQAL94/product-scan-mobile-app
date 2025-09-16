@@ -966,5 +966,56 @@ export const cancel_user_subscription = async (
   }
 };
 
+export const set_user_subscription = async (userId: string): Promise<void> => {
+  const user_action: UserAction = {
+    action_type: ActionTypeEnum.SET_USER_SUBSCRIPTION, // or create USER_SUBSCRIPTION_UPDATE
+    action_description: "Set user subscription to false",
+    action_data: JSON.stringify({
+      userId,
+    }),
+    date_format: format_date_to_custom_string(),
+  };
+
+  try {
+    // Find the user document by uid
+    const querySnapshot = await firestore()
+      .collection("users")
+      .where("uid", "==", userId)
+      .limit(1)
+      .get();
+
+    if (querySnapshot.empty) {
+      throw new Error(`User with uid ${userId} not found`);
+    }
+
+    // Get the document reference
+    const userDoc = querySnapshot.docs[0];
+    const userDocRef = userDoc.ref;
+
+    // Prepare subscription update data
+    const updateData: Partial<UserSchema> = {
+      is_subscribed: false,
+      updated_at: format_date_to_timestamp(),
+    };
+
+    // Update the user document
+    await userDocRef.update(updateData);
+
+    user_action.action_description =
+      "User subscription make it false updated successfully";
+    await create_log(user_action);
+  } catch (error: any) {
+    user_action.action_description =
+      "Error updating user subscription to make it false";
+    user_action.action_data = JSON.stringify({
+      userId,
+      code: error.code,
+      error_message: error.message,
+    });
+    await create_log(user_action);
+    throw error; // Re-throw to handle in calling function
+  }
+};
+
 // Export auth and storage instances for use in other parts of the app
 export { auth, firestore };

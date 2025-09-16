@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { get_user_subscription } from "@/external-services/firebase-config";
+import {
+  get_user_subscription,
+  set_user_subscription,
+} from "@/external-services/firebase-config";
 import { useAuth } from "@/hooks/useAuth";
 import { VerifyPurchaseRequestBody } from "@/types/requests";
 import { verify_google_play_purchase_func } from "@/services";
@@ -44,8 +47,12 @@ export const useSubscription = () => {
             };
             const response = await verify_google_play_purchase_func(body);
 
-            if (response) {
+            if (response?.valid) {
               setIsSubscribed(response.valid);
+              setIsLoading(false);
+            } else {
+              await set_user_subscription(user?.uid);
+              setIsSubscribed(false);
               setIsLoading(false);
             }
           }
