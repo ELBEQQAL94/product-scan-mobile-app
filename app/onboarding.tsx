@@ -65,12 +65,12 @@ const OnboardingScreen: FC = () => {
 
   return (
     <>
-      <LanguageSwitcher
+      {/* <LanguageSwitcher
         modalVisible={modalVisible}
         currentLanguage={language}
         setModalVisible={setModalVisible}
         changeLanguage={setLanguage}
-      />
+      /> */}
       <View style={styles.main_container}>
         <View style={[styles.container, { backgroundColor: "green" }]}>
           <FlatList
