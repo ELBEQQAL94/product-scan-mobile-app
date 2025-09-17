@@ -10,6 +10,10 @@ import {
   Dimensions,
   useColorScheme,
 } from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { AsyncStorageKey, LanguageKey } from "@/constants/keys";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 import { Colors } from "@/themes/colors";
@@ -24,6 +28,7 @@ const OnboardingScreen: FC = () => {
   // Hooks
   const colorScheme = useColorScheme();
   const flatListRef = useRef<FlatList>(null);
+  const insets = useSafeAreaInsets();
   const { modalVisible, language, setModalVisible, setLanguage } =
     useLanguage();
   const router = useRouter();
@@ -64,7 +69,7 @@ const OnboardingScreen: FC = () => {
   };
 
   return (
-    <View style={[styles.main_container, { backgroundColor: "green" }]}>
+    <SafeAreaView style={[styles.main_container, { backgroundColor: "green" }]}>
       {/* Content Area */}
       <View style={styles.content_area}>
         <FlatList
@@ -88,7 +93,7 @@ const OnboardingScreen: FC = () => {
       </View>
 
       {/* Button Area */}
-      <View style={styles.button_area}>
+      <View style={[styles.button_area, { paddingBottom: insets.bottom + 40 }]}>
         <View style={styles.button_container}>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: Colors.GLOVO_GREEN }]}
@@ -121,7 +126,7 @@ const OnboardingScreen: FC = () => {
           )}
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -135,7 +140,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button_area: {
-    paddingBottom: 40,
     paddingHorizontal: 20,
   },
   slide: {
