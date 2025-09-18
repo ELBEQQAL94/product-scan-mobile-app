@@ -10,6 +10,10 @@ import {
   Dimensions,
   useColorScheme,
 } from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import { AsyncStorageKey, LanguageKey } from "@/constants/keys";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 import { Colors } from "@/themes/colors";
@@ -24,6 +28,7 @@ const OnboardingScreen: FC = () => {
   // Hooks
   const colorScheme = useColorScheme();
   const flatListRef = useRef<FlatList>(null);
+  const insets = useSafeAreaInsets();
   const { modalVisible, language, setModalVisible, setLanguage } =
     useLanguage();
   const router = useRouter();
@@ -64,67 +69,64 @@ const OnboardingScreen: FC = () => {
   };
 
   return (
-    <>
-      {/* <LanguageSwitcher
-        modalVisible={modalVisible}
-        currentLanguage={language}
-        setModalVisible={setModalVisible}
-        changeLanguage={setLanguage}
-      /> */}
-      <View style={styles.main_container}>
-        <View style={[styles.container, { backgroundColor: "green" }]}>
-          <FlatList
-            ref={flatListRef}
-            data={slides}
-            horizontal
-            pagingEnabled
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={false}
-            renderItem={({ item }) => (
-              <View style={styles.slide}>
-                <View style={styles.text_container}>
-                  <Text style={styles.title}>{t(item.title)}</Text>
-                  <Text style={styles.description}>{t(item.subtitle)}</Text>
-                </View>
+    <SafeAreaView style={[styles.main_container, { backgroundColor: "green" }]}>
+      {/* Content Area */}
+      <View style={styles.content_area}>
+        <FlatList
+          ref={flatListRef}
+          data={slides}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={false}
+          renderItem={({ item }) => (
+            <View style={styles.slide}>
+              <View style={styles.text_container}>
+                <Text style={styles.title}>{t(item.title)}</Text>
+                <Text style={styles.description}>{t(item.subtitle)}</Text>
               </View>
-            )}
-            keyExtractor={(item) => item.id}
-            extraData={currentIndex}
-          />
-          <View style={styles.button_container}>
+            </View>
+          )}
+          keyExtractor={(item) => item.id}
+          extraData={currentIndex}
+        />
+      </View>
+
+      {/* Button Area */}
+      <View style={[styles.button_area, { paddingBottom: insets.bottom + 40 }]}>
+        <View style={styles.button_container}>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: Colors.GLOVO_GREEN }]}
+            onPress={handleNext}
+          >
+            <Text style={styles.button_text}>
+              {currentIndex < slides.length - 1
+                ? t(LanguageKey.NEXT)
+                : t(LanguageKey.CREATE_ACCOUNT)}
+            </Text>
+          </TouchableOpacity>
+          {currentIndex > 0 ? (
             <TouchableOpacity
-              style={[styles.button, { backgroundColor: Colors.GLOVO_GREEN }]}
-              onPress={handleNext}
+              style={[styles.button, { backgroundColor: colors.background }]}
+              onPress={handleBack}
             >
-              <Text style={styles.button_text}>
-                {currentIndex < slides.length - 1
-                  ? t(LanguageKey.NEXT)
-                  : t(LanguageKey.CREATE_ACCOUNT)}
+              <Text style={[styles.button_text, { color: colors.text }]}>
+                {t(LanguageKey.BACK)}
               </Text>
             </TouchableOpacity>
-            {currentIndex > 0 ? (
-              <TouchableOpacity
-                style={[styles.button, { backgroundColor: colors.background }]}
-                onPress={handleBack}
-              >
-                <Text style={[styles.button_text, { color: colors.text }]}>
-                  {t(LanguageKey.BACK)}
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                style={[styles.button, { backgroundColor: colors.background }]}
-                onPress={skip}
-              >
-                <Text style={[styles.button_text, { color: colors.text }]}>
-                  {t(LanguageKey.SKIP)}
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
+          ) : (
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: colors.background }]}
+              onPress={skip}
+            >
+              <Text style={[styles.button_text, { color: colors.text }]}>
+                {t(LanguageKey.SKIP)}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 
@@ -132,19 +134,13 @@ const styles = StyleSheet.create({
   main_container: {
     flex: 1,
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingTop: 40,
-    paddingBottom: 10,
-    backgroundColor: "transparent",
-  },
-  container: {
+  content_area: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  button_area: {
+    paddingHorizontal: 20,
   },
   slide: {
     width,
@@ -168,15 +164,15 @@ const styles = StyleSheet.create({
     color: "white",
   },
   button_container: {
-    position: "absolute",
-    bottom: 40,
-    width: width * 0.8,
+    width: "100%",
+    alignItems: "center",
   },
   button: {
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
     marginVertical: 5,
+    width: "80%",
   },
   button_text: {
     color: "#fff",
