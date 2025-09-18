@@ -67,7 +67,7 @@ export default {
     },
     android: {
       package: "com.myscan.appmyscan",
-      versionCode: 95,
+      versionCode: 3,
       googleServicesFile:
         process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
       image: "./assets/images/splash.png",
