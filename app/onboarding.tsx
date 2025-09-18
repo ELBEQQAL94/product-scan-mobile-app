@@ -10,10 +10,7 @@ import {
   Dimensions,
   useColorScheme,
 } from "react-native";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AsyncStorageKey, LanguageKey } from "@/constants/keys";
 import LanguageSwitcher from "@/components/shared/LanguageSwitcher";
 import { Colors } from "@/themes/colors";
@@ -69,7 +66,7 @@ const OnboardingScreen: FC = () => {
   };
 
   return (
-    <SafeAreaView style={[styles.main_container, { backgroundColor: "green" }]}>
+    <>
       {/* Content Area */}
       <View style={styles.content_area}>
         <FlatList
@@ -126,7 +123,7 @@ const OnboardingScreen: FC = () => {
           )}
         </View>
       </View>
-    </SafeAreaView>
+    </>
   );
 };
 

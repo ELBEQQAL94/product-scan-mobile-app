@@ -7,6 +7,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Screens } from "@/constants/screens";
 import { LanguageProvider } from "@/context/LanguageProvider";
@@ -96,65 +97,69 @@ export default function Layout() {
   }, []);
 
   return (
-    <LanguageProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name={Screens.LOGIN_SCREEN}
-            options={{
-              headerShown: false,
-              // Prevent going back to tabs when not authenticated
-              gestureEnabled: false,
-            }}
-          />
-          <Stack.Screen
-            name={Screens.REGISTER_SCREEN}
-            options={{
-              headerShown: false,
-              // Prevent going back to tabs when not authenticated
-              gestureEnabled: false,
-            }}
-          />
-          <Stack.Screen
-            name={Screens.SCAN_RESULT_SCREEN}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name={Screens.HALAL_SCAN_RESULT_SCREEN}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name={Screens.ONBOARDING_SCREEN}
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name={Screens.HEALTH_SETUP_SCREEN}
-            options={{
-              title: t(LanguageKey.HEALTH_PROFILE_SETUP),
-              headerStyle: {
-                backgroundColor: Colors.GLOVO_GREEN,
-                ...Typography.h1,
-              },
-              headerTitleStyle: {
-                color: Colors.WHITE,
-              },
-            }}
-          />
-          <Stack.Screen
-            name={Screens.PRICING_SCREEN}
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack>
-      </ThemeProvider>
-    </LanguageProvider>
+    <SafeAreaProvider>
+      <LanguageProvider>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name={Screens.LOGIN_SCREEN}
+              options={{
+                headerShown: false,
+                // Prevent going back to tabs when not authenticated
+                gestureEnabled: false,
+              }}
+            />
+            <Stack.Screen
+              name={Screens.REGISTER_SCREEN}
+              options={{
+                headerShown: false,
+                // Prevent going back to tabs when not authenticated
+                gestureEnabled: false,
+              }}
+            />
+            <Stack.Screen
+              name={Screens.SCAN_RESULT_SCREEN}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name={Screens.HALAL_SCAN_RESULT_SCREEN}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name={Screens.ONBOARDING_SCREEN}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name={Screens.HEALTH_SETUP_SCREEN}
+              options={{
+                title: t(LanguageKey.HEALTH_PROFILE_SETUP),
+                headerStyle: {
+                  backgroundColor: Colors.GLOVO_GREEN,
+                  ...Typography.h1,
+                },
+                headerTitleStyle: {
+                  color: Colors.WHITE,
+                },
+              }}
+            />
+            <Stack.Screen
+              name={Screens.PRICING_SCREEN}
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack>
+        </ThemeProvider>
+      </LanguageProvider>
+    </SafeAreaProvider>
   );
 }
